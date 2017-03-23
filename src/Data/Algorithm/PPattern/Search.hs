@@ -13,7 +13,7 @@ commentary with @some markup@.
 module Data.Algorithm.PPattern.Searchable
 (
   -- * The @Perm@ type
-  Search
+  search
 )
 where
 
