@@ -1,0 +1,140 @@
+Name:                ppattern
+Version:             0.1.0.0
+-- synopsis:
+-- description:
+License:             MIT
+License-File:        LICENSE
+Author:              Stéphane Vialette
+Maintainer:          vialette@gmail.com
+-- copyright:
+Category:            Math
+Build-Type:          Simple
+Extra-Source-Files:  README.md
+Cabal-Version:       >=1.22
+
+Library
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Hs-Source-Dirs: src
+  Build-Depends:
+    base >=4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    formatting >= 6.2.4,
+    clock >= 0.7.2
+  Exposed-Modules: Data.Algorithm.PPattern.Perm,
+                   Data.Algorithm.PPattern.Strategy,
+                   Data.Algorithm.PPattern
+
+Executable ppattern-search
+  Main-Is: PPatternSearch.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends:
+    base >= 4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    criterion >= 1.1.4,
+    integer-gmp >= 1.0,
+    formatting >= 6.2.4,
+    clock >= 0.7.2
+
+Executable ppattern-rand
+  Main-Is: PPatternRand.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends:
+    base >= 4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    formatting >= 6.2.4,
+    clock >= 0.7.2,
+    criterion >= 1.1.4
+
+Executable ppattern-rand-k-increasings
+  Main-Is: PPatternRandKIncreasings.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends:
+    base >= 4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    formatting >= 6.2.4,
+    clock >= 0.7.2
+
+Executable ppattern-generate
+  Main-Is: PPatternGenerate.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends:
+    base >= 4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    criterion >= 1.1.4,
+    formatting >= 6.2.4,
+    clock >= 0.7.2
+
+Executable ppattern-benchmark
+  Main-Is: PPatternBenchmark.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends:
+    base >= 4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    criterion >= 1.1.4,
+    formatting >= 6.2.4,
+    clock >= 0.7.2
+
+Executable ppattern-estimate-split
+  Main-Is: PPatternEstimateSplit.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends:
+    base >= 4.8,
+    containers >=0.5 && <0.6,
+    random >=1.1,
+    random-shuffle >=0.0,
+    patience >=0.1,
+    utility-ht >= 0.0.12,
+    cmdargs >= 0.10.4,
+    split >= 0.2.3,
+    criterion >= 1.1.4,
+    formatting >= 6.2.4,
+    clock >= 0.7.2
