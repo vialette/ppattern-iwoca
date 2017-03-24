@@ -18,6 +18,9 @@ module Data.Algorithm.PPattern.Perm
   -- * Constructing
 , mk
 
+  -- * Transforming
+, reversal
+
   -- * Querying
 , size
 , longestIncreasing
@@ -37,10 +40,11 @@ module Data.Algorithm.PPattern.Perm
 )
 where
 
-  import qualified Data.Tuple     as Tuple
-  import qualified Data.List      as List
-  import qualified Data.Foldable  as Foldable
-  import qualified Data.Function  as Function
+  import qualified Data.Tuple      as Tuple
+  import qualified Data.List       as List
+  import qualified Data.Foldable   as Foldable
+  import qualified Data.Function   as Function
+  import qualified Data.Map.Strict as Map
 
   import qualified Data.Algorithm.Patience as Patience
 
@@ -57,6 +61,24 @@ where
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm a
   mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
+
+  {-|
+    Reverse a permutation.
+  -}
+  reversal :: Perm a -> Perm a
+  reversal (Perm ts) = Perm $ Foldable.foldl f [] ts
+    where
+      n = List.length ts
+
+      f acc t = Perm.T.mk p' a : acc
+        where
+          p = Perm.T.point t
+          a = Perm.T.annotation t
+
+          x = Point.xCoord p
+          x' = n + 1 - x
+
+          p' = Point.updateXCoord x' p
 
   {-|
     Turn a permutation into a list.
@@ -131,8 +153,8 @@ where
   {-|
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
-  longestIncreasing :: Perm a -> [Perm.T.T a]
-  longestIncreasing (Perm ts) = unformat . List.reverse . go $ format ts
+  longestIncreasing :: Perm a -> Perm a
+  longestIncreasing (Perm ts) = Perm . unformat . List.reverse . go $ format ts
     where
       format   = fmap (\ t -> (Perm.T.yCoord t, t))
       go       = Patience.longestIncreasing
@@ -143,13 +165,13 @@ where
     subsequences in 'xs'.
   -}
   longestIncreasingLength :: Perm a -> Int
-  longestIncreasingLength = List.length . longestIncreasing
+  longestIncreasingLength = size . longestIncreasing
 
   {-|
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
-  longestDecreasing :: Perm a -> [Perm.T.T a]
-  longestDecreasing (Perm ts) = unformat . go $ format ts
+  longestDecreasing :: Perm a -> Perm a
+  longestDecreasing (Perm ts) = Perm . unformat . go $ format ts
     where
       format   = List.reverse . fmap (\ t -> (Perm.T.yCoord t, t))
       go       = Patience.longestIncreasing
@@ -160,4 +182,4 @@ where
     subsequences in 'xs'.
   -}
   longestDecreasingLength :: Perm a -> Int
-  longestDecreasingLength = List.length . longestDecreasing
+  longestDecreasingLength = size . longestDecreasing
