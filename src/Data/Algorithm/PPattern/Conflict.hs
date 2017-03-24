@@ -15,15 +15,21 @@ module Data.Algorithm.PPattern.Conflict
   -- * The @Resolve@ type
   Conflict(..)
 
-  -- * Access
+  -- * Querying
+, colorPoint
 , threshold
 )
 where
 
-  import qualified Data.Algorithm.PPattern.CPoint as CPoint
+  import qualified Data.Algorithm.PPattern.ColorPoint as ColorPoint
 
-  data Conflict = OrderConflict {-# UNPACK #-} !CPoint.CPoint !Int
-                | ValueConflict {-# UNPACK #-} !CPoint.CPoint !Int
+  data Conflict = OrderConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
+                | ValueConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
+                deriving (Show)
+
+  colorPoint :: Conflict -> ColorPoint.ColorPoint
+  colorPoint (OrderConflict cp _) = cp
+  colorPoint (ValueConflict cp _) = cp
 
   threshold :: Conflict -> Int
   threshold (OrderConflict _ t) = t
