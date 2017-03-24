@@ -23,6 +23,8 @@ module Data.Algorithm.PPattern.Geometry.ColorPoint
   -- * Constructing
 , mk
 , mk2
+, mkBlank
+, mk2Blank
 
   -- * Rendering
 , toTuple
@@ -53,6 +55,18 @@ where
   -}
   mk2 :: Point.Point -> Color.Color -> ColorPoint
   mk2 p c = ColorPoint (p, c)
+
+  {-|
+    'mkBlank' makes a blank point from two coordinates.
+  -}
+  mkBlank ::Int -> Int -> ColorPoint
+  mkBlank x y c = ColorPoint (Point.mk x y, Color.blankColor)
+
+  {-|
+    'mkPoint' makes a blank point from a point.
+  -}
+  mk2Blank :: Point.Point -> Color.Color -> ColorPoint
+  mk2Blank p = ColorPoint (p, Color.blankColor)
 
   {-|
     Transform a color point into a triple (x-ccordinate, y-ccordinate, color).

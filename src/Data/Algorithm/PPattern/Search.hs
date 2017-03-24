@@ -21,28 +21,27 @@ where
   import qualified Data.Foldable as Foldable
   import qualified Data.IntMap.Strict as IntMap
 
-  import qualified Data.Algorithm.PPattern.Search.Context      as Search.Context
-  import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
-  import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Color               as Color
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
   import qualified Data.Algorithm.PPattern.Strategy            as Strategy
   import qualified Data.Algorithm.PPattern.State               as State
+  import qualified Data.Algorithm.PPattern.Search.Context      as Context
+  import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
+  import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
 
   -- Make an initial list of colored points. Each element from the longest
   -- decreasing subsequence is given a distinct colors. All other elements
   -- are given the 'not determined yet' color 0.
-  mkColorPoints :: [(Int, Int)] -> [Int] -> [Color.Color] -> [ColorPoint.ColorPoint]
-  mkColorPoints []             _  _         = []
-  mkColorPoints ((i, y) : iys) [] refColors = cp : mkColorPoints iys [] refColors
-    where
-      cp = ColorPoint.mk i y 0
-  mkColorPoints ((_, _) : _)   _  []        =
-    error "mkColorPoints. We shouldn't be there" -- make ghc -Werror happy
-  mkColorPoints ((i, y) : iys) ds'@(d : ds) refColors'@(c : refColors)
-    | y == d    = ColorPoint.mk i y c : mkColorPoints iys ds  refColors
-    | otherwise = ColorPoint.mk i y Color.blankColor : mkColorPoints iys ds' refColors'
+  initialColorPoints :: [Point.Point] -> [Point.Point] -> [Color.Color] -> [ColorPoint.ColorPoint]
+  initialColorPoints []       _  _  = []
+  initialColorPoints (p : ps) [] cs =  ColorPoint.mk2Blank p : initialColorPoints ps [] cs
+  initialColorPoints (_ : []) _  _  = error "Search.initialColorPoints" -- make ghc -Werror happy
+  initialColorPoints (p : ps) ps''@(p' : ps') cs'@(c : cs)
+    | Point.yCoord p == Point.yCoord p' =
+      ColorPoint.mk2 p c : initialColorPoints ps ps' cs
+    | otherwise                         =
+      ColorPoint.mk2Blank p : initialColorPoints ps ps'' cs'
 
   -- Extract embedding in case of a direct search
   present :: State.State -> Maybe [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)]
@@ -56,6 +55,19 @@ where
         where
           cp1' = ColorPoint.updateXCoord (pSize + 1 - ColorPoint.xCoord cp1) cp1
           cp2' = ColorPoint.updateXCoord (qSize + 1 - ColorPoint.xCoord cp2) cp2
+
+
+  mkRightLongestDecreasing :: [Point.Point] -> Map.Map Point Int
+  mkRightLongestDecreasing ps = mkAux Map.empty ps . fmap (\ p -> (Point.yCoord p, undefined)) ps
+
+  mkRightLongestDecreasingAux :: Map.Map Point Int -> [Point.Point] -> [(Int, t)] -> Map.Map Point Int
+  mkRightLongestDecreasingAux m []       _         = m
+  mkAux m (p : []) []        = Map.insert p 0 m
+  mkAux m (p : ps) (_ : ys)  = mkRightLongestDecreasing m' ps $ L.filter (\ y -> Point.yCoord p > y) ys
+    where
+      longestIncreasing       = Patience.longestIncreasing $ List.reverse ys
+      longestDecreasingLength = List.length longestIncreasing
+      m'                      = Map.insert p longestDecreasingLength m
 
   -- Search for an order-isomorphic occurrence of permutation p into permutation q.
   -- Resolve conflicts according to a given strategy.
@@ -92,7 +104,8 @@ where
 
       -- comapre by longest decreasing subsequence length
       pLongestDecreasing = Perm.longestDecreasing p
-      pLongestDecreasingLength = Foldable.length decreasing
+      pLongestDecreasingLength = Perm.size pLongestDecreasing
+      pLongestDecreasingPoints = Perm.points pLongestDecreasing
 
       -- make initial state
       s = State.mk q
@@ -100,63 +113,75 @@ where
 
       -- Permutation p as blank points
       pPoints = Perm.points p
-      pBlankPoints = fmap (\ p -> ColorPoint.mk p Color.blankColor) pPoints
 
       -- p longest decressing by suffixes
-      pRightLongestDecreasing = RightLongestDecreasing.mk pPoints
+      pRightLongestDecreasing = mkRightLongestDecreasing.mk pPoints
 
       -- Embed p and perform search
-      res = Foldable.asum [doSearch pcps pDecreasingPanorama cs context strategy s
+      res = Foldable.asum [doSearch pcps cs pRightLongestDecreasing context strategy s
                             | refColors   <- cs `Combinatorics.choose` l
-                            , let pcps    = pInitialColorPoints p pLongestDecreasing refColors
+                            , let pcps    = initialColorPoints pPoints pLongestDecreasingPoints refColors
                             , let precede = IntMap.empty
                             , let follow  = IntMap.fromList $ List.zip refColors decreasing
-                            , let context = Search.Context.mk pcps precede follow
+                            , let context = Context.mk precede follow rightLongestDecreasing
                           ]
 
   doSearch ::
-    [ColorPoint.ColorPoint] -> [Color.Color] -> Search.Context.Context -> Strategy.Strategy -> State.State ->
+    [ColorPoint.ColorPoint] -> [Color.Color] ->
+    Context.Context -> Strategy.Strategy -> State.State ->
       Maybe State.State
-  doSearch []             _  _       _        s  = Just s
-  doSearch pcps@(pcp : _) cs context strategy s
-    | c == Color.blankColor = doSearchBlankColorPoint pcps cs context strategy s
-    | otherwise             = doSearchFixedColorPoint pcps cs context strategy s
+  doSearch []             _  _                       _       _        s  = Just s
+  doSearch pcps@(pcp : _) cs pRightLongestDecreasing context strategy s
+    | c == Color.blankColor =
+      doSearchBlankPoint pcps cs pRightLongestDecreasing context strategy s
+    | otherwise             =
+      doSearchColorPoint pcps cs pRightLongestDecreasing context strategy s
     where
       c = ColorPoint.color pcp
 
-  -- pcp is a 0-color point.
-  doSearchFreePoint ::
-    [ColorPoint.ColorPoint] -> [Color.Color] -> Search.Context.Context -> Strategy.Strategy -> State.State ->
-      Maybe State.State
-  doSearchFreePoint []           _  _       _        _ =
+  allowedColor :: ColorPoint -> Color -> [Color.Color] -> RightLongestDecreasing -> Bool
+  allowedColor cp c cs m =
+    case RightLongestDecreasing.query p m of
+      Nothing -> error "allowedColor. Point should be inside the map"
+      Just i  -> i >= k
+    where
+      k = List.length $ List.Filter (> c) cs
+
+  -- pcp is a blank point.
+  doSearchBlankPoint ::
+    [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
+    Maybe State.State
+  doSearchBlankPoint [] _ _ _ _ =
     error "doSearchFreePoint. We shouldn't be there" -- make ghc -Werror happy
-  doSearchFreePoint (pcp : pcps) cs context strategy s =
+  doSearchBlankPoint (pcp : pcps) cs pRightLongestDecreasing context strategy s =
     Foldable.asum [State.pAppend (ColorPoint.updateColor c pcp) s >>= -- append new point
                    resolveConflicts strategy                      >>= -- resolve for match
-                   doSearch pcps cs context' strategy
+                   doSearch pcps cs  context' strategy
                      | c <- cs
-                     , Search.Context.agree c y context
-                     , let context' = Search.Context.update c y context
+                     , Context.agree c y context
+                     , let rightLongestDecreasing = Context.rightLongestDecreasing context
+                     , allowedColor pcp c cs rightLongestDecreasing
+                     , let context' = Context.update c y context
                   ]
     where
       y = ColorPoint.yCoord pcp
 
   -- pcp is not a 0-color point.
-  doSearchFixedColorPoint ::
-    [ColorPoint.ColorPoint] -> [Color.Color] -> Search.Context.Context -> Strategy.Strategy -> State.State ->
-      Maybe State.State
-  doSearchFixedColorPoint []           _  _                  _        _ =
+  doSearchColorPoint ::
+    [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
+    Maybe State.State
+  doSearchColorPoint [] _ _ _ _ =
     error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
-  doSearchFixedColorPoint (pcp : pcps) cs context strategy s =
+  doSearchColorPoint (pcp : pcps) cs context strategy s =
       State.pAppend pcp s       >>= -- append new point
       resolveConflicts strategy >>= -- resolve for match
       doSearch pcps cs context' strategy
     where
       y = ColorPoint.yCoord pcp
       c = ColorPoint.color  pcp
-      context' = Search.Context.update c y context
+      context' = Context.update c y context
 
-  resolveConflicts :: Strategy.Strategy -> State.State -> Maybe State.State
+  resolveConflicts :: Strategy -> State.State -> Maybe State.State
   resolveConflicts strategy s =
     case strategy s of
       Nothing                             -> Just s
