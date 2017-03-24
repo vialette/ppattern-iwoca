@@ -1,13 +1,10 @@
 {-|
 Module      : Data.Algorithm.PPattern.ColorPoint
-Description : Short description
+Description : Simple color 2D point
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016
 License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
-
-Here is a longer description of this module, containing some
-commentary with @some markup@.
 -}
 
 module Data.Algorithm.PPattern.Geometry.ColorPoint
@@ -24,8 +21,8 @@ module Data.Algorithm.PPattern.Geometry.ColorPoint
 , differentColor
 
   -- * Constructing
-, mkColorPoint
-, mkColorPoint'
+, mk
+, mk2
 
   -- * Rendering
 , toTuple
@@ -37,7 +34,7 @@ module Data.Algorithm.PPattern.Geometry.ColorPoint
 )
 where
 
-  import qualified Data.Algorithm.PPattern.Color as Color
+  import qualified Data.Algorithm.PPattern.Color          as Color
   import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
   {-|
@@ -46,24 +43,16 @@ where
   newtype ColorPoint = ColorPoint (Point.Point, Color.Color) deriving (Show, Eq, Ord)
 
   {-|
-    'mkColorPoint' makes a colored point from two coordinates and a color.
+    'mk' makes a colored point from two coordinates and a color.
   -}
-  mkColorPoint ::Int -> Int -> Color.Color -> ColorPoint
-  mkColorPoint x y c = ColorPoint (Point.mkPoint x y, c)
+  mk ::Int -> Int -> Color.Color -> ColorPoint
+  mk x y c = ColorPoint (Point.mk x y, c)
 
   {-|
     'mkPoint' makes a colored point from a point and a color.
   -}
-  mkColorPoint' :: Point.Point -> Color.Color -> ColorPoint
-  mkColorPoint' p c = ColorPoint (p, c)
-
-  {-|
-    'mkPoint' makes a colored point from a point and a color.
-  -}
-  mkColorPoint'' :: Int -> Int -> Color.Color -> ColorPoint
-  mkColorPoint'' x y c = ColorPoint (p, c)
-    where
-      p = Point.mkPoint x y
+  mk2 :: Point.Point -> Color.Color -> ColorPoint
+  mk2 p c = ColorPoint (p, c)
 
   {-|
     Transform a color point into a triple (x-ccordinate, y-ccordinate, color).
@@ -104,21 +93,21 @@ where
     Return True if two color points do not share the same color.
   -}
   differentColor :: ColorPoint -> ColorPoint -> Bool
-  differentColor = not . sameColor
+  differentColor (ColorPoint (_, c)) (ColorPoint (_, c')) = c /= c'
 
   {-|
     Update color point x-coordinate.
   -}
   updateXCoord :: Int -> ColorPoint -> ColorPoint
-  updateXCoord x (ColorPoint (p, c)) = mkColorPoint' p' c
+  updateXCoord x (ColorPoint (p, c)) = mk2 p' c
     where
       p' = Point.updateXCoord x p
 
   {-|
     Update color point y-coordinate.
   -}
-  updateYCoord :: Int -> ColorPoint -> ColorPointInt
-  updateYCoord y (ColorPoint (p, c)) = mkColorPoint' p' c
+  updateYCoord :: Int -> ColorPoint -> ColorPoint
+  updateYCoord y (ColorPoint (p, c)) = mk2 p' c
     where
       p' = Point.updateYCoord y p
 
@@ -126,4 +115,4 @@ where
     Update color point color.
   -}
   updateColor :: Color.Color -> ColorPoint -> ColorPoint
-  updateColor c' (ColorPoint (p, _)) = mkColorPoint' p c'
+  updateColor c' (ColorPoint (p, _)) = mk2 p c'

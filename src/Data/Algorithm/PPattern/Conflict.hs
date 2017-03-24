@@ -21,7 +21,7 @@ module Data.Algorithm.PPattern.Conflict
 )
 where
 
-  import qualified Data.Algorithm.PPattern.ColorPoint as ColorPoint
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
   data Conflict = OrderConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
                 | ValueConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int

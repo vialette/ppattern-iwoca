@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Perm
+Module      : Data.Algorithm.PPattern.Search
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017
 License     : MIT
@@ -10,26 +10,31 @@ Here is a longer description of this module, containing some
 commentary with @some markup@.
 -}
 
-module Data.Algorithm.PPattern.Searchable
+module Data.Algorithm.PPattern.Search
 (
   -- * The @Perm@ type
   search
 )
 where
 
+import qualified Data.Algorithm.PPattern.Perm                as Perm
+import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
+import qualified Data.Algorithm.PPattern.Strategy            as Strategy
+import qualified Data.Algorithm.PPattern.State               as State
+
 -- Make an initial list of colored points. Each element from the longest
 -- decreasing subsequence is given a distinct colors. All other elements
 -- are given the 'not determined yet' color 0.
-mkCPoints :: [(Int, Int)] -> [Int] -> [Color.Color] -> [CPoint.CPoint]
-mkCPoints []             _  _         = []
-mkCPoints ((i, y) : iys) [] refColors = cp : mkCPoints iys [] refColors
+mkColorPoints :: [(Int, Int)] -> [Int] -> [Color.Color] -> [ColorPoint.ColorPoint]
+mkColorPoints []             _  _         = []
+mkColorPoints ((i, y) : iys) [] refColors = cp : mkColorPoints iys [] refColors
   where
-    cp = CPoint.mkCPoint i y 0
-mkCPoints ((_, _) : _)   _  []        =
-  error "mkCPoints. We shouldn't be there" -- make ghc -Werror happy
-mkCPoints ((i, y) : iys) ds'@(d : ds) refColors'@(c : refColors)
-  | y == d    = CPoint.mkCPoint i y c : mkCPoints iys ds  refColors
-  | otherwise = CPoint.mkCPoint i y Color.noColor : mkCPoints iys ds' refColors'
+    cp = ColorPoint.mkColorPoint i y 0
+mkColorPoints ((_, _) : _)   _  []        =
+  error "mkColorPoints. We shouldn't be there" -- make ghc -Werror happy
+mkColorPoints ((i, y) : iys) ds'@(d : ds) refColors'@(c : refColors)
+  | y == d    = ColorPoint.mkColorPoint i y c : mkColorPoints iys ds  refColors
+  | otherwise = ColorPoint.mkColorPoint i y Color.noColor : mkColorPoints iys ds' refColors'
 
 -- Render the embedding as a list of pairs of color points.
 showEmbedding :: State.State -> Maybe [(ColorPoint.ColorPoint a b, ColorPoint.ColorPoint a b)]
@@ -63,28 +68,28 @@ searchAux p q strategy
     -- Embed p and perform search
     res = Foldable.asum [doSearch pcps cs context strategy s
                           | refColors   <- cs `Combi.choose` l
-                          , let pcps    = mkCPoints pIndexed decreasing refColors
+                          , let pcps    = mkColorPoints pIndexed decreasing refColors
                           , let precede = IntMap.empty
                           , let follow  = IntMap.fromList $ L.zip refColors decreasing
                           , let context = Context.mk precede follow
                         ]
 
 doSearch ::
-  [CPoint.CPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
+  [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
     Maybe State.State
 doSearch []             _  _       _        s  = Just s
 doSearch pcps@(pcp : _) cs context strategy s
-  | CPoint.color pcp == 0 = doSearchFreePoint pcps cs context strategy s
+  | ColorPoint.color pcp == 0 = doSearchFreePoint pcps cs context strategy s
   | otherwise             = doSearchFixedColorPoint pcps cs context strategy s
 
 -- pcp is a 0-color point.
 doSearchFreePoint ::
-  [CPoint.CPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
+  [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
     Maybe State.State
 doSearchFreePoint []           _  _       _        _ =
   error "doSearchFreePoint. We shouldn't be there" -- make ghc -Werror happy
 doSearchFreePoint (pcp : pcps) cs context strategy s =
-  Foldable.asum [State.pAppend (CPoint.updateColor c pcp) s >>= -- append new point
+  Foldable.asum [State.pAppend (ColorPoint.updateColor c pcp) s >>= -- append new point
                  resolveConflicts strategy                  >>= -- resolve for match
                  doSearch pcps cs context' strategy
                    | c <- cs
@@ -92,11 +97,11 @@ doSearchFreePoint (pcp : pcps) cs context strategy s =
                    , let context' = Context.update c y context
                 ]
   where
-    y = CPoint.yCoord pcp
+    y = ColorPoint.yCoord pcp
 
 -- pcp is not a 0-color point.
 doSearchFixedColorPoint ::
-  [CPoint.CPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
+  [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
     Maybe State.State
 doSearchFixedColorPoint []           _  _                  _        _ =
   error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
@@ -105,8 +110,8 @@ doSearchFixedColorPoint (pcp : pcps) cs context strategy s =
     resolveConflicts strategy >>= -- resolve for match
     doSearch pcps cs context' strategy
   where
-    y = CPoint.yCoord pcp
-    c = CPoint.color  pcp
+    y = ColorPoint.yCoord pcp
+    c = ColorPoint.color  pcp
     context' = Context.update c y context
 
 resolveConflicts :: Strategy.Strategy -> State.State -> Maybe State.State

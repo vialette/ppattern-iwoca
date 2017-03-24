@@ -32,9 +32,9 @@ where
   mk cp1 cp2 = Link (cp1, cp2)
 
   -- First color point.
- fstColorPoint :: Link -> ColorPoint.ColorPoint
- fstColorPoint (Link (cp1, _)) = cp1
+  fstColorPoint :: Link -> ColorPoint.ColorPoint
+  fstColorPoint (Link (cp1, _)) = cp1
 
- -- Second color point.
- sndColorPoint :: Link -> ColorPoint.ColorPoint
- sndColorPoint (Link (_, cp2)) = cp2
+  -- Second color point.
+  sndColorPoint :: Link -> ColorPoint.ColorPoint
+  sndColorPoint (Link (_, cp2)) = cp2

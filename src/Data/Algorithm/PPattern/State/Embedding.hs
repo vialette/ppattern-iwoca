@@ -18,7 +18,7 @@ module Data.Algorithm.PPattern.State.Embedding
 , empty
 
   -- * Querying
-, lookup
+, query
 
   -- * Modifying
 , insert
@@ -28,6 +28,7 @@ module Data.Algorithm.PPattern.State.Embedding
 )
 where
 
+  import qualified Data.List       as List
   import qualified Data.Monoid     as Monoid
   import qualified Data.Map.Strict as Map
 
@@ -46,11 +47,11 @@ where
     where
       m' = Map.insert cp cp' m
 
-  lookup :: ColorPoint.ColorPoint -> Embedding  a b-> Maybe (ColorPoint.ColorPoint)
-  lookup cp (Embedding m) = Map.lookup cp m
+  query :: ColorPoint.ColorPoint -> Embedding -> Maybe (ColorPoint.ColorPoint)
+  query cp (Embedding m) = Map.lookup cp m
 
   showEmbedding :: Embedding -> String
-  showEmbedding = aux "" . L.sort . toList
+  showEmbedding = aux "" . List.sort . toList
     where
       aux acc []                  = acc
       aux acc ((cp, cp') : cpcps) = aux (acc `Monoid.mappend` str) cpcps

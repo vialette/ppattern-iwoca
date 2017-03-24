@@ -16,10 +16,14 @@ module Data.Algorithm.PPattern.Perm
   Perm(..)
 
   -- * Constructing
-, mkPerm
+, mk
 
   -- * Querying
 , size
+, longestIncreasing
+, longestIncreasingLength
+, longestDecreasing
+, longestDecreasingLength
 
   -- * Converting
 , toList
@@ -40,20 +44,19 @@ where
 
   import qualified Data.Algorithm.Patience as Patience
 
-  import qualified Data.Algorithm.PPattern.Perm.T as Perm.T
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
-  import qualified Data.Algorithm.PPattern.Color as Color
+  import qualified Data.Algorithm.PPattern.Perm.T         as Perm.T
+  import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
   {-|
 
   -}
-  newtype Perm a = Perm [Perm.T a] deriving (Eq, Ord, Show, Read)
+  newtype Perm a = Perm [Perm.T.T a] deriving (Eq, Ord, Show)
 
   {-|
     Construct a Perm from foldable.
   -}
-  mkPerm :: (Foldable t, Ord a) => t a -> Perm a
-  mkPerm = Perm . fmap (uncurry Perm.T) . reduce . Foldable.toList
+  mk :: (Foldable t, Ord a) => t a -> Perm a
+  mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
 
   {-|
     Turn a permutation into a list.
@@ -83,12 +86,12 @@ where
     λ: reduce (Perm [5,9,2,7,3])
     Perm [3,5,1,4,2]
   -}
-  reduce :: (Ord a) => [a] -> [(Int, Int, a)]
+  reduce :: (Ord a) => [a] -> [(Point.Point, a)]
   reduce = fmap f . sortByIdx . List.zip [1..] . sortByElt . List.zip [1..]
     where
-      sortByElt = List.sortBy (compare `Function.on` T.snd)
-      sortByIdx = List.sortBy (compare `Function.on` (T.fst . T.snd))
-      f (y, (x, a)) = (x, y, a)
+      sortByElt = List.sortBy (compare `Function.on` Tuple.snd)
+      sortByIdx = List.sortBy (compare `Function.on` (Tuple.fst . Tuple.snd))
+      f (y, (x, a)) = (Point.mk x y, a)
 
   {-|
     Return the size of the permutation.
@@ -98,63 +101,63 @@ where
 
   -- Auxiliary function for isIncreasing and isDecreasing
   isMonotoneAux :: (Int -> Int -> Bool) -> Perm a -> Bool
-  isMonotoneAux cmp (Perm ts) =
-    case xs of
-      []        -> True
-      [_]       -> True
-      otherwise -> aux List.zip ts (L.tail.ts)
-      where
-        aux []              = True
-        aux ((t1, t2) : ts') = y1 `cmp` y2 && aux ts'
-          where
-            y1 = Point.yCoord $ Perm.T.point t1
-            y2 = Point.yCoord $ Perm.T.point t2
+  isMonotoneAux cmp (Perm ts) = aux ts
+    where
+      aux  []    = True
+      aux (_:[]) = True
+      aux _      = Foldable.foldl f True consecutives
+        where
+          consecutives   =  List.zip ts (List.tail ts)
+          f acc (t1, t2) = acc && (Perm.T.yCoord t1) `cmp` (Perm.T.yCoord t2)
 
   {-|
     Return True iff the permutation is increasing.
   -}
+  isIncreasing :: Perm a -> Bool
   isIncreasing = isMonotoneAux (<)
 
   {-|
     Return True iff the permutation is decreasing.
   -}
+  isDecreasing :: Perm a -> Bool
   isDecreasing = isMonotoneAux (>)
 
   {-|
     Return True iff the permutation is monotone (i.e. increasing or decreasing).
   -}
+  isMonotone :: Perm a -> Bool
   isMonotone p = isIncreasing p || isDecreasing p
 
   {-|
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
-  longestIncreasing :: Perm a -> [Perm.T]
+  longestIncreasing :: Perm a -> [Perm.T.T a]
   longestIncreasing (Perm ts) = unformat . List.reverse . go $ format ts
     where
       format   = fmap (\ t -> (Perm.T.yCoord t, t))
       go       = Patience.longestIncreasing
-      unformat = fmap Tuple.snd.
+      unformat = fmap Tuple.snd
 
   {-|
     'longestIncreasingLength xs' returns the length of the longest increasing
     subsequences in 'xs'.
   -}
-  longestIncreasingLength:: Perm a -> Int
+  longestIncreasingLength :: Perm a -> Int
   longestIncreasingLength = List.length . longestIncreasing
 
   {-|
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
-  longestDecreasing :: Perm a -> [Perm.T]
+  longestDecreasing :: Perm a -> [Perm.T.T a]
   longestDecreasing (Perm ts) = unformat . go $ format ts
     where
       format   = List.reverse . fmap (\ t -> (Perm.T.yCoord t, t))
       go       = Patience.longestIncreasing
-      unformat = fmap Tuple.snd.
+      unformat = fmap Tuple.snd
 
   {-|
     'longestDecreasingLength xs' returns the length of the longest decreasing
     subsequences in 'xs'.
   -}
-  longestDecreasingLength :: Perm -> Int
+  longestDecreasingLength :: Perm a -> Int
   longestDecreasingLength = List.length . longestDecreasing

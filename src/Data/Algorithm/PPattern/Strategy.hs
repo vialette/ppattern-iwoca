@@ -27,16 +27,16 @@ module Data.Algorithm.PPattern.Strategy
 )
 where
 
-  import qualified Data.Tuple as T
-  import qualified Data.List  as L
+  import qualified Data.Tuple as Tuple
+  import qualified Data.List  as List
 
-  import qualified Data.Algorithm.PPattern.State    as State
-  import qualified Data.Algorithm.PPattern.CPoint   as CPoint
-  import qualified Data.Algorithm.PPattern.Combi    as Combi
-  import qualified Data.Algorithm.PPattern.Conflict as Conflict
-  import qualified Data.Algorithm.PPattern.Tools    as Tools
-  import qualified Data.Algorithm.PPattern.Strategy.Link  as Strategy.Link
-  import qualified Data.Algorithm.PPattern.Strategy.Strategy.PLink.PLink as Strategy.Strategy.PLink.PLink
+  import qualified Data.Algorithm.PPattern.State               as State
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
+  import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
+  import qualified Data.Algorithm.PPattern.Conflict            as Conflict
+  import qualified Data.Algorithm.PPattern.Tools               as Tools
+  import qualified Data.Algorithm.PPattern.Strategy.Link       as Strategy.Link
+  import qualified Data.Algorithm.PPattern.Strategy.PLink      as Strategy.PLink
 
   -- strategy
   type Strategy = State.State -> Maybe Conflict.Conflict
@@ -49,42 +49,42 @@ where
 
   -- All pairs of links.
   collect :: State.State -> [Strategy.PLink.PLink]
-  collect s = fmap f . flip Combi.choose 2 $ State.embeddingToList e
+  collect s = fmap f . flip Combinatorics.choose 2 $ State.embeddingToList e
     where
       e = State.embedding s
-      f = T.uncurry mkStrategy.PLink.PLink . Tools.tuplify2 . fmap (T.uncurry mkLink)
+      f = Tuple.uncurry mkStrategy.PLink.PLink . Tools.tuplify2 . fmap (Tuple.uncurry mkLink)
 
   orderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   orderConflict link1 link2 = x1 < x2 && x1' > x2'
     where
-      x1  = CPoint.xCoord (fstCPoint link1)
-      x1' = CPoint.xCoord (sndCPoint link1)
+      x1  = ColorPoint.xCoord (fstColorPoint link1)
+      x1' = ColorPoint.xCoord (sndColorPoint link1)
 
-      x2  = CPoint.xCoord (fstCPoint link2)
-      x2' = CPoint.xCoord (sndCPoint link2)
+      x2  = ColorPoint.xCoord (fstColorPoint link2)
+      x2' = ColorPoint.xCoord (sndColorPoint link2)
 
   reportOrderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Conflict.Conflict
   reportOrderConflict link1 link2 = conflict
     where
-      qcp1 = sndCPoint link1
-      pcp2 = fstCPoint link2
-      conflict = Conflict.OrderConflict pcp2 (CPoint.xCoord qcp1)
+      qcp1 = sndColorPoint link1
+      pcp2 = fstColorPoint link2
+      conflict = Conflict.OrderConflict pcp2 (ColorPoint.xCoord qcp1)
 
   valueConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   valueConflict link1 link2 = y1 < y2 && y1' > y2'
     where
-      y1  = CPoint.yCoord (fstCPoint link1)
-      y1' = CPoint.yCoord (sndCPoint link1)
+      y1  = ColorPoint.yCoord (fstColorPoint link1)
+      y1' = ColorPoint.yCoord (sndColorPoint link1)
 
-      y2  = CPoint.yCoord (fstCPoint link2)
-      y2' = CPoint.yCoord (sndCPoint link2)
+      y2  = ColorPoint.yCoord (fstColorPoint link2)
+      y2' = ColorPoint.yCoord (sndColorPoint link2)
 
   reportValueConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Conflict.Conflict
   reportValueConflict link1 link2 = conflict
     where
-      qcp1 = sndCPoint link1
-      pcp2 = fstCPoint link2
-      conflict = Conflict.ValueConflict pcp2 (CPoint.yCoord qcp1)
+      qcp1 = sndColorPoint link1
+      pcp2 = fstColorPoint link2
+      conflict = Conflict.ValueConflict pcp2 (ColorPoint.yCoord qcp1)
 
   -- Default strategy for resolving conflicts.
   defaultStrategy :: Strategy
@@ -110,7 +110,7 @@ where
   -- Return the rightmost order conflict. If such a conflict does not exists,
   -- return the rightmost value conflict. Return Nothing if there is no conflict.
   rightmostOrderConflictFirst :: Strategy
-  rightmostOrderConflictFirst = orderConflictFirst Nothing . L.reverse . collect
+  rightmostOrderConflictFirst = orderConflictFirst Nothing . List.reverse . collect
 
   orderConflictFirst :: Maybe Conflict.Conflict -> [Strategy.PLink.PLink] -> Maybe Conflict.Conflict
   orderConflictFirst Nothing   []                              = Nothing
@@ -136,7 +136,7 @@ where
   -- Return the rightmost value conflict. If such a conflict does not exists,
   -- return the rightmost order conflict. Return Nothing if there is no conflict.
   rightmostValueConflictFirst :: Strategy
-  rightmostValueConflictFirst = valueConflictFirst Nothing . L.reverse . collect
+  rightmostValueConflictFirst = valueConflictFirst Nothing . List.reverse . collect
 
   valueConflictFirst :: Maybe Conflict.Conflict -> [Strategy.PLink.PLink] -> Maybe Conflict.Conflict
   valueConflictFirst Nothing   []                             = Nothing

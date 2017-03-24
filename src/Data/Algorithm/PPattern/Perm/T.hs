@@ -21,8 +21,8 @@ module Data.Algorithm.PPattern.Perm.T
 , annotation
 
   -- * Constructing
-, mkT
-, mkT'
+, mk
+, mk'
 
   -- * Rendering
 , toTuple
@@ -31,15 +31,16 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
-  newtype T a = T (Point.Point, a)
+  -- Perm type element
+  newtype T a = T (Point.Point, a) deriving (Eq, Ord, Show)
 
-  mkT :: Point.Point -> a -> T a
-  mkT p a = T (p, a)
+  mk :: Point.Point -> a -> T a
+  mk p a = T (p, a)
 
-  mkT' :: Int -> Int -> Color.Color -> a -> T a
-  mkT' x y a = T (cp, a)
+  mk' :: Int -> Int -> a -> T a
+  mk' x y a = T (cp, a)
     where
-      cp = Point.mkPoint x y
+      cp = Point.mk x y
 
   point :: T a -> Point.Point
   point (T (p, _)) = p
@@ -53,5 +54,5 @@ where
   annotation :: T a -> a
   annotation (T (_, a)) = a
 
-  toTuple :: T a -> (Point, a)
+  toTuple :: T a -> (Point.Point, a)
   toTuple (T (cp, a)) = (cp, a)

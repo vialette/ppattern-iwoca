@@ -19,7 +19,7 @@ module Data.Algorithm.PPattern.State.Next
 , mk
 
   -- * Querying
-, lookup
+, query
 , jumpThreshold
 , xJumpThreshold
 , yJumpThreshold
@@ -43,28 +43,28 @@ where
   empty = Next Map.empty
 
   mk :: [ColorPoint.ColorPoint] -> Next
-  mk = Tuple.fst . Foldable.foldr f (emptyNext, IntMap.empty)
+  mk = Tuple.fst . Foldable.foldr f (empty, IntMap.empty)
     where
       f cp (m, m') = case IntMap.lookup c m' of
                        Nothing  -> (m, IntMap.insert c cp m')
-                       Just cp' -> (insertNext cp cp' m, IntMap.insert c cp m')
+                       Just cp' -> (insert cp cp' m, IntMap.insert c cp m')
         where
           c = ColorPoint.color cp
 
-  lookup :: ColorPoint.ColorPoint -> Next -> Maybe ColorPoint.ColorPoint
-  lookup cp (Next m) = Map.lookup cp m
+  query :: ColorPoint.ColorPoint -> Next -> Maybe ColorPoint.ColorPoint
+  query cp (Next m) = Map.lookup cp m
 
   insert :: ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> Next -> Next
   insert cp cp' (Next m) = Next $ Map.insert cp cp' m
 
   jumpThreshold ::
     (ColorPoint.ColorPoint -> Int) -> Int ->  Next -> ColorPoint.ColorPoint -> Maybe ColorPoint.ColorPoint
-  jumpThreshold f t n cp = aux (lookupNext cp n)
+  jumpThreshold f t n cp = aux (query cp n)
     where
       aux Nothing = Nothing
       aux (Just cp')
         | f cp' > t = Just cp'               -- above threshold, done.
-        | otherwise = aux (lookupNext cp' n) -- below threshold, keep on searching.
+        | otherwise = aux (query cp' n) -- below threshold, keep on searching.
 
   xJumpThreshold :: Int -> Next -> ColorPoint.ColorPoint -> Maybe ColorPoint.ColorPoint
   xJumpThreshold = jumpThreshold ColorPoint.xCoord

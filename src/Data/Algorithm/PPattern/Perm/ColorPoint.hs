@@ -18,11 +18,11 @@ where
   import qualified Data.List as List
   import qualified Data.IntMap.Strict as IntMap
 
-  import qualified Data.Algorithm.PPattern.Perm as Perm
+  import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
   increasingFactorization :: Perm.Perm -> [ColorPoint.ColorPoint]
-  increasingFactorization = increasingFactorization' [] IntMap.empty . point
+  increasingFactorization = increasingFactorization' [] IntMap.empty . Perm.points
 
   increasingFactorization' ::
     [ColorPoint.ColorPoint] -> IntMap.IntMap Int -> [Point.Point] -> [ColorPoint.ColorPoint]
