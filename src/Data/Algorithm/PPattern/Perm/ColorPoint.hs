@@ -19,9 +19,10 @@ where
   import qualified Data.IntMap.Strict as IntMap
 
   import qualified Data.Algorithm.PPattern.Perm                as Perm
+  import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
-  increasingFactorization :: Perm.Perm -> [ColorPoint.ColorPoint]
+  increasingFactorization :: Perm.Perm a -> [ColorPoint.ColorPoint]
   increasingFactorization = increasingFactorization' [] IntMap.empty . Perm.points
 
   increasingFactorization' ::
@@ -33,8 +34,8 @@ where
       c  = findSmallestColor y m
       m' = case IntMap.lookup c m of
              Nothing -> IntMap.insert c y m
-             Just _  -> IntMap.update (\_ -> Just y) c m
-      cp = ColorPoint.mkColorPoint x y c
+             Just _  -> IntMap.update (\ _ -> Just y) c m
+      cp = ColorPoint.mk2 p c
 
   -- Auxialiary function for increasingFactorization'.
   -- Find the smallest color for a new y-coordinate
