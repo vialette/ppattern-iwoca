@@ -14,6 +14,9 @@ module Data.Algorithm.PPattern.State.Embedding
   -- * The @Next@ type
   Embedding
 
+  -- * Exporting
+, toList
+
   -- * Constructing
 , empty
 

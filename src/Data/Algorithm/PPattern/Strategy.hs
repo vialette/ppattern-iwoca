@@ -49,9 +49,9 @@ where
 
   -- All pairs of links.
   collect :: State.State -> [Strategy.PLink.PLink]
-  collect = fmap f . flip Combinatorics.choose 2 . State.Embedding.toList . State.embedding
+  collect = fmap f . flip Combinatorics.choose 2 . State.toList
     where
-      f = Tuple.uncurry Strategy.PLink.mk . Tools.tuplify2 . fmap (Tuple.uncurry mkLink)
+      f = Tuple.uncurry Strategy.PLink.mk . Tools.tuplify2 . fmap (Tuple.uncurry Strategy.Link.mk)
 
   orderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   orderConflict link1 link2 = x1 < x2 && x1' > x2'
@@ -94,12 +94,12 @@ where
   leftmostConflict = aux . collect
     where
       aux [] = Nothing
-      aux (Strategy.PLink.PLink (link1, link2) : Strategy.PLink.PLinks)
+      aux (Strategy.PLink.PLink (link1, link2) : plinks)
         | orderConflict link1 link2 = Just $ reportOrderConflict link1 link2
         | orderConflict link2 link1 = Just $ reportOrderConflict link2 link1
         | valueConflict link1 link2 = Just $ reportValueConflict link1 link2
         | valueConflict link2 link1 = Just $ reportValueConflict link2 link1
-        | otherwise                 = aux Strategy.PLink.PLinks
+        | otherwise                 = aux plinks
 
   -- Return the leftmost order conflict. If such a conflict does not exists,
   -- return the leftmost value conflict. Return Nothing if there is no conflict.

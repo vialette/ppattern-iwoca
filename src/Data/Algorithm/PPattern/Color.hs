@@ -16,7 +16,7 @@ module Data.Algorithm.PPattern.Color
   Color
 
   -- * Constructing
-, noColor
+, blankColor
 , palette
 )
 where
@@ -24,8 +24,8 @@ where
   -- |The 'Color' type encapsulates a color.
   type Color = Int
 
-  noColor :: Color
-  noColor = 0 :: Color
+  blankColor :: Color
+  blankColor = 0 :: Color
 
   {-|
     'palette fromColor toColor' returns the list of all colors from 'fromColor'

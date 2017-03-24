@@ -10,7 +10,7 @@ Stability   : experimental
 module Data.Algorithm.PPattern.Strategy.Link
 (
   -- * The @Link@ type
-  Link
+  Link(..)
 
   -- * Constructing
 , mk

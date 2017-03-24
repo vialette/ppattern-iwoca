@@ -10,7 +10,7 @@ Stability   : experimental
 module Data.Algorithm.PPattern.Strategy.PLink
 (
   -- * The @PLink@ type
-  PLink
+  PLink(..)
 
   -- * Constructing
 , mk

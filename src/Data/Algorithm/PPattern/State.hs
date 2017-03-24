@@ -14,6 +14,9 @@ module Data.Algorithm.PPattern.State
   -- * The @State@ type
   State(..)
 
+  -- * Exporting
+,  toList
+
   -- * Constructing
 , mk
 
@@ -67,6 +70,9 @@ where
     where
       qcps = Perm.ColorPoint.increasingFactorization q
       n    = State.Next.mk qcps
+
+  toList :: State -> [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)]
+  toList = State.Embedding.toList . embedding
 
   {-|
     Add a new colored point to the list of colored points associated
