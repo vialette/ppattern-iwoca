@@ -49,41 +49,40 @@ where
 
   -- All pairs of links.
   collect :: State.State -> [Strategy.PLink.PLink]
-  collect s = fmap f . flip Combinatorics.choose 2 $ State.embeddingToList e
+  collect = fmap f . flip Combinatorics.choose 2 . State.Embedding.toList . State.embedding
     where
-      e = State.embedding s
-      f = Tuple.uncurry mkStrategy.PLink.PLink . Tools.tuplify2 . fmap (Tuple.uncurry mkLink)
+      f = Tuple.uncurry Strategy.PLink.mk . Tools.tuplify2 . fmap (Tuple.uncurry mkLink)
 
   orderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   orderConflict link1 link2 = x1 < x2 && x1' > x2'
     where
-      x1  = ColorPoint.xCoord (fstColorPoint link1)
-      x1' = ColorPoint.xCoord (sndColorPoint link1)
+      x1  = ColorPoint.xCoord (Strategy.Link.fstColorPoint link1)
+      x1' = ColorPoint.xCoord (Strategy.Link.sndColorPoint link1)
 
-      x2  = ColorPoint.xCoord (fstColorPoint link2)
-      x2' = ColorPoint.xCoord (sndColorPoint link2)
+      x2  = ColorPoint.xCoord (Strategy.Link.fstColorPoint link2)
+      x2' = ColorPoint.xCoord (Strategy.Link.sndColorPoint link2)
 
   reportOrderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Conflict.Conflict
   reportOrderConflict link1 link2 = conflict
     where
-      qcp1 = sndColorPoint link1
-      pcp2 = fstColorPoint link2
+      qcp1 = Strategy.Link.sndColorPoint link1
+      pcp2 = Strategy.Link.fstColorPoint link2
       conflict = Conflict.OrderConflict pcp2 (ColorPoint.xCoord qcp1)
 
   valueConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   valueConflict link1 link2 = y1 < y2 && y1' > y2'
     where
-      y1  = ColorPoint.yCoord (fstColorPoint link1)
-      y1' = ColorPoint.yCoord (sndColorPoint link1)
+      y1  = ColorPoint.yCoord (Strategy.Link.fstColorPoint link1)
+      y1' = ColorPoint.yCoord (Strategy.Link.sndColorPoint link1)
 
-      y2  = ColorPoint.yCoord (fstColorPoint link2)
-      y2' = ColorPoint.yCoord (sndColorPoint link2)
+      y2  = ColorPoint.yCoord (Strategy.Link.fstColorPoint link2)
+      y2' = ColorPoint.yCoord (Strategy.Link.sndColorPoint link2)
 
   reportValueConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Conflict.Conflict
   reportValueConflict link1 link2 = conflict
     where
-      qcp1 = sndColorPoint link1
-      pcp2 = fstColorPoint link2
+      qcp1 = Strategy.Link.sndColorPoint link1
+      pcp2 = Strategy.Link.fstColorPoint link2
       conflict = Conflict.ValueConflict pcp2 (ColorPoint.yCoord qcp1)
 
   -- Default strategy for resolving conflicts.
@@ -115,18 +114,18 @@ where
   orderConflictFirst :: Maybe Conflict.Conflict -> [Strategy.PLink.PLink] -> Maybe Conflict.Conflict
   orderConflictFirst Nothing   []                              = Nothing
   orderConflictFirst vConflict []                              = vConflict
-  orderConflictFirst vConflict (Strategy.PLink.PLink (link1, link2) : Strategy.PLink.PLinks)
+  orderConflictFirst vConflict (Strategy.PLink.PLink (link1, link2) : plinks)
     | orderConflict link1 link2 = Just $ reportOrderConflict link1 link2
     | orderConflict link2 link1 = Just $ reportOrderConflict link2 link1
     | valueConflict link1 link2 =
         case vConflict of
-          Nothing -> orderConflictFirst (Just $ reportValueConflict link1 link2) Strategy.PLink.PLinks
-          _       -> orderConflictFirst vConflict Strategy.PLink.PLinks
+          Nothing -> orderConflictFirst (Just $ reportValueConflict link1 link2) plinks
+          _       -> orderConflictFirst vConflict plinks
     | valueConflict link2 link1 =
         case vConflict of
-          Nothing -> orderConflictFirst (Just $ reportValueConflict link2 link1) Strategy.PLink.PLinks
-          _       -> orderConflictFirst vConflict Strategy.PLink.PLinks
-    | otherwise                 = orderConflictFirst vConflict Strategy.PLink.PLinks
+          Nothing -> orderConflictFirst (Just $ reportValueConflict link2 link1) plinks
+          _       -> orderConflictFirst vConflict plinks
+    | otherwise                 = orderConflictFirst vConflict plinks
 
   -- Return the leftmost value conflict. If such a conflict does not exists,
   -- return the leftmost order conflict. Return Nothing if there is no conflict.
@@ -141,15 +140,15 @@ where
   valueConflictFirst :: Maybe Conflict.Conflict -> [Strategy.PLink.PLink] -> Maybe Conflict.Conflict
   valueConflictFirst Nothing   []                             = Nothing
   valueConflictFirst oConflict []                             = oConflict
-  valueConflictFirst oConflict (Strategy.PLink.PLink (link1, link2) : Strategy.PLink.PLinks)
+  valueConflictFirst oConflict (Strategy.PLink.PLink (link1, link2) : plinks)
     | orderConflict link1 link2 =
       case oConflict of
-        Nothing -> valueConflictFirst (Just $ reportOrderConflict link1 link2) Strategy.PLink.PLinks
-        _       -> valueConflictFirst oConflict Strategy.PLink.PLinks
+        Nothing -> valueConflictFirst (Just $ reportOrderConflict link1 link2) plinks
+        _       -> valueConflictFirst oConflict plinks
     | orderConflict link2 link1 =
       case oConflict of
-        Nothing -> valueConflictFirst (Just $ reportOrderConflict link2 link1) Strategy.PLink.PLinks
-        _       -> valueConflictFirst oConflict Strategy.PLink.PLinks
+        Nothing -> valueConflictFirst (Just $ reportOrderConflict link2 link1) plinks
+        _       -> valueConflictFirst oConflict plinks
     | valueConflict link1 link2 = Just $ reportValueConflict link1 link2
     | valueConflict link2 link1 = Just $ reportValueConflict link2 link1
-    | otherwise                 = valueConflictFirst oConflict Strategy.PLink.PLinks
+    | otherwise                 = valueConflictFirst oConflict plinks

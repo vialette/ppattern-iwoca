@@ -12,7 +12,7 @@ Pattern matching for permutations.
 module Data.Algorithm.PPattern.State
 (
   -- * The @State@ type
-  State
+  State(..)
 
   -- * Constructing
 , mk
@@ -29,7 +29,6 @@ where
   import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Perm.ColorPoint     as Perm.ColorPoint
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
-  import qualified Data.Algorithm.PPattern.Color               as Color
   import qualified Data.Algorithm.PPattern.State.Next          as State.Next
   import qualified Data.Algorithm.PPattern.State.Access        as State.Access
   import qualified Data.Algorithm.PPattern.State.Embedding     as State.Embedding
@@ -54,12 +53,12 @@ where
   {-|
     Make a new state. Permutation q is required.
   -}
-  mk :: Perm.Perm -> State
+  mk :: Perm.Perm a -> State
   mk q  = State { pColorPoints            = []
                 , qColorPoints            = qcps
                 , embedding               = State.Embedding.empty
                 , pRightmostMappedByColor = State.Access.empty
-                , qLeftmostByColor        = mkLeftmostByColor qcps
+                , qLeftmostByColor        = State.Access.mkLeftmostByColor qcps
                 , qRightmostMappedByColor = State.Access.empty
                 , qRightmost              = Nothing
                 , pNext                   = State.Next.empty
