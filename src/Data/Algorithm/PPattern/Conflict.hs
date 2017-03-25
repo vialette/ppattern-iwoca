@@ -21,13 +21,13 @@ module Data.Algorithm.PPattern.Conflict
 )
 where
 
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
 
-  data Conflict = OrderConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
-                | ValueConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
+  data Conflict = OrderConflict {-# UNPACK #-} !CP.ColorPoint !Int
+                | ValueConflict {-# UNPACK #-} !CP.ColorPoint !Int
                 deriving (Show)
 
-  colorPoint :: Conflict -> ColorPoint.ColorPoint
+  colorPoint :: Conflict -> CP.ColorPoint
   colorPoint (OrderConflict cp _) = cp
   colorPoint (ValueConflict cp _) = cp
 

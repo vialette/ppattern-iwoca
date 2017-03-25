@@ -24,6 +24,9 @@ where
   -- |The 'Color' type encapsulates a color.
   type Color = Int
 
+  {-|
+    Set blanck color as 0.
+  -}
   blankColor :: Color
   blankColor = 0 :: Color
 

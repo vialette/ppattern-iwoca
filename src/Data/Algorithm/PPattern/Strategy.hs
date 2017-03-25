@@ -30,8 +30,8 @@ where
   import qualified Data.Tuple as Tuple
   import qualified Data.List  as List
 
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
   import qualified Data.Algorithm.PPattern.State               as State
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
   import qualified Data.Algorithm.PPattern.Tools               as Tools
@@ -40,12 +40,6 @@ where
 
   -- strategy
   type Strategy = State.State -> Maybe Conflict.Conflict
-
-  ------------------------------------------------------------------------------
-  --
-  -- Strategies
-  --
-  ------------------------------------------------------------------------------
 
   -- All pairs of links.
   collect :: State.State -> [Strategy.PLink.PLink]
@@ -56,34 +50,34 @@ where
   orderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   orderConflict link1 link2 = x1 < x2 && x1' > x2'
     where
-      x1  = ColorPoint.xCoord (Strategy.Link.fstColorPoint link1)
-      x1' = ColorPoint.xCoord (Strategy.Link.sndColorPoint link1)
+      x1  = CP.xCoord (Strategy.Link.fstColorPoint link1)
+      x1' = CP.xCoord (Strategy.Link.sndColorPoint link1)
 
-      x2  = ColorPoint.xCoord (Strategy.Link.fstColorPoint link2)
-      x2' = ColorPoint.xCoord (Strategy.Link.sndColorPoint link2)
+      x2  = CP.xCoord (Strategy.Link.fstColorPoint link2)
+      x2' = CP.xCoord (Strategy.Link.sndColorPoint link2)
 
   reportOrderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Conflict.Conflict
   reportOrderConflict link1 link2 = conflict
     where
       qcp1 = Strategy.Link.sndColorPoint link1
       pcp2 = Strategy.Link.fstColorPoint link2
-      conflict = Conflict.OrderConflict pcp2 (ColorPoint.xCoord qcp1)
+      conflict = Conflict.OrderConflict pcp2 (CP.xCoord qcp1)
 
   valueConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   valueConflict link1 link2 = y1 < y2 && y1' > y2'
     where
-      y1  = ColorPoint.yCoord (Strategy.Link.fstColorPoint link1)
-      y1' = ColorPoint.yCoord (Strategy.Link.sndColorPoint link1)
+      y1  = CP.yCoord (Strategy.Link.fstColorPoint link1)
+      y1' = CP.yCoord (Strategy.Link.sndColorPoint link1)
 
-      y2  = ColorPoint.yCoord (Strategy.Link.fstColorPoint link2)
-      y2' = ColorPoint.yCoord (Strategy.Link.sndColorPoint link2)
+      y2  = CP.yCoord (Strategy.Link.fstColorPoint link2)
+      y2' = CP.yCoord (Strategy.Link.sndColorPoint link2)
 
   reportValueConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Conflict.Conflict
   reportValueConflict link1 link2 = conflict
     where
       qcp1 = Strategy.Link.sndColorPoint link1
       pcp2 = Strategy.Link.fstColorPoint link2
-      conflict = Conflict.ValueConflict pcp2 (ColorPoint.yCoord qcp1)
+      conflict = Conflict.ValueConflict pcp2 (CP.yCoord qcp1)
 
   -- Default strategy for resolving conflicts.
   defaultStrategy :: Strategy

@@ -48,7 +48,7 @@ where
   import qualified Data.Algorithm.Patience as Patience
 
   import qualified Data.Algorithm.PPattern.Perm.T         as Perm.T
-  import qualified Data.Algorithm.PPattern.Geometry.Point as Point
+  import qualified Data.Algorithm.PPattern.Geometry.Point as P
 
   {-|
 
@@ -74,21 +74,21 @@ where
           p = Perm.T.point t
           a = Perm.T.annotation t
 
-          x = Point.xCoord p
+          x = P.xCoord p
           x' = n + 1 - x
 
-          p' = Point.updateXCoord x' p
+          p' = P.updateXCoord x' p
 
   {-|
     Turn a permutation into a list.
   -}
-  toList :: Perm a -> [(Point.Point, a)]
+  toList :: Perm a -> [(P.Point, a)]
   toList (Perm ts) = fmap Perm.T.toTuple ts
 
   {-|
     Points projection.
   -}
-  points :: Perm a -> [Point.Point]
+  points :: Perm a -> [P.Point]
   points (Perm ts) = fmap Perm.T.point ts
 
   {-|
@@ -107,12 +107,12 @@ where
     λ: reduce (Perm [5,9,2,7,3])
     Perm [3,5,1,4,2]
   -}
-  reduce :: (Ord a) => [a] -> [(Point.Point, a)]
+  reduce :: (Ord a) => [a] -> [(P.Point, a)]
   reduce = fmap f . sortByIdx . List.zip [1..] . sortByElt . List.zip [1..]
     where
       sortByElt = List.sortBy (compare `Function.on` Tuple.snd)
       sortByIdx = List.sortBy (compare `Function.on` (Tuple.fst . Tuple.snd))
-      f (y, (x, a)) = (Point.mk x y, a)
+      f (y, (x, a)) = (P.mk x y, a)
 
   {-|
     Return the size of the permutation.
