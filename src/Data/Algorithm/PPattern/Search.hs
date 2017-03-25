@@ -148,8 +148,7 @@ where
   doSearchBlankPoint ::
     [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
     Maybe State.State
-  doSearchBlankPoint [] _ _ _ _ =
-    error "doSearchFreePoint. We shouldn't be there" -- make ghc -Werror happy
+  doSearchBlankPoint []           _  _       _        _ = error "doSearchFreePoint. We shouldn't be there" -- make ghc -Werror happy
   doSearchBlankPoint (pcp : pcps) cs context strategy s =
     Foldable.asum [State.pAppend (ColorPoint.updateColor c pcp) s >>= -- append new point
                    resolveConflicts strategy                      >>= -- resolve for match
