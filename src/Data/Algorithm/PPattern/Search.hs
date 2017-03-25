@@ -126,16 +126,15 @@ where
       cs = C.palette 1 qLongestDecreasingLength
 
       -- Embed p and perform search
-      computation =
-        Foldable.asum [doSearch pcps cs context strategy s
-                        | refColors   <- cs `Combinatorics.choose` pLongestDecreasingLength
-                        , let pcps    = initialColorPoints pPoints pLongestDecreasingPoints refColors
-                        , let precede = IntMap.empty
-                        , let ys      = fmap P.yCoord pLongestDecreasingPoints
-                        , let pairs   = List.zip refColors ys
-                        , let follow  = IntMap.fromList pairs
-                        , let context = Context.mk precede follow pRightLongestDecreasings
-                      ]
+      computation = Foldable.asum [doSearch pcps cs context strategy s
+                                    | refColors   <- cs `Combinatorics.choose` pLongestDecreasingLength
+                                    , let pcps    = initialColorPoints pPoints pLongestDecreasingPoints refColors
+                                    , let precede = IntMap.empty
+                                    , let ys      = fmap P.yCoord pLongestDecreasingPoints
+                                    , let pairs   = List.zip refColors ys
+                                    , let follow  = IntMap.fromList pairs
+                                    , let context = Context.mk precede follow pRightLongestDecreasings
+                                    ]
 
   doSearch :: [CP.ColorPoint] -> [C.Color] -> Context.Context -> S.Strategy -> State.State -> Maybe State.State
   doSearch [] _ _ _ s  = Just s
