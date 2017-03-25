@@ -44,7 +44,6 @@ where
   import qualified Data.List       as List
   import qualified Data.Foldable   as Foldable
   import qualified Data.Function   as Function
-  import qualified Data.Map.Strict as Map
 
   import qualified Data.Algorithm.Patience as Patience
 

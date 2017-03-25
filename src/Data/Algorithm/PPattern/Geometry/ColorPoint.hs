@@ -59,13 +59,13 @@ where
   {-|
     'mkBlank' makes a blank point from two coordinates.
   -}
-  mkBlank ::Int -> Int -> ColorPoint
-  mkBlank x y c = ColorPoint (Point.mk x y, Color.blankColor)
+  mkBlank :: Int -> Int -> ColorPoint
+  mkBlank x y = ColorPoint (Point.mk x y, Color.blankColor)
 
   {-|
     'mkPoint' makes a blank point from a point.
   -}
-  mk2Blank :: Point.Point -> Color.Color -> ColorPoint
+  mk2Blank :: Point.Point -> ColorPoint
   mk2Blank p = ColorPoint (p, Color.blankColor)
 
   {-|
