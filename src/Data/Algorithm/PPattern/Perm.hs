@@ -13,7 +13,7 @@ commentary with @some markup@.
 module Data.Algorithm.PPattern.Perm
 (
   -- * The @Perm@ type
-  Perm(..)
+  Perm
 
   -- * Constructing
 , mk
@@ -30,6 +30,7 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Converting
 , toList
+, toAnnotedList
 , points
 , annotations
 
@@ -47,19 +48,38 @@ where
 
   import qualified Data.Algorithm.Patience as Patience
 
-  import qualified Data.Algorithm.PPattern.Perm.T         as Perm.T
   import qualified Data.Algorithm.PPattern.Geometry.Point as P
 
-  {-|
+  -- Perm element type
+  newtype T a = T (P.Point, a) deriving (Eq, Ord, Show)
 
+  mkT :: P.Point -> a -> T a
+  mkT p a = T (p, a)
+
+  point :: T a -> P.Point
+  point (T (p, _)) = p
+
+  annotation :: T a -> a
+  annotation (T (_, a)) = a
+
+  toTuple :: T a -> (P.Point, a)
+  toTuple (T (cp, a)) = (cp, a)
+
+  {-|
+    Permutation type.
   -}
-  newtype Perm a = Perm [Perm.T.T a] deriving (Eq, Ord, Show)
+  newtype Perm a = Perm [T a] deriving (Eq, Ord, Show)
+
+  instance Foldable.Foldable Perm  where
+    foldr f z (Perm xs) = List.foldr f' z xs
+      where
+        f' (T (_, a)) = f a
 
   {-|
     Construct a Perm from foldable.
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm a
-  mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
+  mk = Perm . fmap (uncurry mkT) . reduce . Foldable.toList
 
   {-|
     Reverse a permutation.
@@ -69,11 +89,8 @@ where
     where
       n = List.length ts
 
-      f acc t = Perm.T.mk p' a : acc
+      f acc (T (p, a)) = mkT p' a : acc
         where
-          p = Perm.T.point t
-          a = Perm.T.annotation t
-
           x = P.xCoord p
           x' = n + 1 - x
 
@@ -82,30 +99,26 @@ where
   {-|
     Turn a permutation into a list.
   -}
-  toList :: Perm a -> [(P.Point, a)]
-  toList (Perm ts) = fmap Perm.T.toTuple ts
+  toList :: Perm a -> [a]
+  toList (Perm ts) = fmap annotation ts
+
+  toAnnotedList :: Perm a -> [(P.Point, a)]
+  toAnnotedList (Perm ts) = fmap toTuple ts
 
   {-|
     Points projection.
   -}
   points :: Perm a -> [P.Point]
-  points (Perm ts) = fmap Perm.T.point ts
+  points (Perm ts) = fmap point ts
 
   {-|
     Points projection.
   -}
   annotations :: Perm a -> [a]
-  annotations (Perm ts) = fmap Perm.T.annotation ts
+  annotations (Perm ts) = fmap annotation ts
 
   {-|
     'reduce p' returns the reduced form of the permutation 'p'.
-
-    λ: reduce (Perm [])
-    Perm []
-    λ: reduce (Perm [1..5])
-    Perm [1,2,3,4,5]
-    λ: reduce (Perm [5,9,2,7,3])
-    Perm [3,5,1,4,2]
   -}
   reduce :: (Ord a) => [a] -> [(P.Point, a)]
   reduce = fmap f . sortByIdx . List.zip [1..] . sortByElt . List.zip [1..]
@@ -129,7 +142,7 @@ where
       aux _      = Foldable.foldl f True consecutives
         where
           consecutives   =  List.zip ts (List.tail ts)
-          f acc (t1, t2) = acc && (Perm.T.yCoord t1) `cmp` (Perm.T.yCoord t2)
+          f acc (T (p, _), T (p', _)) = acc && (P.yCoord p) `cmp` (P.yCoord p')
 
   {-|
     Return True iff the permutation is increasing.
@@ -153,10 +166,10 @@ where
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
   longestIncreasing :: Perm a -> Perm a
-  longestIncreasing (Perm ts) = Perm . unformat . List.reverse . go $ format ts
+  longestIncreasing (Perm ts) = Perm . unformat . List.reverse . doSearch $ format ts
     where
-      format   = fmap (\ t -> (Perm.T.yCoord t, t))
-      go       = Patience.longestIncreasing
+      format   = fmap (\ t@(T (p, _)) -> (P.yCoord p, t))
+      doSearch = Patience.longestIncreasing
       unformat = fmap Tuple.snd
 
   {-|
@@ -170,10 +183,10 @@ where
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
   longestDecreasing :: Perm a -> Perm a
-  longestDecreasing (Perm ts) = Perm . unformat . go $ format ts
+  longestDecreasing (Perm ts) = Perm . unformat . doSearch $ format ts
     where
-      format   = List.reverse . fmap (\ t -> (Perm.T.yCoord t, t))
-      go       = Patience.longestIncreasing
+      format   = List.reverse . fmap (\ t@(T (p, _)) -> (P.yCoord p, t))
+      doSearch = Patience.longestIncreasing
       unformat = fmap Tuple.snd
 
   {-|

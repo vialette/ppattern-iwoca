@@ -29,12 +29,12 @@ where
 
   import qualified Data.Monoid as Monoid
 
-  import qualified Data.Algorithm.PPattern.Perm                as Perm
-  import qualified Data.Algorithm.PPattern.Perm.ColorPoint     as Perm.ColorPoint
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
-  import qualified Data.Algorithm.PPattern.State.Next          as State.Next
-  import qualified Data.Algorithm.PPattern.State.Access        as State.Access
-  import qualified Data.Algorithm.PPattern.State.Embedding     as State.Embedding
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint     as CP
+  import qualified Data.Algorithm.PPattern.Perm                    as Perm
+  import qualified Data.Algorithm.PPattern.IncreasingFactorization as IncreasingFactorization
+  import qualified Data.Algorithm.PPattern.State.Next              as State.Next
+  import qualified Data.Algorithm.PPattern.State.Access            as State.Access
+  import qualified Data.Algorithm.PPattern.State.Embedding         as State.Embedding
 
   -- The state of a search
   data State =
@@ -68,7 +68,7 @@ where
                 , qNext                   = n
                 }
     where
-      qcps = Perm.ColorPoint.increasingFactorization q
+      qcps = IncreasingFactorization.increasingFactorization q
       n    = State.Next.mk qcps
 
   toList :: State -> [(CP.ColorPoint, CP.ColorPoint)]

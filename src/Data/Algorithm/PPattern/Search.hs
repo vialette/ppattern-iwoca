@@ -63,7 +63,7 @@ where
   mkRightLongestDecreasings ps = mkRightLongestDecreasingsAux IntMap.empty ps ys
     where
       -- Patience.longestIncreasing asks for a list of pairs with data snd element.
-      -- As we do not use this data snd element, rely on undefined.
+      -- As we do not use this data snd element, we rely on undefined.
       ys = fmap (\ p -> (P.yCoord p, undefined)) ps
 
   -- Max longest decreasing length by suffix auxiliary function.

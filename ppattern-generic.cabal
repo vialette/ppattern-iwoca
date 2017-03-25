@@ -20,6 +20,21 @@ Library
     base >=4.8,
     containers >=0.5 && <0.6,
     patience >=0.1
-  Exposed-Modules: Data.Algorithm.PPattern.Perm,
-                   Data.Algorithm.PPattern.Strategy,
-                   Data.Algorithm.PPattern
+  Exposed-Modules: Data.Algorithm.PPattern.Perm
+                 , Data.Algorithm.PPattern.Strategy
+                 , Data.Algorithm.PPattern
+  Other-Modules: Data.Algorithm.PPattern.IncreasingFactorization
+               , Data.Algorithm.PPattern.Search
+               , Data.Algorithm.PPattern.Search.Context
+               , Data.Algorithm.PPattern.State
+               , Data.Algorithm.PPattern.State.Access
+               , Data.Algorithm.PPattern.State.Embedding
+               , Data.Algorithm.PPattern.State.Next
+               , Data.Algorithm.PPattern.Strategy.Link
+               , Data.Algorithm.PPattern.Strategy.PLink
+               , Data.Algorithm.PPattern.Geometry.Point
+               , Data.Algorithm.PPattern.Geometry.ColorPoint
+               , Data.Algorithm.PPattern.Conflict
+               , Data.Algorithm.PPattern.Tools
+               , Data.Algorithm.PPattern.Combinatorics
+               , Data.Algorithm.PPattern.Color
