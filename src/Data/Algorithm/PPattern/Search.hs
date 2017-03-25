@@ -41,10 +41,8 @@ where
   initialColorPoints (p : ps) [] cs =  ColorPoint.mk2Blank p : initialColorPoints ps [] cs
   initialColorPoints (_ : []) _  _  = error "Search.initialColorPoints" -- make ghc -Werror happy
   initialColorPoints (p : ps) ps''@(p' : ps') cs'@(c : cs)
-    | Point.yCoord p == Point.yCoord p' =
-      ColorPoint.mk2 p c : initialColorPoints ps ps' cs
-    | otherwise                         =
-      ColorPoint.mk2Blank p : initialColorPoints ps ps'' cs'
+    | Point.yCoord p == Point.yCoord p' = ColorPoint.mk2 p c : initialColorPoints ps ps' cs
+    | otherwise                         = ColorPoint.mk2Blank p : initialColorPoints ps ps'' cs'
 
   -- Extract embedding in case of a direct search
   present :: State.State -> Maybe [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)]
