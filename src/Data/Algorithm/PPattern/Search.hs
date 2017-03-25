@@ -133,10 +133,7 @@ where
                         , let context = Context.mk precede follow pRightLongestDecreasing
                       ]
 
-  doSearch ::
-    [ColorPoint.ColorPoint] -> [Color.Color] ->
-    Context.Context -> Strategy.Strategy -> State.State ->
-      Maybe State.State
+  doSearch :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State -> Maybe State.State
   doSearch [] _ _ _ s  = Just s
   doSearch pcps@(pcp : _) cs context strategy s
     | c == Color.blankColor = doSearchBlankPoint pcps cs context strategy s
