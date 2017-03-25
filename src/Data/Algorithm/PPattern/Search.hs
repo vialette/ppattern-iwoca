@@ -166,7 +166,7 @@ where
   doSearchColorPoint ::
     [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State ->
     Maybe State.State
-  doSearchColorPoint [] _ _ _ _ = error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
+  doSearchColorPoint []           _  _       _        _ = error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
   doSearchColorPoint (pcp : pcps) cs context strategy s = State.pAppend pcp s       >>= -- append new point
                                                           resolveConflicts strategy >>= -- resolve for match
                                                           doSearch pcps cs context' strategy
