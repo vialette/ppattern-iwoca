@@ -32,6 +32,30 @@ where
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
   import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
+  import qualified Data.Algorithm.PPattern.Occurrence          as Occurrence
+
+  increasingFactorization :: Perm.Perm a -> [CP.ColorPoint]
+  increasingFactorization = increasingFactorization' [] IntMap.empty . Perm.points
+  
+  increasingFactorization' :: [CP.ColorPoint] -> IntMap.IntMap Int -> [Point.Point] -> [CP.ColorPoint]
+  increasingFactorization' acc _ []       = List.reverse acc
+  increasingFactorization' acc m (p : ps) = increasingFactorization' (cp : acc) m' ps
+    where
+      y  = Point.yCoord p
+      c  = findSmallestColor y m
+      m' = case IntMap.lookup c m of
+             Nothing -> IntMap.insert c y m
+             Just _  -> IntMap.update (\ _ -> Just y) c m
+      cp = CP.mk2 p c
+
+  -- Auxialiary function for increasingFactorization'.
+  -- Find the smallest color for a new y-coordinate
+  findSmallestColor :: Int -> IntMap.IntMap Int -> Int
+  findSmallestColor y m = aux 1
+    where
+      aux c = case IntMap.lookup c m of
+                Nothing -> c
+                Just y' -> if y' < y then c else aux (c+1)
 
   -- Make an initial list of colored points. Each element from the longest
   -- decreasing subsequence is given a distinct colors. All other elements
@@ -46,12 +70,12 @@ where
     | otherwise                 = CP.mk2Blank p : initialColorPoints ps ps'' cs'
 
   -- Extract embedding in case of a direct search
-  present :: State.State -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
-  present = Just . State.toList
+  present :: Perm.Perm a -> Perm.Perm b -> State.State -> Maybe (Occurrence.Occurrence a b)
+  present p q = Just . Occurrence.mk p q . State.toList
 
   -- Extract embedding in case of a reverse search
-  presentReverse :: Int -> Int -> State.State -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
-  presentReverse pSize qSize  = Just . Foldable.foldr f [] . State.toList
+  presentReverse :: Perm.Perm a -> Perm.Perm b -> Int -> Int -> State.State -> Maybe (Occurrence.Occurrence a b)
+  presentReverse p q pSize qSize  = Just . Occurrence.mk p q . Foldable.foldr f [] . State.toList
     where
       f (cp1, cp2) acc = (cp1', cp2') : acc
         where
@@ -60,35 +84,33 @@ where
 
   -- Max longest decreasing length by suffix.
   mkRightLongestDecreasings :: [P.Point] -> IntMap.IntMap Int
-  mkRightLongestDecreasings ps = mkRightLongestDecreasingsAux IntMap.empty ps ys
+  mkRightLongestDecreasings = mkRightLongestDecreasingsAux IntMap.empty . fmap f
     where
       -- Patience.longestIncreasing asks for a list of pairs with data snd element.
       -- As we do not use this data snd element, we rely on undefined.
-      ys = fmap (\ p -> (P.yCoord p, undefined)) ps
+      f p = (P.yCoord p, undefined)
 
   -- Max longest decreasing length by suffix auxiliary function.
-  mkRightLongestDecreasingsAux :: IntMap.IntMap Int -> [P.Point] -> [(Int, t)] -> IntMap.IntMap Int
-  mkRightLongestDecreasingsAux m []       _        = m
-  mkRightLongestDecreasingsAux m (p : []) _        = IntMap.insert (P.yCoord p) 0 m
-  mkRightLongestDecreasingsAux _ _        []       = error "mkRightLongestDecreasingsAux. We shouldn't be there" -- make ghc -Werror happy
-  mkRightLongestDecreasingsAux m (p : ps) (_ : ys) = mkRightLongestDecreasingsAux m' ps ys'
+  mkRightLongestDecreasingsAux :: IntMap.IntMap Int -> [(Int, t)] -> IntMap.IntMap Int
+  mkRightLongestDecreasingsAux m []            = m
+  mkRightLongestDecreasingsAux m ((y, _) : []) = IntMap.insert y 0 m
+  mkRightLongestDecreasingsAux m ((y, _) : ys) = mkRightLongestDecreasingsAux m' ys
     where
-      longestIncreasing       = Patience.longestIncreasing $ List.reverse ys
+      ys'                     = List.filter (\ (y', _) -> y > y') ys
+      longestIncreasing       = Patience.longestIncreasing $ List.reverse ys'
       longestDecreasingLength = List.length longestIncreasing
-      m'                      = IntMap.insert (P.yCoord p) longestDecreasingLength m
-      ys'                     = List.filter (\ (y, _) -> P.yCoord p > y) ys
+      m'                      = IntMap.insert y longestDecreasingLength m
 
   -- Search for an order-isomorphic occurrence of permutation p into permutation q.
   -- Resolve conflicts according to a given strategy.
-  search :: Perm.Perm a -> Perm.Perm b -> S.Strategy -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  search :: Perm.Perm a -> Perm.Perm b -> S.Strategy -> Maybe (Occurrence.Occurrence a b)
   search p q strategy
     | pSize > qSize = Nothing
-    | qLongestDecreasingLength < qLongestIncreasingLength =
-        searchAux p q qLongestDecreasingLength strategy >>=
-        present
-    | otherwise =
-        searchAux pReverse qReverse qReverseLongestDecreasingLength strategy >>=
-        presentReverse pSize qSize
+    | qLongestDecreasingLength < qLongestIncreasingLength = searchAux p q qLongestDecreasingLength strategy >>=
+                                                            present p q
+    | otherwise = searchAux pReverse qReverse qReverseLongestDecreasingLength strategy >>=
+                  presentReverse p q pSize qSize
+
     where
       pSize = Perm.size p
       qSize = Perm.size q
@@ -134,7 +156,7 @@ where
                                     , let pairs   = List.zip refColors ys
                                     , let follow  = IntMap.fromList pairs
                                     , let context = Context.mk precede follow pRightLongestDecreasings
-                                    ]
+                                  ]
 
   doSearch :: [CP.ColorPoint] -> [C.Color] -> Context.Context -> S.Strategy -> State.State -> Maybe State.State
   doSearch [] _ _ _ s  = Just s
@@ -162,8 +184,7 @@ where
   -- pcp is not a 0-color point.
   doSearchColorPoint :: [CP.ColorPoint] -> [C.Color] -> Context.Context -> S.Strategy -> State.State -> Maybe State.State
   doSearchColorPoint []           _  _       _        _ = error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
-  doSearchColorPoint (pcp : pcps) cs context strategy s =
-    State.pAppend pcp s >>= resolveConflicts strategy >>= doSearch pcps cs context' strategy
+  doSearchColorPoint (pcp : pcps) cs context strategy s = State.pAppend pcp s >>= resolveConflicts strategy >>= doSearch pcps cs context' strategy
     where
       y = CP.yCoord pcp
       c = CP.color  pcp

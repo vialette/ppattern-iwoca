@@ -22,9 +22,9 @@ Library
     patience >=0.1
   Exposed-Modules: Data.Algorithm.PPattern.Perm
                  , Data.Algorithm.PPattern.Strategy
+                 , Data.Algorithm.PPattern.Occurrence
                  , Data.Algorithm.PPattern
-  Other-Modules: Data.Algorithm.PPattern.IncreasingFactorization
-               , Data.Algorithm.PPattern.Search
+  Other-Modules: Data.Algorithm.PPattern.Search
                , Data.Algorithm.PPattern.Search.Context
                , Data.Algorithm.PPattern.State
                , Data.Algorithm.PPattern.State.Access

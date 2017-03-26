@@ -37,21 +37,21 @@ where
 
   import qualified Data.Maybe as Maybe
 
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
   import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Search              as Search
   import qualified Data.Algorithm.PPattern.Strategy            as Strategy
+  import qualified Data.Algorithm.PPattern.Occurrence          as Occurrence
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys'.
   -}
-  search :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  search :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
   search = searchWithStrategy Strategy.defaultStrategy
 
   {-|
     Alias for 'search xs ys'.
   -}
-  occurrenceIn :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  occurrenceIn :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
   xs `occurrenceIn` ys = search xs ys
 
   {-|
@@ -76,7 +76,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to a given strategy.
   -}
-  searchWithStrategy :: (Foldable t, Ord a, Foldable f, Ord b) => Strategy.Strategy -> t a -> f b -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  searchWithStrategy :: (Foldable t, Ord a, Foldable f, Ord b) => Strategy.Strategy -> t a -> f b -> Maybe (Occurrence.Occurrence a b)
   searchWithStrategy strategy xs ys = Search.search p q strategy
     where
       p = Perm.mk xs
@@ -93,7 +93,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys'.
     Resolve conflicts according to a given strategy.
   -}
-  searchLeftmostOrderConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  searchLeftmostOrderConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
   searchLeftmostOrderConflictFirst = searchWithStrategy Strategy.leftmostOrderConflictFirst
 
   {-|
@@ -119,7 +119,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the leftmost value conflict first strategy.
   -}
-  searchLeftmostValueConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  searchLeftmostValueConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
   searchLeftmostValueConflictFirst = searchWithStrategy Strategy.leftmostValueConflictFirst
 
   {-|
@@ -145,7 +145,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the leftmost conflict strategy.
   -}
-  searchLeftmostConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe [(CP.ColorPoint, CP.ColorPoint)]
+  searchLeftmostConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
   searchLeftmostConflictFirst = searchWithStrategy Strategy.leftmostConflict
 
   {-|
