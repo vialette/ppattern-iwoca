@@ -12,12 +12,14 @@ module Data.Algorithm.PPattern.Geometry.Point
   -- * The @CPoint@ type
   Point
 
+  -- * Constructing
+, mk
+, mkFromList
+, mkSequential
+
  -- * Accessing
 , xCoord
 , yCoord
-
-  -- * Constructing
-, mk
 
   -- * Rendering
 , toTuple
@@ -28,10 +30,19 @@ module Data.Algorithm.PPattern.Geometry.Point
 )
 where
 
+  import qualified Data.Tuple as Tuple
+  import qualified Data.List  as List
+
   newtype Point = Point (Int, Int) deriving (Show, Eq, Ord)
 
   mk :: Int -> Int -> Point
   mk x y = Point (x, y)
+
+  mkFromList :: [(Int, Int)] -> [Point]
+  mkFromList = fmap (Tuple.uncurry mk)
+
+  mkSequential :: [Int] -> [Point]
+  mkSequential = mkFromList . List.zip [1..]
 
   toTuple :: Point -> (Int, Int)
   toTuple (Point (x, y)) = (x, y)

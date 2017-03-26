@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Perm
+Module      : Data.Algorithm.PPattern.APerm
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-2017
 License     : MIT
@@ -10,10 +10,10 @@ Here is a longer description of this module, containing some
 commentary with @some markup@.
 -}
 
-module Data.Algorithm.PPattern.Perm
+module Data.Algorithm.PPattern.APerm
 (
-  -- * The @Perm@ type
-  Perm
+  -- * The @APerm@ type
+  APerm(..)
 
   -- * Constructing
 , mk
@@ -29,7 +29,6 @@ module Data.Algorithm.PPattern.Perm
 , longestDecreasingLength
 
   -- * Converting
-, toList
 , toAnnotedList
 , points
 , annotations
@@ -68,24 +67,24 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm a = Perm [T a] deriving (Eq, Ord, Show)
+  newtype APerm a = APerm { toList :: [T a] } deriving (Eq, Ord, Show)
 
-  instance Foldable.Foldable Perm  where
-    foldr f z (Perm xs) = List.foldr f' z xs
+  instance Foldable.Foldable APerm  where
+    foldr f z (APerm xs) = List.foldr f' z xs
       where
         f' (T (_, a)) = f a
 
   {-|
     Construct a Perm from foldable.
   -}
-  mk :: (Foldable t, Ord a) => t a -> Perm a
-  mk = Perm . fmap (uncurry mkT) . reduce . Foldable.toList
+  mk :: (Foldable t, Ord a) => t a -> APerm a
+  mk = APerm . fmap (uncurry mkT) . reduce . Foldable.toList
 
   {-|
     Reverse a permutation.
   -}
-  reversal :: Perm a -> Perm a
-  reversal (Perm ts) = Perm $ Foldable.foldl f [] ts
+  reversal :: APerm a -> APerm a
+  reversal (APerm ts) = APerm $ Foldable.foldl f [] ts
     where
       n = List.length ts
 
@@ -97,25 +96,22 @@ where
           p' = P.updateXCoord x' p
 
   {-|
-    Turn a permutation into a list.
+    Turn a permutation into a list with annotations.
   -}
-  toList :: Perm a -> [a]
-  toList (Perm ts) = fmap annotation ts
-
-  toAnnotedList :: Perm a -> [(P.Point, a)]
-  toAnnotedList (Perm ts) = fmap toTuple ts
+  toAnnotedList :: APerm a -> [(P.Point, a)]
+  toAnnotedList (APerm ts) = fmap toTuple ts
 
   {-|
     Points projection.
   -}
-  points :: Perm a -> [P.Point]
-  points (Perm ts) = fmap point ts
+  points :: APerm a -> [P.Point]
+  points (APerm ts) = fmap point ts
 
   {-|
     Points projection.
   -}
-  annotations :: Perm a -> [a]
-  annotations (Perm ts) = fmap annotation ts
+  annotations :: APerm a -> [a]
+  annotations (APerm ts) = fmap annotation ts
 
   {-|
     'reduce p' returns the reduced form of the permutation 'p'.
@@ -130,12 +126,12 @@ where
   {-|
     Return the size of the permutation.
   -}
-  size :: Perm a -> Int
-  size (Perm ts) = List.length ts
+  size :: APerm a -> Int
+  size (APerm ts) = List.length ts
 
   -- Auxiliary function for isIncreasing and isDecreasing
-  isMonotoneAux :: (Int -> Int -> Bool) -> Perm a -> Bool
-  isMonotoneAux cmp (Perm ts) = aux ts
+  isMonotoneAux :: (Int -> Int -> Bool) -> APerm a -> Bool
+  isMonotoneAux cmp (APerm ts) = aux ts
     where
       aux  []    = True
       aux (_:[]) = True
@@ -147,26 +143,26 @@ where
   {-|
     Return True iff the permutation is increasing.
   -}
-  isIncreasing :: Perm a -> Bool
+  isIncreasing :: APerm a -> Bool
   isIncreasing = isMonotoneAux (<)
 
   {-|
     Return True iff the permutation is decreasing.
   -}
-  isDecreasing :: Perm a -> Bool
+  isDecreasing :: APerm a -> Bool
   isDecreasing = isMonotoneAux (>)
 
   {-|
     Return True iff the permutation is monotone (i.e. increasing or decreasing).
   -}
-  isMonotone :: Perm a -> Bool
+  isMonotone :: APerm a -> Bool
   isMonotone p = isIncreasing p || isDecreasing p
 
   {-|
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
-  longestIncreasing :: Perm a -> Perm a
-  longestIncreasing (Perm ts) = Perm . unformat . List.reverse . doSearch $ format ts
+  longestIncreasing :: APerm a -> APerm a
+  longestIncreasing (APerm ts) = APerm . unformat . List.reverse . doSearch $ format ts
     where
       format   = fmap (\ t@(T (p, _)) -> (P.yCoord p, t))
       doSearch = Patience.longestIncreasing
@@ -176,14 +172,14 @@ where
     'longestIncreasingLength xs' returns the length of the longest increasing
     subsequences in 'xs'.
   -}
-  longestIncreasingLength :: Perm a -> Int
+  longestIncreasingLength :: APerm a -> Int
   longestIncreasingLength = size . longestIncreasing
 
   {-|
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
-  longestDecreasing :: Perm a -> Perm a
-  longestDecreasing (Perm ts) = Perm . unformat . doSearch $ format ts
+  longestDecreasing :: APerm a -> APerm a
+  longestDecreasing (APerm ts) = APerm . unformat . doSearch $ format ts
     where
       format   = List.reverse . fmap (\ t@(T (p, _)) -> (P.yCoord p, t))
       doSearch = Patience.longestIncreasing
@@ -193,5 +189,5 @@ where
     'longestDecreasingLength xs' returns the length of the longest decreasing
     subsequences in 'xs'.
   -}
-  longestDecreasingLength :: Perm a -> Int
+  longestDecreasingLength :: APerm a -> Int
   longestDecreasingLength = size . longestDecreasing

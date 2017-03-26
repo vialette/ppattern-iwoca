@@ -30,32 +30,9 @@ where
   import qualified Data.Algorithm.PPattern.State               as State
   import qualified Data.Algorithm.PPattern.Search.Context      as Context
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
-  import qualified Data.Algorithm.PPattern.Perm                as Perm
+  import qualified Data.Algorithm.PPattern.APerm               as APerm
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
   import qualified Data.Algorithm.PPattern.Occurrence          as Occurrence
-
-  increasingFactorization :: Perm.Perm a -> [CP.ColorPoint]
-  increasingFactorization = increasingFactorization' [] IntMap.empty . Perm.points
-  
-  increasingFactorization' :: [CP.ColorPoint] -> IntMap.IntMap Int -> [Point.Point] -> [CP.ColorPoint]
-  increasingFactorization' acc _ []       = List.reverse acc
-  increasingFactorization' acc m (p : ps) = increasingFactorization' (cp : acc) m' ps
-    where
-      y  = Point.yCoord p
-      c  = findSmallestColor y m
-      m' = case IntMap.lookup c m of
-             Nothing -> IntMap.insert c y m
-             Just _  -> IntMap.update (\ _ -> Just y) c m
-      cp = CP.mk2 p c
-
-  -- Auxialiary function for increasingFactorization'.
-  -- Find the smallest color for a new y-coordinate
-  findSmallestColor :: Int -> IntMap.IntMap Int -> Int
-  findSmallestColor y m = aux 1
-    where
-      aux c = case IntMap.lookup c m of
-                Nothing -> c
-                Just y' -> if y' < y then c else aux (c+1)
 
   -- Make an initial list of colored points. Each element from the longest
   -- decreasing subsequence is given a distinct colors. All other elements
@@ -70,11 +47,11 @@ where
     | otherwise                 = CP.mk2Blank p : initialColorPoints ps ps'' cs'
 
   -- Extract embedding in case of a direct search
-  present :: Perm.Perm a -> Perm.Perm b -> State.State -> Maybe (Occurrence.Occurrence a b)
+  present :: APerm.APerm a -> APerm.APerm b -> State.State -> Maybe (Occurrence.Occurrence a b)
   present p q = Just . Occurrence.mk p q . State.toList
 
   -- Extract embedding in case of a reverse search
-  presentReverse :: Perm.Perm a -> Perm.Perm b -> Int -> Int -> State.State -> Maybe (Occurrence.Occurrence a b)
+  presentReverse :: APerm.APerm a -> APerm.APerm b -> Int -> Int -> State.State -> Maybe (Occurrence.Occurrence a b)
   presentReverse p q pSize qSize  = Just . Occurrence.mk p q . Foldable.foldr f [] . State.toList
     where
       f (cp1, cp2) acc = (cp1', cp2') : acc
@@ -103,7 +80,7 @@ where
 
   -- Search for an order-isomorphic occurrence of permutation p into permutation q.
   -- Resolve conflicts according to a given strategy.
-  search :: Perm.Perm a -> Perm.Perm b -> S.Strategy -> Maybe (Occurrence.Occurrence a b)
+  search :: APerm.APerm a -> APerm.APerm b -> S.Strategy -> Maybe (Occurrence.Occurrence a b)
   search p q strategy
     | pSize > qSize = Nothing
     | qLongestDecreasingLength < qLongestIncreasingLength = searchAux p q qLongestDecreasingLength strategy >>=
@@ -112,36 +89,36 @@ where
                   presentReverse p q pSize qSize
 
     where
-      pSize = Perm.size p
-      qSize = Perm.size q
+      pSize = APerm.size p
+      qSize = APerm.size q
 
-      qLongestDecreasing = Perm.longestDecreasing q
-      qLongestDecreasingLength = Perm.size qLongestDecreasing
+      qLongestDecreasing = APerm.longestDecreasing q
+      qLongestDecreasingLength = APerm.size qLongestDecreasing
 
-      qLongestIncreasing = Perm.longestIncreasing q
-      qLongestIncreasingLength = Perm.size qLongestIncreasing
+      qLongestIncreasing = APerm.longestIncreasing q
+      qLongestIncreasingLength = APerm.size qLongestIncreasing
 
-      pReverse = Perm.reversal p
-      qReverse = Perm.reversal q
+      pReverse = APerm.reversal p
+      qReverse = APerm.reversal q
 
-      qReverseLongestDecreasing = Perm.longestDecreasing qReverse
-      qReverseLongestDecreasingLength = Perm.size qReverseLongestDecreasing
+      qReverseLongestDecreasing = APerm.longestDecreasing qReverse
+      qReverseLongestDecreasingLength = APerm.size qReverseLongestDecreasing
 
-  searchAux :: Perm.Perm a -> Perm.Perm b -> Int -> S.Strategy -> Maybe State.State
+  searchAux :: APerm.APerm a -> APerm.APerm b -> Int -> S.Strategy -> Maybe State.State
   searchAux p q qLongestDecreasingLength strategy
     | pLongestDecreasingLength > qLongestDecreasingLength = Nothing
     | otherwise                                           = computation
     where
       -- Permutation p as points
-      pPoints = Perm.points p
+      pPoints = APerm.points p
 
       -- p longest decressing by suffixes
       pRightLongestDecreasings = mkRightLongestDecreasings pPoints
 
       -- permutation p longest decreasing data
-      pLongestDecreasing = Perm.longestDecreasing p
-      pLongestDecreasingLength = Perm.size pLongestDecreasing
-      pLongestDecreasingPoints = Perm.points pLongestDecreasing
+      pLongestDecreasing = APerm.longestDecreasing p
+      pLongestDecreasingLength = APerm.size pLongestDecreasing
+      pLongestDecreasingPoints = APerm.points pLongestDecreasing
 
       -- initial state
       s = State.mk q
