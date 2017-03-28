@@ -20,6 +20,7 @@ module Data.Algorithm.PPattern.Strategy
 
   -- * strategies
 , leftmostConflict
+, rightmostConflict
 , leftmostOrderConflictFirst
 , rightmostOrderConflictFirst
 , leftmostValueConflictFirst
@@ -83,17 +84,22 @@ where
   defaultStrategy :: Strategy
   defaultStrategy = leftmostConflict
 
+  firstConflict :: [Strategy.PLink.PLink] -> Maybe Conflict.Conflict
+  firstConflict [] = Nothing
+  firstConflict (Strategy.PLink.PLink (link1, link2) : plinks)
+    | orderConflict link1 link2 = Just $ reportOrderConflict link1 link2
+    | orderConflict link2 link1 = Just $ reportOrderConflict link2 link1
+    | valueConflict link1 link2 = Just $ reportValueConflict link1 link2
+    | valueConflict link2 link1 = Just $ reportValueConflict link2 link1
+    | otherwise                 = firstConflict plinks
+
   -- Return any leftmost w.r.t. x-ccordinates conflict
   leftmostConflict :: Strategy
-  leftmostConflict = aux . collect
-    where
-      aux [] = Nothing
-      aux (Strategy.PLink.PLink (link1, link2) : plinks)
-        | orderConflict link1 link2 = Just $ reportOrderConflict link1 link2
-        | orderConflict link2 link1 = Just $ reportOrderConflict link2 link1
-        | valueConflict link1 link2 = Just $ reportValueConflict link1 link2
-        | valueConflict link2 link1 = Just $ reportValueConflict link2 link1
-        | otherwise                 = aux plinks
+  leftmostConflict = firstConflict . collect
+
+  -- Return any rightmost w.r.t. x-ccordinates conflict
+  rightmostConflict :: Strategy
+  rightmostConflict = firstConflict . List.reverse . collect
 
   -- Return the leftmost order conflict. If such a conflict does not exists,
   -- return the leftmost value conflict. Return Nothing if there is no conflict.

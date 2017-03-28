@@ -42,10 +42,10 @@ module Data.Algorithm.PPattern.Perm
 , toPoints
 -- , annotations
 --
---   -- * Testing
--- , isIncreasing
--- , isDecreasing
--- , isMonotone
+  -- * Testing
+, isIncreasing
+, isDecreasing
+, isMonotone
 )
 where
 
@@ -54,8 +54,6 @@ where
   import qualified Data.Foldable as Foldable
   import qualified Data.Function as Function
   import qualified Data.Monoid   as Monoid
-
-  -- import qualified Data.Algorithm.Patience as Patience
 
   import qualified Data.Algorithm.PPattern.Geometry.Point as P
 
@@ -130,7 +128,7 @@ where
     Return True iff the permutation is increasing.
   -}
   isIncreasing :: Perm -> Bool
-  isIncreasing p = p == P.mkSequential [1..n]
+  isIncreasing p = toList p == P.mkSequential [1..n]
     where
       n = size p
 
@@ -138,7 +136,7 @@ where
     Return True iff the permutation is decreasing.
   -}
   isDecreasing :: Perm -> Bool
-  isDecreasing p = p == P.mkSequential [n,(n-1)..1]
+  isDecreasing p = toList p == P.mkSequential [n,(n-1)..1]
     where
       n = size p
 
