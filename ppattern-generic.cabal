@@ -40,3 +40,12 @@ Library
                , Data.Algorithm.PPattern.Tools
                , Data.Algorithm.PPattern.Combinatorics
                , Data.Algorithm.PPattern.Color
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  hs-source-dirs: tests
+  main-is: Spec.hs
+  Default-Language: Haskell2010
+  build-depends: base  >=4.8
+               , hspec >= 2.4.3
+               , ppattern-generic

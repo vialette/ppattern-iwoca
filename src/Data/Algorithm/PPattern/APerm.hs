@@ -133,9 +133,9 @@ where
   isMonotoneAux :: (Int -> Int -> Bool) -> APerm a -> Bool
   isMonotoneAux cmp (APerm ts) = aux ts
     where
-      aux  []    = True
-      aux (_:[]) = True
-      aux _      = Foldable.foldl f True consecutives
+      aux  []      = True
+      aux (_ : []) = True
+      aux _        = Foldable.foldl f True consecutives
         where
           consecutives   =  List.zip ts (List.tail ts)
           f acc (T (p, _), T (p', _)) = acc && (P.yCoord p) `cmp` (P.yCoord p')

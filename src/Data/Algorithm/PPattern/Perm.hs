@@ -17,6 +17,7 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Constructing
 , mk
+, empty
 
   -- * Transforming
 , reversal
@@ -24,16 +25,21 @@ module Data.Algorithm.PPattern.Perm
 , reversalComplement
 , inverse
 
+  -- * composing
+, skewSum
+, directSum
+
   -- * Querying
 , size
+, Data.Algorithm.PPattern.Perm.null
 -- , longestIncreasing
 -- , longestIncreasingLength
 -- , longestDecreasing
 -- , longestDecreasingLength
 --
---   -- * Converting
+  -- * Converting
 -- , toAnnotedList
--- , points
+, toPoints
 -- , annotations
 --
 --   -- * Testing
@@ -43,10 +49,11 @@ module Data.Algorithm.PPattern.Perm
 )
 where
 
-  import qualified Data.Tuple      as Tuple
-  import qualified Data.List       as List
-  import qualified Data.Foldable   as Foldable
-  import qualified Data.Function   as Function
+  import qualified Data.Tuple    as Tuple
+  import qualified Data.List     as List
+  import qualified Data.Foldable as Foldable
+  import qualified Data.Function as Function
+  import qualified Data.Monoid   as Monoid
 
   -- import qualified Data.Algorithm.Patience as Patience
 
@@ -55,17 +62,27 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm = Perm { getList :: [P.Point] } deriving (Eq, Ord, Show)
+  newtype Perm = Perm { toList :: [P.Point] } deriving (Eq, Ord)
+
+  instance Show Perm where
+    show = show . fmap P.yCoord . toList
 
   {-|
     Construct a Perm from foldable.
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm
-  mk xs = Perm { getList = reduce $ Foldable.toList xs }
+  mk xs = Perm { toList = reduce $ Foldable.toList xs }
 
-  {-|
-    'reduce p' returns the reduced form of the permutation 'p'.
-  -}
+  empty :: Perm
+  empty = Perm { toList = [] }
+
+  toPoints :: Perm -> [P.Point]
+  toPoints = toList
+
+  null :: Perm -> Bool
+  null = List.null . toList
+
+  -- Return the reduced form of the permutation 'p'.
   reduce :: (Ord a) => [a] -> [P.Point]
   reduce = fmap f . sortByIdx . List.zip [1..] . sortByElt . List.zip [1..]
     where
@@ -74,22 +91,59 @@ where
       f (y, (x, _)) = P.mk x y
 
   size :: Perm -> Int
-  size = List.length . getList
+  size = List.length . toList
 
   reversal :: Perm -> Perm
-  reversal = Perm . P.mkSequential . List.reverse . fmap P.yCoord . getList
+  reversal = Perm . P.mkSequential . List.reverse . fmap P.yCoord . toList
 
   complement :: Perm -> Perm
-  complement Perm { getList = xs } = Perm . P.mkSequential . fmap f $ fmap P.yCoord xs
+  complement Perm { toList = xs } = Perm . P.mkSequential . fmap f $ fmap P.yCoord xs
     where
       n   = List.length xs
       f y = n+1-y
 
   reversalComplement :: Perm -> Perm
-  reversalComplement Perm { getList = xs } = Perm . P.mkSequential . fmap f . List.reverse $ fmap P.yCoord xs
+  reversalComplement Perm { toList = xs } = Perm . P.mkSequential . fmap f . List.reverse $ fmap P.yCoord xs
     where
       n   = List.length xs
       f y = n+1-y
 
   inverse :: Perm -> Perm
-  inverse Perm { getList = xs } = Perm . P.mkSequential . fmap Tuple.snd . List.sort . flip List.zip [1..] $ fmap P.yCoord xs
+  inverse Perm { toList = xs } = Perm . P.mkSequential . fmap Tuple.snd . List.sort . flip List.zip [1..] $ fmap P.yCoord xs
+
+  skewSum :: Perm -> Perm -> Perm
+  skewSum p q = Perm $ xs `Monoid.mappend` ys
+    where
+      m = size p
+      n = size q
+      xs = P.mkSequential . fmap ((+n) . P.yCoord) $ toList p
+      ys = P.mkFromList . List.zip [(m+1)..] . fmap P.yCoord $ toList q
+
+  directSum :: Perm -> Perm -> Perm
+  directSum p q = Perm $ xs `Monoid.mappend` ys
+    where
+      m = size p
+      xs = toList p
+      ys = P.mkFromList . List.zip [(m+1)..] . fmap ((+m) . P.yCoord) $ toList q
+
+  {-|
+    Return True iff the permutation is increasing.
+  -}
+  isIncreasing :: Perm -> Bool
+  isIncreasing p = p == P.mkSequential [1..n]
+    where
+      n = size p
+
+  {-|
+    Return True iff the permutation is decreasing.
+  -}
+  isDecreasing :: Perm -> Bool
+  isDecreasing p = p == P.mkSequential [n,(n-1)..1]
+    where
+      n = size p
+
+  {-|
+    Return True iff the permutation is monotone (i.e. increasing or decreasing).
+  -}
+  isMonotone :: Perm -> Bool
+  isMonotone p = isIncreasing p || isDecreasing p
