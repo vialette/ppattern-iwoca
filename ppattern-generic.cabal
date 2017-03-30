@@ -36,6 +36,7 @@ Library
                , Data.Algorithm.PPattern.Strategy.PLink
                , Data.Algorithm.PPattern.Geometry.Point
                , Data.Algorithm.PPattern.Geometry.ColorPoint
+               , Data.Algorithm.PPattern.Geometry.Interval
                , Data.Algorithm.PPattern.Conflict
                , Data.Algorithm.PPattern.Tools
                , Data.Algorithm.PPattern.Combinatorics
