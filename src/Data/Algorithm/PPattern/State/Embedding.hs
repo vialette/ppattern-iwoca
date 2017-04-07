@@ -50,7 +50,7 @@ where
     where
       m' = Map.insert cp cp' m
 
-  query :: ColorPoint.ColorPoint -> Embedding -> Maybe (ColorPoint.ColorPoint)
+  query :: ColorPoint.ColorPoint -> Embedding -> Maybe ColorPoint.ColorPoint
   query cp (Embedding m) = Map.lookup cp m
 
   showEmbedding :: Embedding -> String

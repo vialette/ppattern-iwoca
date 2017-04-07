@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Interval
+Module      : Data.Algorithm.PPattern.Geometry.Interval
 Structription : Minimum int interval module
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017
 License     : MIT
@@ -10,7 +10,7 @@ Here is a longer Structription of this module, containing some
 commentary with @some markup@.
 -}
 
-module Data.Algorithm.PPattern.Interval
+module Data.Algorithm.PPattern.Geometry.Interval
 (
   -- * The @Interval@ type
   Interval
@@ -20,28 +20,38 @@ module Data.Algorithm.PPattern.Interval
 , union
 , intersection
 
+ -- * Accessing
+, lowerBound
+, upperBound
+
   -- * Comparing
 , precedes
+, strictlyPrecedes
 , follows
+, strictlyFollows
 , disjoint
 , intersects
-, consecutive
 )
 where
 
   import qualified Data.Tuple as Tuple
-  import qualified Data.List  as List
 
   newtype Interval = Interval (Int, Int)
                      deriving (Eq, Show)
 
   mk :: Int -> Int -> Interval
-  mk lowerBound upperBound = Interval (lowerBound, upperBound)
+  mk = Tuple.curry Interval
+
+  lowerBound :: Interval -> Int
+  lowerBound (Interval (lb, _)) = lb
+
+  upperBound :: Interval -> Int
+  upperBound (Interval (_, ub)) = ub
 
   intersection :: Interval -> Interval -> Maybe Interval
   intersection i i'
     | disjoint i i' = Nothing
-    | otherwise     = mk lb ub
+    | otherwise     = Just $ mk lb ub
     where
       lb = max (lowerBound i) (lowerBound i')
       ub = min (upperBound i) (upperBound i')
@@ -49,7 +59,7 @@ where
   union :: Interval -> Interval -> Maybe Interval
   union i i'
     | disjoint i i' = Nothing
-    | otherwise     = mk lb ub
+    | otherwise     = Just $ mk lb ub
     where
       lb = min (lowerBound i) (lowerBound i')
       ub = max (upperBound i) (upperBound i')
@@ -67,7 +77,7 @@ where
   strictlyFollows i i' = lowerBound i + 1 == upperBound i'
 
   disjoint :: Interval -> Interval -> Bool
-  disjoint i i' precedes i i' || precedes i' i
+  disjoint i i' = precedes i i' || precedes i' i
 
   intersects :: Interval -> Interval -> Bool
   intersects i i' = not $ disjoint i i'

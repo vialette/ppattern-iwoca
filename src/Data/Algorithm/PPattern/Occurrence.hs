@@ -27,8 +27,8 @@ where
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
   import qualified Data.Algorithm.PPattern.APerm                as APerm
 
-  data Element a = Element { getX          :: Int
-                           , getY          :: Int
+  data Element a = Element { getX          :: {-# UNPACK #-} !Int
+                           , getY          :: {-# UNPACK #-} !Int
                            , getAnnotation :: a
                            }
                            deriving (Show)

@@ -40,7 +40,7 @@ where
   initialColorPoints :: [P.Point] -> [P.Point] -> [C.Color] -> [CP.ColorPoint]
   initialColorPoints []       _  _   = []
   initialColorPoints (p : ps) [] cs  = CP.mk2Blank p : initialColorPoints ps [] cs
-  initialColorPoints (_ : []) _  _   = error "Search.initialColorPoints" -- make ghc -Werror happy
+  initialColorPoints [_]      _  _   = error "Search.initialColorPoints" -- make ghc -Werror happy
   initialColorPoints _        _  []  = error "Search.initialColorPoints" -- make ghc -Werror happy
   initialColorPoints (p : ps) ps''@(p' : ps') cs'@(c : cs)
     | P.yCoord p == P.yCoord p' = CP.mk2 p c : initialColorPoints ps ps' cs
@@ -70,7 +70,7 @@ where
   -- Max longest decreasing length by suffix auxiliary function.
   mkRightLongestDecreasingsAux :: IntMap.IntMap Int -> [(Int, t)] -> IntMap.IntMap Int
   mkRightLongestDecreasingsAux m []            = m
-  mkRightLongestDecreasingsAux m ((y, _) : []) = IntMap.insert y 0 m
+  mkRightLongestDecreasingsAux m [(y, _)]      = IntMap.insert y 0 m
   mkRightLongestDecreasingsAux m ((y, _) : ys) = mkRightLongestDecreasingsAux m' ys
     where
       ys'                     = List.filter (\ (y', _) -> y > y') ys
@@ -110,7 +110,7 @@ where
     | otherwise                                           = computation
     where
       -- Permutation p as points
-      pPoints = APerm.points p
+      pPoints = APerm.toPoints p
 
       -- p longest decressing by suffixes
       pRightLongestDecreasings = mkRightLongestDecreasings pPoints
@@ -118,7 +118,7 @@ where
       -- permutation p longest decreasing data
       pLongestDecreasing = APerm.longestDecreasing p
       pLongestDecreasingLength = APerm.size pLongestDecreasing
-      pLongestDecreasingPoints = APerm.points pLongestDecreasing
+      pLongestDecreasingPoints = APerm.toPoints pLongestDecreasing
 
       -- initial state
       s = State.mk q

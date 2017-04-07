@@ -31,8 +31,11 @@ module Data.Algorithm.PPattern.Geometry.ColorPoint
 
   -- * Modifying
 , updateXCoord
+, updateXCoord'
 , updateYCoord
+, updateYCoord'
 , updateColor
+, updateColor'
 )
 where
 
@@ -118,6 +121,14 @@ where
       p' = P.updateXCoord x p
 
   {-|
+    Update color point x-coordinate.
+  -}
+  updateXCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
+  updateXCoord' f (ColorPoint (p, c)) = mk2 p' c
+    where
+      p' = P.updateXCoord' f p
+
+  {-|
     Update color point y-coordinate.
   -}
   updateYCoord :: Int -> ColorPoint -> ColorPoint
@@ -126,7 +137,23 @@ where
       p' = P.updateYCoord y p
 
   {-|
+    Update color point y-coordinate.
+  -}
+  updateYCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
+  updateYCoord' f (ColorPoint (p, c)) = mk2 p' c
+    where
+      p' = P.updateYCoord' f p
+
+  {-|
     Update color point color.
   -}
   updateColor :: C.Color -> ColorPoint -> ColorPoint
   updateColor c' (ColorPoint (p, _)) = mk2 p c'
+
+  {-|
+    Update color point color.
+  -}
+  updateColor' :: (C.Color -> C.Color) -> ColorPoint -> ColorPoint
+  updateColor' f (ColorPoint (p, c)) = mk2 p c'
+    where
+      c' = f c

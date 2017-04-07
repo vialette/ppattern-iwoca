@@ -26,7 +26,9 @@ module Data.Algorithm.PPattern.Geometry.Point
 
   -- * Modifying
 , updateXCoord
+, updateXCoord'
 , updateYCoord
+, updateYCoord'
 )
 where
 
@@ -56,5 +58,15 @@ where
   updateXCoord :: Int -> Point -> Point
   updateXCoord x' (Point (_, y)) = mk x' y
 
+  updateXCoord' :: (Int -> Int) -> Point -> Point
+  updateXCoord' f (Point (x, y)) = mk x' y
+    where
+      x' = f x
+
   updateYCoord :: Int -> Point -> Point
   updateYCoord y' (Point (x, _)) = mk x y'
+
+  updateYCoord' :: (Int -> Int) -> Point -> Point
+  updateYCoord' f (Point (x, y)) = mk x y'
+    where
+      y' = f y

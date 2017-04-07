@@ -13,22 +13,20 @@ commentary with @some markup@.
 module Data.Algorithm.PPattern.DecompositionTree
 (
   -- * The @DecompositionTree@ type
-  DecompositionTree
+  DecompositionTree(..)
 
   -- * Constructing
-, mk
-, union
-, intersection
 
-  -- * Comparing
-, precedes
-, follows
-, disjoint
-, intersects
-, consecutive
 )
 where
 
-  data DecompositionTree = Leaf Perm.Perm
-                         | Plus DecompositionTree DecompositionTree
-                         | Minus DecompositionTree DecompositionTree
+  import qualified Data.Algorithm.PPattern.APerm             as APerm
+  import qualified Data.Algorithm.PPattern.Geometry.Interval as I
+
+  data DecompositionTree = Leaf APerm.APerm
+                         | Plus  (I.Interval, I.Interval) DecompositionTree DecompositionTree
+                         | Minus (I.Interval, I.Interval) DecompositionTree DecompositionTree
+
+
+  mk :: APerm.APerm -> DecompositionTree
+  mk p

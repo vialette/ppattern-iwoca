@@ -3,7 +3,7 @@ Module      : Data.Algorithm.PPattern.Tools
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017
 License     : MIT
-Maintainer  : vialette@gmail.com
+Maintainer  : vialette@gmaiList.com
 Stability   : experimental
 -}
 
@@ -18,11 +18,21 @@ module Data.Algorithm.PPattern.Tools
 
   -- *
 , sublistIndex
+
+, prefixes
+, suffixes
+, factors
+
+  -- *
+, consecutivePairs
+, allConsecutivePairs
+, anyConsecutivePairs
 )
 where
 
-  import qualified Data.List  as L
-  import qualified Data.Tuple as T
+  import qualified Data.List     as List
+  import qualified Data.Tuple    as Tuple
+  import qualified Data.Foldable as Foldable
 
   removeAt :: (Eq a, Num a) => [b] -> a -> (b, [b])
   removeAt []     _ = error "Cannot removeAt an empty list"
@@ -32,7 +42,7 @@ where
       (x', xs') = removeAt xs (n-1)
 
   removeAt' :: (Eq a, Num a) => [b] -> a -> [b]
-  removeAt' xs i = T.snd $ removeAt xs i
+  removeAt' xs i = Tuple.snd $ removeAt xs i
 
   -- Transform a list of length 2 to a pair.
   tuplify2 :: [a] -> (a, a)
@@ -41,4 +51,28 @@ where
 
   -- Sublist from list of indexes
   sublistIndex :: [a] -> [Int] -> [a]
-  sublistIndex xs = fmap (\ i  -> xs L.!! i) . L.sort
+  sublistIndex xs = fmap (\ i  -> xs List.!! i) . List.sort
+
+  --
+  prefixes :: [a] -> [[a]]
+  prefixes = List.tail . List.inits
+
+  --
+  suffixes :: [a] -> [[a]]
+  suffixes = fmap List.reverse . List.init . fmap List.reverse . List.tails
+
+  --
+  factors :: [a] -> [[a]]
+  factors = Foldable.concatMap prefixes . suffixes
+
+  consecutivePairs :: Foldable t => t a -> [(a, a)]
+  consecutivePairs = aux . Foldable.toList
+    where
+      aux []  = []
+      aux xs = List.zip xs (List.tail xs)
+
+  allConsecutivePairs :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
+  allConsecutivePairs f = Foldable.all f . consecutivePairs
+
+  anyConsecutivePairs :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
+  anyConsecutivePairs f = Foldable.any f . consecutivePairs

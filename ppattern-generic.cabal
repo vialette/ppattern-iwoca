@@ -21,11 +21,14 @@ Library
     containers >=0.5 && <0.6,
     patience >=0.1
   Exposed-Modules: Data.Algorithm.PPattern.APerm
-                 , Data.Algorithm.PPattern.Perm
                  , Data.Algorithm.PPattern.Strategy
                  , Data.Algorithm.PPattern.Occurrence
+                 , Data.Algorithm.PPattern.SeparatingTree
+                 , Data.Algorithm.PPattern.CompactSeparatingTree
+                 , Data.Algorithm.PPattern.StackSort
                  , Data.Algorithm.PPattern
-  Other-Modules: Data.Algorithm.PPattern.Search
+  Other-Modules: Data.Algorithm.PPattern.Perm.T
+               , Data.Algorithm.PPattern.Search
                , Data.Algorithm.PPattern.Search.Context
                , Data.Algorithm.PPattern.State
                , Data.Algorithm.PPattern.State.Access
