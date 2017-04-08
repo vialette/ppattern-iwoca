@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Combi
+Module      : Data.Algorithm.PPattern.Combinatorics
 Description : Combinatorial tools
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017
 License     : MIT
@@ -14,7 +14,7 @@ module Data.Algorithm.PPattern.Combinatorics
 where
 
   {-|
-    The 'partitionsByLength' function returns all k-partitions of an integer.
+    'choose xs k' returns all sublists of size 'k' of 'xs'.
   -}
   choose :: [a] -> Int -> [[a]]
   _      `choose` 0       = [[]]

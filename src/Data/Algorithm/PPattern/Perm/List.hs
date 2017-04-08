@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Perm.T.List
+Module      : Data.Algorithm.PPattern.Perm.List
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-2017
 License     : MIT
@@ -10,7 +10,7 @@ Here is a longer description of this module, containing some
 commentary with @some markup@.
 -}
 
-module Data.Algorithm.PPattern.Perm.T.List
+module Data.Algorithm.PPattern.Perm.List
 (
   -- *
   sub
@@ -19,46 +19,83 @@ module Data.Algorithm.PPattern.Perm.T.List
 
 , longestIncreasing
 , longestDecreasing
+
+, reversal
+, complement
+, reversalComplement
+, inverse
 )
   where
 
-    import qualified Data.List as List
+    import qualified Data.List     as List
+    import qualified Data.Tuple    as Tuple
+    import qualified Data.Foldable as Foldable
 
-    import qualified Data.Algorithm.PPattern.Perm.T         as T
-    import qualified Data.Algorithm.PPattern.Geometry.Point as P
+    import qualified Data.Algorithm.Patience as Patience
+
+    import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
+    import qualified Data.Algorithm.PPattern.Geometry.Point      as P
+    import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
+    import qualified Data.Algorithm.PPattern.Tools               as Tools
 
     --
-    sub :: Int -> Int -> [T.T a] -> [T.T a]
+    sub :: Int -> Int -> [Perm.T.T a] -> [Perm.T.T a]
     sub xMin xMax = aux
       where
         aux [] = []
-        aux (t@(T.T (p, _)) : ts)
+        aux (t@(Perm.T.T (p, _)) : ts)
           | P.xCoord p < xMin = aux ts
           | P.xCoord p < xMax = t : aux ts
           | otherwise         = []
 
     -- Auxiliary function for isIncreasing and isDecreasing
-    isMonotone :: (Int -> Int -> Bool) -> [T.T a] -> Bool
+    isMonotone :: (Int -> Int -> Bool) -> [Perm.T.T a] -> Bool
     isMonotone cmp = go
       where
         go []  = True
         go [_] = True
-        go _   = Foldable.foldl f True consecutives
+        go ts   = Foldable.foldl f True $ Tools.consecutivePairs ts
           where
-            consecutives   =  List.zip ts (List.tail ts)
-            f acc (T (p, _), T (p', _)) = acc && P.yCoord p `cmp` P.yCoord p'
+            f acc (Perm.T.T (p, _), Perm.T.T (p', _)) = acc && P.yCoord p `cmp` P.yCoord p'
 
 
-    longestIncreasing :: [T.T a] -> [T.T a]
-    longestIncreasing = Perm . unformat . List.reverse . doSearch . format
+    longestIncreasing :: [Perm.T.T a] -> [Perm.T.T a]
+    longestIncreasing = unformat . List.reverse . doSearch . format
       where
-        format   = fmap (\ t@(T (p, _)) -> (P.yCoord p, t))
+        format   = fmap (\ t@(Perm.T.T (p, _)) -> (P.yCoord p, t))
         doSearch = Patience.longestIncreasing
         unformat = fmap Tuple.snd
 
-    longestDecreasing :: [T.T a] -> [T.T a]
-    longestDecreasing = Perm . unformat . doSearch . format
+    longestDecreasing :: [Perm.T.T a] -> [Perm.T.T a]
+    longestDecreasing = unformat . doSearch . format
       where
-        format   = List.reverse . fmap (\ t@(T (p, _)) -> (P.yCoord p, t))
+        format   = List.reverse . fmap (\ t@(Perm.T.T (p, _)) -> (P.yCoord p, t))
         doSearch = Patience.longestIncreasing
         unformat = fmap Tuple.snd
+
+    reversal :: [Perm.T.T a] -> [Perm.T.T a]
+    reversal ts = Foldable.foldl f [] ts
+      where
+        n = List.length ts
+
+        f acc (Perm.T.T (p, a)) = Perm.T.mk p' a : acc
+          where
+            x = P.xCoord p
+            x' = n + 1 - x
+
+            p' = P.updateXCoord x' p
+
+    complement :: [Perm.T.T a] -> [Perm.T.T a]
+    complement ts = P.List.mkSequential . fmap f . fmap P.yCoord $ fmap Perm.T.point ts
+      where
+        n   = List.length ts
+        f y = n+1-y
+
+    reversalComplement :: [Perm.T.T a] -> [Perm.T.T a]
+    reversalComplement ts = P.List.mkSequential . fmap f . List.reverse . fmap P.yCoord $ fmap Perm.T.point ts
+      where
+        n   = List.length ts
+        f y = n+1-y
+
+    inverse :: [Perm.T.T a] -> [Perm.T.T a]
+    inverse = P.List.mkSequential . fmap Tuple.snd . List.sort . flip List.zip [1..] . fmap P.yCoord $ fmap Perm.T.point

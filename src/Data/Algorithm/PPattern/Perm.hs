@@ -59,10 +59,8 @@ where
   import qualified Data.Maybe    as Maybe
   import qualified Control.Applicative as Applicative
 
-  import qualified Data.Algorithm.Patience as Patience
-
-  import qualified Data.Algorithm.PPattern.Perm.T         as T
-  import qualified Data.Algorithm.PPattern.Perm.T.List    as T.List
+  import qualified Data.Algorithm.PPattern.Perm.T         as Perm.T
+  import qualified Data.Algorithm.PPattern.Perm.List      as Perm.List
   import qualified Data.Algorithm.PPattern.Geometry.Point as P
   import qualified Data.Algorithm.PPattern.SeparatingTree as ST
   import qualified Data.Algorithm.PPattern.StackSort      as StackSort
@@ -71,25 +69,25 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm a = Perm { toList :: [T.T a] } deriving (Eq, Ord, Show)
+  newtype Perm a = Perm { toList :: [Perm.T.T a] } deriving (Eq, Ord, Show)
 
   instance Foldable.Foldable Perm  where
     foldr f z (Perm xs) = List.foldr f' z xs
       where
-        f' (T (_, a)) = f a
+        f' (Perm.T.T (_, a)) = f a
 
   {-|
     Construct a Perm from foldable.
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm a
-  mk = Perm . fmap (uncurry T.mk) . reduce . Foldable.toList
+  mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
 
 
   sub :: Int -> Int -> Perm a -> Perm a
-  sub xMin xMax = Perm . T.sub xMin xMax . toList
+  sub xMin xMax = Perm . Perm.List.sub xMin xMax . toList
 
   subRed :: Int -> Int -> Perm a -> Perm a
-  subRed xMin xMax = mk . fmap annotation . T.sub xMin xMax . toList
+  subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.List.sub xMin xMax . toList
 
   {-|
     Construct all Perm prefixes of a permutation.
@@ -101,7 +99,7 @@ where
     Construct all reduced Perm prefixes of a permutation.
   -}
   prefixesRed :: (Ord a) => Perm a -> [Perm a]
-  prefixesRed = fmap (mk . fmap annotation) . Tools.prefixes . toList
+  prefixesRed = fmap (mk . fmap Perm.T.annotation) . Tools.prefixes . toList
 
 
   {-|
@@ -114,7 +112,7 @@ where
     Construct all reduced Perm suffixes of a permutation.
   -}
   suffixesRed :: (Ord a) => Perm a -> [Perm a]
-  suffixesRed = fmap (mk . fmap annotation) . Tools.suffixes . toList
+  suffixesRed = fmap (mk . fmap Perm.T.annotation) . Tools.suffixes . toList
 
   {-|
     Construct all Perm factors of a permutation.
@@ -126,52 +124,35 @@ where
     Construct all reduced Perm factors of a permutation.
   -}
   factorsRed :: (Ord a) => Perm a -> [Perm a]
-  factorsRed = fmap (mk . fmap annotation) . Tools.factors . toList
-
-
+  factorsRed = fmap (mk . fmap Perm.T.annotation) . Tools.factors . toList
 
   {-|
     Reverse a permutation.
   -}
   reversal :: Perm a -> Perm a
-  reversal = Perm . Foldable.foldl f [] . toList
-    where
-      n = List.length ts
-
-      f acc (T (p, a)) = mkT p' a : acc
-        where
-          x = P.xCoord p
-          x' = n + 1 - x
-
-          p' = P.updateXCoord x' p
+  reversal = Perm . Perm.List.reversal . toList
 
   complement :: Perm a -> Perm a
-  complement Perm { toList = xs } = Perm . P.mkSequential . fmap f $ fmap P.yCoord xs
-    where
-      n   = List.length xs
-      f y = n+1-y
+  complement = Perm . Perm.List.complement . toList
 
-  reversalComplement :: Perm -> Perm
-  reversalComplement Perm { toList = xs } = Perm . P.mkSequential . fmap f . List.reverse $ fmap P.yCoord xs
-    where
-      n   = List.length xs
-      f y = n+1-y
+  reversalComplement :: Perm a -> Perm a
+  reversalComplement = Perm . Perm.List.reversalComplement . toList
 
-  inverse :: Perm -> Perm
-  inverse Perm { toList = xs } = Perm . P.mkSequential . fmap Tuple.snd . List.sort . flip List.zip [1..] $ fmap P.yCoord xs
+  inverse :: Perm a  -> Perm a
+  inverse = Perm . Perm.List.inverse . toList
 
 
   {-|
     Turn a permutation into a list with annotations.
   -}
   toAnnotedList :: Perm a -> [(P.Point, a)]
-  toAnnotedList = fmap toTuple . toList
+  toAnnotedList = fmap Perm.T.toTuple . toList
 
   {-|
     Points projection.
   -}
   toPoints :: Perm a -> [P.Point]
-  toPoints = fmap point . toList
+  toPoints = fmap Perm.T.point . toList
 
   {-|
     x-ccordinates projection.
@@ -189,7 +170,7 @@ where
     Points projection.
   -}
   toAnnotations :: Perm a -> [a]
-  toAnnotations = fmap annotation . toList
+  toAnnotations = fmap Perm.T.annotation . toList
 
   {-|
     'reduce p' returns the reduced form of the permutation 'p'.
@@ -227,7 +208,7 @@ where
 
   -- Auxiliary function for isIncreasing and isDecreasing
   isMonotoneAux :: (Int -> Int -> Bool) -> Perm a -> Bool
-  isMonotoneAux cmp = T.List.isMonotone cmp . toList
+  isMonotoneAux cmp = Perm.List.isMonotone cmp . toList
 
   {-|
     Return True iff the permutation is alternating and starts with an up-step.
@@ -257,7 +238,7 @@ where
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
   longestIncreasing :: Perm a -> Perm a
-  longestIncreasing = Perm . T.List.longestIncreasing . toList
+  longestIncreasing = Perm . Perm.List.longestIncreasing . toList
 
   {-|
     'longestIncreasingLength xs' returns the length of the longest increasing
@@ -270,7 +251,7 @@ where
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
   longestDecreasing :: Perm a -> Perm a
-  longestDecreasing Perm = T.List.longestDecreasing . toList
+  longestDecreasing Perm = Perm.List.longestDecreasing . toList
 
   {-|
     'longestDecreasingLength xs' returns the length of the longest decreasing
@@ -285,16 +266,16 @@ where
       m = size p
       n = size q
       pps  = P.updateYCoord' (+n) Applicative.<$> toPoints p
-      ppas = fmap (Tuple.uncurry mkT) . List.zip pps $ toAnnotations p
-      qps  = P.mkFromList . List.zip [(m+1)..] . fmap P.yCoord $ toPoints q
-      qpas = fmap (Tuple.uncurry mkT) . List.zip qps $ toAnnotations q
+      ppas = fmap (Tuple.uncurry Perm.T.mk) . List.zip pps $ toAnnotations p
+      qps  = P.List.mkFromList . List.zip [(m+1)..] . fmap P.yCoord $ toPoints q
+      qpas = fmap (Tuple.uncurry Perm.T.mk) . List.zip qps $ toAnnotations q
 
   directSum :: Perm a -> Perm a -> Perm a
   directSum Perm { toList = ppas } q = Perm $ ppas `Monoid.mappend` qpas
     where
       m = List.length ppas
       qps  = fmap (\ (x, p) -> P.mk x (m + P.yCoord p)) . List.zip [(m+1)..] $ toPoints q
-      qpas = fmap (Tuple.uncurry mkT) . List.zip qps $ toAnnotations q
+      qpas = fmap (Tuple.uncurry Perm.T.mk) . List.zip qps $ toAnnotations q
 
   {-|
     'isSeparable p' returns True if an only if permutation 'p' is separable

@@ -20,10 +20,10 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.Point      as P
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
-  import qualified Data.Algorithm.PPattern.APerm               as APerm
+  import qualified Data.Algorithm.PPattern.Perm               as Perm
 
-  increasingFactorization :: APerm.APerm a -> [CP.ColorPoint]
-  increasingFactorization = increasingFactorization' [] IntMap.empty . APerm.toPoints
+  increasingFactorization :: Perm.Perm a -> [CP.ColorPoint]
+  increasingFactorization = increasingFactorization' [] IntMap.empty . Perm.toPoints
 
   increasingFactorization' :: [CP.ColorPoint] -> IntMap.IntMap Int -> [P.Point] -> [CP.ColorPoint]
   increasingFactorization' acc _ []       = List.reverse acc

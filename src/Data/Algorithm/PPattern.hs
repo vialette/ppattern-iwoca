@@ -37,7 +37,7 @@ where
 
   import qualified Data.Maybe as Maybe
 
-  import qualified Data.Algorithm.PPattern.APerm      as APerm
+  import qualified Data.Algorithm.PPattern.Perm      as Perm
   import qualified Data.Algorithm.PPattern.Search     as Search
   import qualified Data.Algorithm.PPattern.Strategy   as Strategy
   import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
@@ -79,8 +79,8 @@ where
   searchWithStrategy :: (Foldable t, Ord a, Foldable f, Ord b) => Strategy.Strategy -> t a -> f b -> Maybe (Occurrence.Occurrence a b)
   searchWithStrategy strategy xs ys = Search.search p q strategy
     where
-      p = APerm.mk xs
-      q = APerm.mk ys
+      p = Perm.mk xs
+      q = Perm.mk ys
 
   {-|
     Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'

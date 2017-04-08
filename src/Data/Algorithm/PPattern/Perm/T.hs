@@ -21,6 +21,7 @@ module Data.Algorithm.PPattern.Perm.T
   -- * Querying
 , point
 , annotation
+, toTuple
 )
   where
 
