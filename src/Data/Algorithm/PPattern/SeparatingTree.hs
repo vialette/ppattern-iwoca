@@ -36,7 +36,7 @@ where
                       deriving (Eq)
 
   indent :: Show a => Int -> a -> String
-  indent n x = concat (replicate n " ") ++ show x ++ "\n"
+  indent n x = concat (replicate n ".") ++ show x ++ "\n"
 
   display :: Int -> SeparatingTree -> String
   display n (Leaf p) = indent n p
