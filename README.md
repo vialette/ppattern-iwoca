@@ -4,6 +4,8 @@
 
 ### Basic manipulation
 
+### Basic properties
+
 ### Transforming permutations
 
 ```haskell
@@ -21,6 +23,16 @@
 [2,4,1,3,6,5,7]
 λ:
 ```
+
+### Basic statistics
+
+## Pattern matching
+
+### Generic pattern matching
+
+### Monotone patterns
+
+### Separable patterns
 
 ## Permutation classes
 
@@ -55,3 +67,6 @@ True
 
 λ:
 ```
+
+
+## Computing a base
