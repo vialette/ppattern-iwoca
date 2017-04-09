@@ -79,7 +79,10 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm a = Perm { toList :: [Perm.T.T a] } deriving (Eq, Ord, Show)
+  newtype Perm a = Perm { toList :: [Perm.T.T a] } deriving (Eq, Ord)
+
+  instance (Show a) => Show (Perm a) where
+    show = show . toAnnotations
 
   instance Foldable.Foldable Perm  where
     foldr f z (Perm xs) = List.foldr f' z xs

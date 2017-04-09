@@ -29,6 +29,7 @@ Library
                  , Data.Algorithm.PPattern.StackSort
                  , Data.Algorithm.PPattern
   Other-Modules: Data.Algorithm.PPattern.Perm.T
+               , Data.Algorithm.PPattern.Perm.List
                , Data.Algorithm.PPattern.Search
                , Data.Algorithm.PPattern.Search.Context
                , Data.Algorithm.PPattern.State
