@@ -18,6 +18,7 @@ module Data.Algorithm.PPattern.Perm
   -- * Constructing
 , mk
 , sub
+, subRed
 , reversal
 , skewSum
 , directSum
@@ -27,6 +28,10 @@ module Data.Algorithm.PPattern.Perm
 , suffixesRed
 , factors
 , factorsRed
+, complement
+, reversalComplement
+, inverse
+, stackSort
 
   -- * Querying
 , size
@@ -43,11 +48,15 @@ module Data.Algorithm.PPattern.Perm
 , toAnnotations
 
   -- * Testing
+, isAlernating
+, isUpDown
+, isDownUp
 , isIncreasing
 , isDecreasing
 , isMonotone
 , isSeparable
 , isStackSortable
+, is231Avoiding
 )
 where
 
@@ -59,12 +68,13 @@ where
   import qualified Data.Maybe    as Maybe
   import qualified Control.Applicative as Applicative
 
-  import qualified Data.Algorithm.PPattern.Perm.T         as Perm.T
-  import qualified Data.Algorithm.PPattern.Perm.List      as Perm.List
-  import qualified Data.Algorithm.PPattern.Geometry.Point as P
-  import qualified Data.Algorithm.PPattern.SeparatingTree as ST
-  import qualified Data.Algorithm.PPattern.StackSort      as StackSort
-  import qualified Data.Algorithm.PPattern.Tools          as Tools
+  import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
+  import qualified Data.Algorithm.PPattern.Perm.List           as Perm.T.List
+  import qualified Data.Algorithm.PPattern.Geometry.Point      as P
+  import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
+  import qualified Data.Algorithm.PPattern.SeparatingTree      as ST
+  import qualified Data.Algorithm.PPattern.List                as List.Tools
+  import qualified Data.Algorithm.PPattern.StackSort           as StackSort
 
   {-|
     Permutation type.
@@ -84,62 +94,62 @@ where
 
 
   sub :: Int -> Int -> Perm a -> Perm a
-  sub xMin xMax = Perm . Perm.List.sub xMin xMax . toList
+  sub xMin xMax = Perm . Perm.T.List.sub xMin xMax . toList
 
-  subRed :: Int -> Int -> Perm a -> Perm a
-  subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.List.sub xMin xMax . toList
+  subRed :: (Ord a) => Int -> Int -> Perm a -> Perm a
+  subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.T.List.sub xMin xMax . toList
 
   {-|
     Construct all Perm prefixes of a permutation.
   -}
   prefixes :: Perm a -> [Perm a]
-  prefixes = fmap Perm . Tools.prefixes . toList
+  prefixes = fmap Perm . List.Tools.prefixes . toList
 
   {-|
     Construct all reduced Perm prefixes of a permutation.
   -}
   prefixesRed :: (Ord a) => Perm a -> [Perm a]
-  prefixesRed = fmap (mk . fmap Perm.T.annotation) . Tools.prefixes . toList
+  prefixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.prefixes . toList
 
 
   {-|
     Construct all Perm suffixes of a permutation.
   -}
   suffixes :: Perm a -> [Perm a]
-  suffixes = fmap Perm . Tools.suffixes . toList
+  suffixes = fmap Perm . List.Tools.suffixes . toList
 
   {-|
     Construct all reduced Perm suffixes of a permutation.
   -}
   suffixesRed :: (Ord a) => Perm a -> [Perm a]
-  suffixesRed = fmap (mk . fmap Perm.T.annotation) . Tools.suffixes . toList
+  suffixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.suffixes . toList
 
   {-|
     Construct all Perm factors of a permutation.
   -}
   factors :: Perm a -> [Perm a]
-  factors = fmap Perm . Tools.factors . toList
+  factors = fmap Perm . List.Tools.factors . toList
 
   {-|
     Construct all reduced Perm factors of a permutation.
   -}
   factorsRed :: (Ord a) => Perm a -> [Perm a]
-  factorsRed = fmap (mk . fmap Perm.T.annotation) . Tools.factors . toList
+  factorsRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.factors . toList
 
   {-|
     Reverse a permutation.
   -}
   reversal :: Perm a -> Perm a
-  reversal = Perm . Perm.List.reversal . toList
+  reversal = Perm . Perm.T.List.reversal . toList
 
   complement :: Perm a -> Perm a
-  complement = Perm . Perm.List.complement . toList
+  complement = Perm . Perm.T.List.complement . toList
 
   reversalComplement :: Perm a -> Perm a
-  reversalComplement = Perm . Perm.List.reversalComplement . toList
+  reversalComplement = Perm . Perm.T.List.reversalComplement . toList
 
   inverse :: Perm a  -> Perm a
-  inverse = Perm . Perm.List.inverse . toList
+  inverse = Perm . Perm.T.List.inverse . toList
 
 
   {-|
@@ -208,25 +218,19 @@ where
 
   -- Auxiliary function for isIncreasing and isDecreasing
   isMonotoneAux :: (Int -> Int -> Bool) -> Perm a -> Bool
-  isMonotoneAux cmp = Perm.List.isMonotone cmp . toList
+  isMonotoneAux cmp = Perm.T.List.isMonotone cmp . toList
 
   {-|
     Return True iff the permutation is alternating and starts with an up-step.
   -}
   isUpDown :: Perm a -> Bool
-  isUpDown = isUpDown' . Tools.consecutivePairs . yCoords
-
-  isUpDown' [] = True
-  isUpDown' ((x, x') : xs) = x < x' && isDownUp' xs
+  isUpDown = List.Tools.isUpDown . List.Tools.consecutivePairs . yCoords
 
   {-|
     Return True iff the permutation is alternating and starts with an down-step.
   -}
   isDownUp :: Perm a -> Bool
-  isDownUp = isUpDown' . Tools.consecutivePairs . yCoords
-
-  isDownUp' [] = True
-  isDownUp' ((x, x') : xs) = x > x' && isUpDown' xs
+  isDownUp = List.Tools.isDownUp . List.Tools.consecutivePairs . yCoords
 
   {-|
     Return True iff the permutation is alternating.
@@ -238,7 +242,7 @@ where
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
   longestIncreasing :: Perm a -> Perm a
-  longestIncreasing = Perm . Perm.List.longestIncreasing . toList
+  longestIncreasing = Perm . Perm.T.List.longestIncreasing . toList
 
   {-|
     'longestIncreasingLength xs' returns the length of the longest increasing
@@ -251,7 +255,7 @@ where
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
   longestDecreasing :: Perm a -> Perm a
-  longestDecreasing Perm = Perm.List.longestDecreasing . toList
+  longestDecreasing = Perm . Perm.T.List.longestDecreasing . toList
 
   {-|
     'longestDecreasingLength xs' returns the length of the longest decreasing
@@ -260,6 +264,9 @@ where
   longestDecreasingLength :: Perm a -> Int
   longestDecreasingLength = size . longestDecreasing
 
+  {-|
+
+  -}
   skewSum :: Perm a -> Perm a -> Perm a
   skewSum p q = Perm $ ppas `Monoid.mappend` qpas
     where
@@ -270,6 +277,9 @@ where
       qps  = P.List.mkFromList . List.zip [(m+1)..] . fmap P.yCoord $ toPoints q
       qpas = fmap (Tuple.uncurry Perm.T.mk) . List.zip qps $ toAnnotations q
 
+  {-|
+
+  -}
   directSum :: Perm a -> Perm a -> Perm a
   directSum Perm { toList = ppas } q = Perm $ ppas `Monoid.mappend` qpas
     where
@@ -288,7 +298,7 @@ where
     Stack sort a permutation.
   -}
   stackSort :: Perm a -> Perm a
-  stackSort = Perm . StackSort.stackSort . yCoords
+  stackSort = Perm . Perm.T.List.stackSort . toList
 
   {-|
     'is231Avoiding p' returns True if an only if permutation 'p' avoids 231.
@@ -301,4 +311,4 @@ where
     sortable (i.e. it avoids 231).
   -}
   isStackSortable :: Perm a -> Bool
-  isStackSortable = Tools.allConsecutivePairs (<) . StackSort.stackSort . yCoords
+  isStackSortable = List.Tools.allConsecutivePairs (Tuple.uncurry (<)) . StackSort.stackSort . yCoords

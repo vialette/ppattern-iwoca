@@ -25,6 +25,7 @@ Library
                  , Data.Algorithm.PPattern.Occurrence
                  , Data.Algorithm.PPattern.SeparatingTree
                  , Data.Algorithm.PPattern.CompactSeparatingTree
+                 , Data.Algorithm.PPattern.SplitTree
                  , Data.Algorithm.PPattern.StackSort
                  , Data.Algorithm.PPattern
   Other-Modules: Data.Algorithm.PPattern.Perm.T
@@ -42,7 +43,7 @@ Library
                , Data.Algorithm.PPattern.Geometry.ColorPoint
                , Data.Algorithm.PPattern.Geometry.Interval
                , Data.Algorithm.PPattern.Conflict
-               , Data.Algorithm.PPattern.Tools
+               , Data.Algorithm.PPattern.List
                , Data.Algorithm.PPattern.Combinatorics
                , Data.Algorithm.PPattern.Color
 

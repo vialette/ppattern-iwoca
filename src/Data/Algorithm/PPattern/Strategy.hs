@@ -35,7 +35,7 @@ where
   import qualified Data.Algorithm.PPattern.State               as State
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
-  import qualified Data.Algorithm.PPattern.Tools               as Tools
+  import qualified Data.Algorithm.PPattern.List                as List.Tools
   import qualified Data.Algorithm.PPattern.Strategy.Link       as Strategy.Link
   import qualified Data.Algorithm.PPattern.Strategy.PLink      as Strategy.PLink
 
@@ -46,7 +46,7 @@ where
   collect :: State.State -> [Strategy.PLink.PLink]
   collect = fmap f . flip Combinatorics.choose 2 . State.toList
     where
-      f = Tuple.uncurry Strategy.PLink.mk . Tools.tuplify2 . fmap (Tuple.uncurry Strategy.Link.mk)
+      f = Tuple.uncurry Strategy.PLink.mk . List.Tools.tuplify2 . fmap (Tuple.uncurry Strategy.Link.mk)
 
   orderConflict :: Strategy.Link.Link -> Strategy.Link.Link -> Bool
   orderConflict link1 link2 = x1 < x2 && x1' > x2'

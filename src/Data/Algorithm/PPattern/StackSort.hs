@@ -12,12 +12,11 @@ commentary with @some markup@.
 
 module Data.Algorithm.PPattern.StackSort
 (
-  -- * Constructing
   stackSort
 )
 where
 
-  import qualified Data.List     as List
+  import qualified Data.List as List
 
   stackSort :: (Ord a) => [a] -> [a]
   stackSort = aux [] []

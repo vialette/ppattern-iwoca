@@ -24,19 +24,23 @@ module Data.Algorithm.PPattern.Perm.List
 , complement
 , reversalComplement
 , inverse
+
+, stackSort
 )
   where
 
-    import qualified Data.List     as List
-    import qualified Data.Tuple    as Tuple
-    import qualified Data.Foldable as Foldable
+    import qualified Data.List          as List
+    import qualified Data.Tuple         as Tuple
+    import qualified Data.Foldable      as Foldable
+    import qualified Data.IntMap.Strict as IntMap
 
     import qualified Data.Algorithm.Patience as Patience
 
     import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
     import qualified Data.Algorithm.PPattern.Geometry.Point      as P
     import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
-    import qualified Data.Algorithm.PPattern.Tools               as Tools
+    import qualified Data.Algorithm.PPattern.List                as List.Tools
+    import qualified Data.Algorithm.PPattern.StackSort           as StackSort
 
     --
     sub :: Int -> Int -> [Perm.T.T a] -> [Perm.T.T a]
@@ -54,7 +58,7 @@ module Data.Algorithm.PPattern.Perm.List
       where
         go []  = True
         go [_] = True
-        go ts   = Foldable.foldl f True $ Tools.consecutivePairs ts
+        go ts   = Foldable.foldl f True $ List.Tools.consecutivePairs ts
           where
             f acc (Perm.T.T (p, _), Perm.T.T (p', _)) = acc && P.yCoord p `cmp` P.yCoord p'
 
@@ -85,17 +89,59 @@ module Data.Algorithm.PPattern.Perm.List
 
             p' = P.updateXCoord x' p
 
-    complement :: [Perm.T.T a] -> [Perm.T.T a]
-    complement ts = P.List.mkSequential . fmap f . fmap P.yCoord $ fmap Perm.T.point ts
+    injectAnnotations :: IntMap.IntMap a -> [P.Point] -> [(P.Point, a)]
+    injectAnnotations m = fmap mk
       where
-        n   = List.length ts
+        mk p = case IntMap.lookup (P.yCoord p) m of
+                 Nothing -> error "Data.Algorithm.PPattern.Perm.List.merge. Empty map"
+                 Just a  -> (p, a)
+
+    mkAnnotationMap :: [Int] -> [a] -> IntMap.IntMap a
+    mkAnnotationMap ys as = IntMap.fromList $ List.zip ys as
+
+    complement :: [Perm.T.T a] -> [Perm.T.T a]
+    complement ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m $ complementAux ys
+      where
+        ps = fmap Perm.T.point ts
+        ys = fmap P.yCoord ps
+        as = fmap Perm.T.annotation ts
+        m  = mkAnnotationMap ys as
+
+    complementAux :: [Int] -> [P.Point]
+    complementAux ys = P.List.mkSequential $ fmap f ys
+      where
+        n   = List.length ys
         f y = n+1-y
 
     reversalComplement :: [Perm.T.T a] -> [Perm.T.T a]
-    reversalComplement ts = P.List.mkSequential . fmap f . List.reverse . fmap P.yCoord $ fmap Perm.T.point ts
+    reversalComplement ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m $ reversalComplementAux ys
       where
-        n   = List.length ts
+        ps = fmap Perm.T.point ts
+        ys = fmap P.yCoord ps
+        as = fmap Perm.T.annotation ts
+        m  = mkAnnotationMap ys as
+
+    reversalComplementAux :: [Int] -> [P.Point]
+    reversalComplementAux ys = P.List.mkSequential . fmap f $ List.reverse ys
+      where
+        n   = List.length ys
         f y = n+1-y
 
     inverse :: [Perm.T.T a] -> [Perm.T.T a]
-    inverse = P.List.mkSequential . fmap Tuple.snd . List.sort . flip List.zip [1..] . fmap P.yCoord $ fmap Perm.T.point
+    inverse ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m $ inverseAux ys
+      where
+        ps = fmap Perm.T.point ts
+        ys = fmap P.yCoord ps
+        as = fmap Perm.T.annotation ts
+        m  = mkAnnotationMap ys as
+
+    inverseAux :: [Int] -> [P.Point]
+    inverseAux = P.List.mkSequential . fmap Tuple.snd . List.sort . flip List.zip [1..]
+
+    stackSort :: [Perm.T.T a] -> [Perm.T.T a]
+    stackSort ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m . P.List.mkSequential $ StackSort.stackSort ys
+      where
+        ps = fmap Perm.T.point ts
+        ys = fmap P.yCoord ps
+        as = fmap Perm.T.annotation ts
+        m  = mkAnnotationMap ys as
