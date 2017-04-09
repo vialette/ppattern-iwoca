@@ -24,7 +24,13 @@
 λ:
 ```
 
+### Composing permutations
+
+#### Sums
+
 ### Basic statistics
+
+### Permutation graphs
 
 ## Pattern matching
 
@@ -33,6 +39,10 @@
 ### Monotone patterns
 
 ### Separable patterns
+
+### Size-3 patterns
+
+### Size-4 patterns
 
 ## Permutation classes
 
@@ -68,5 +78,6 @@ True
 λ:
 ```
 
+### (213,231)-avoiding patterns
 
 ## Computing a base

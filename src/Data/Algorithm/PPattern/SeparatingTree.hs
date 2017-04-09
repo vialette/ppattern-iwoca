@@ -40,10 +40,10 @@ where
 
   display :: Int -> SeparatingTree -> String
   display n (Leaf p) = indent n (show p)
-  display n (Plus i l r)  = indent n ("PLUS  " `Monoid.mappend` show i) `Monoid.mappend`
+  display n (Plus i l r)  = indent n ("+ " `Monoid.mappend` show i) `Monoid.mappend`
                             display (n+1) l                         `Monoid.mappend`
                             display (n+1) r
-  display n (Minus i l r) = indent n ("MINUS " `Monoid.mappend` show i) `Monoid.mappend`
+  display n (Minus i l r) = indent n ("- " `Monoid.mappend` show i) `Monoid.mappend`
                             display (n+1) l                         `Monoid.mappend`
                             display (n+1) r
 
