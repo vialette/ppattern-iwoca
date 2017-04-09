@@ -31,19 +31,19 @@ Nothing
 True
 λ: import Data.Maybe
 λ: fromJust . SeparatingTree.mk $ Perm.toPoints q -- and a separating tree of q
-"+ Interval (1,7)"
- "+ Interval (1,6)"
-  "+ Interval (1,4)"
-   "- Interval (1,3)"
-    Point (1,3)
-    "+ Interval (1,2)"
-     Point (2,1)
-     Point (3,2)
-   Point (4,4)
-  "- Interval (5,6)"
-   Point (5,6)
-   Point (6,5)
- Point (7,7)
++ Interval (1,7)
+.+ Interval (1,6)
+..+ Interval (1,4)
+...- Interval (1,3)
+....Point (1,3)
+....+ Interval (1,2)
+.....Point (2,1)
+.....Point (3,2)
+...Point (4,4)
+..- Interval (5,6)
+...Point (5,6)
+...Point (6,5)
+.Point (7,7)
 
 λ:
 ```

@@ -35,11 +35,11 @@ where
                       | Minus {-# UNPACK #-} !I.Interval !SeparatingTree !SeparatingTree
                       deriving (Eq)
 
-  indent :: Show a => Int -> a -> String
-  indent n x = concat (replicate n ".") ++ show x ++ "\n"
+  indent :: Int -> String -> String
+  indent n x = concat (replicate n ".") ++ x ++ "\n"
 
   display :: Int -> SeparatingTree -> String
-  display n (Leaf p) = indent n p
+  display n (Leaf p) = indent n (show p)
   display n (Plus i l r)  = indent n ("+ " `Monoid.mappend` show i) `Monoid.mappend`
                             display (n+1) l                         `Monoid.mappend`
                             display (n+1) r
