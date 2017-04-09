@@ -22,15 +22,15 @@
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: import qualified Data.Algorithm.PPattern.SeparatingTree as SeparatingTree
 λ: let p = Perm.mk [3,1,4,2,6,5,7]
-λ: Perm.isSeparable p                  -- p does not avoid 2413 and 3142
+λ: Perm.isSeparable p                  -- p does not avoid 2413 and 3142, and hence is not separable
 False
 λ: SeparatingTree.mk $ Perm.toPoints p -- so that no separating tree of p can be obtained
 Nothing
 λ: let q = Perm.mk [3,1,2,4,6,5,7]
-λ: Perm.isSeparable q                             -- q does avoid 2413 and 3142
+λ: Perm.isSeparable q                             -- q does avoid 2413 and 3142, and hence is separable
 True
 λ: import Data.Maybe
-λ: fromJust . SeparatingTree.mk $ Perm.toPoints q -- and a separating tree of q
+λ: fromJust . SeparatingTree.mk $ Perm.toPoints q -- so that a separating tree of q can be obtained
 + Interval (1,7)
 .+ Interval (1,6)
 ..+ Interval (1,4)
