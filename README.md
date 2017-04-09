@@ -1,4 +1,10 @@
-# ppattern
+# PPattern :
+
+## Permutations
+
+### Basic manipulation
+
+### Transforming permutations
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
@@ -16,7 +22,9 @@
 λ:
 ```
 
-## Separable permutations
+## Permutation classes
+
+### Separable permutations
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
