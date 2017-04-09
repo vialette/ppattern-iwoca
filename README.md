@@ -29,8 +29,9 @@ Nothing
 λ: let q = Perm.mk [3,1,2,4,6,5,7]
 λ: Perm.isSeparable q
 True
-λ: SeparatingTree.mk $ Perm.toPoints q
-Just "+ Interval (1,7)"
+λ: import Data.Maybe
+λ: fromJust . SeparatingTree.mk $ Perm.toPoints q
+"+ Interval (1,7)"
  "+ Interval (1,6)"
   "+ Interval (1,4)"
    "- Interval (1,3)"
