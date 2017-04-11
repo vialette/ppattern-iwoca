@@ -161,7 +161,7 @@ module Data.Algorithm.PPattern.Perm.List
     rightToLeftMinima = List.reverse . leftToRight (>) . List.reverse
 
     rightToLeftMaxima :: [Perm.T.T a] -> [Perm.T.T a]
-    rightToLeftMaxima =  List.reverse . leftToRight (<)  List.reverse .
+    rightToLeftMaxima = List.reverse . leftToRight (<) . List.reverse 
 
     leftToRight :: (Int -> Int -> Bool) -> [Perm.T.T a] -> [Perm.T.T a]
     leftToRight cmp = aux []

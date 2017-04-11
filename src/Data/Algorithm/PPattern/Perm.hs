@@ -71,6 +71,8 @@ module Data.Algorithm.PPattern.Perm
   -- * Statictics
 , leftToRightMinima
 , leftToRightMaxima
+, rightToLeftMinima
+, rightToLeftMaxima
 )
 where
 
@@ -377,10 +379,10 @@ where
   leftToRightMaxima = Perm . Perm.T.List.leftToRightMaxima . toList
 
   rightToLeftMinima :: Perm a -> Perm a
-  rightToLeftMinima = Perm . Perm.T.List.rightToLefttMinima . toList
+  rightToLeftMinima = Perm . Perm.T.List.rightToLeftMinima . toList
 
   rightToLeftMaxima :: Perm a -> Perm a
-  rightToLeftMaxima = Perm . Perm.T.List.rightToLefttMaxima . toList
+  rightToLeftMaxima = Perm . Perm.T.List.rightToLeftMaxima . toList
 
     -- simionSchmidt :: Perm a -> Perm a
     -- simionSchmidt = id

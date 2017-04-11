@@ -40,6 +40,10 @@
 [7,5,3,2,1]
 λ: Perm.leftToRightMaxima  p
 [7,8]
+λ: Perm.rightToLeftMinima p
+[1,4,6,8]
+λ: Perm.rightToLeftMaxima  p
+[8]
 λ:
 ```
 
