@@ -33,6 +33,16 @@
 
 ### Basic statistics
 
+```haskell
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk [7,5,3,2,1,4,6,8]
+λ: Perm.leftToRightMinima p
+[7,5,3,2,1]
+λ: Perm.leftToRightMaxima  p
+[7,8]
+λ:
+```
+
 ### Permutation graphs
 
 ## Pattern matching

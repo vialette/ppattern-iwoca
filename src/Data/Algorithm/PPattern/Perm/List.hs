@@ -26,6 +26,9 @@ module Data.Algorithm.PPattern.Perm.List
 , inverse
 
 , stackSort
+
+, leftToRightMinima
+, leftToRightMaxima
 )
   where
 
@@ -145,3 +148,21 @@ module Data.Algorithm.PPattern.Perm.List
         ys = fmap P.yCoord ps
         as = fmap Perm.T.annotation ts
         m  = mkAnnotationMap ys as
+
+    leftToRightMinima :: [Perm.T.T a] -> [Perm.T.T a]
+    leftToRightMinima = leftToRight (>)
+
+    leftToRightMaxima :: [Perm.T.T a] -> [Perm.T.T a]
+    leftToRightMaxima = leftToRight (<)
+
+    leftToRight :: (Int -> Int -> Bool) -> [Perm.T.T a] -> [Perm.T.T a]
+    leftToRight cmp = aux []
+      where
+        aux acc []       = List.reverse acc
+        aux []  (t : ts) = aux [t] ts
+        aux acc@(t' : _) (t : ts)
+          | y' `cmp` y = aux (t : acc) ts
+          | otherwise  = aux acc ts
+          where
+            y  = P.yCoord $ Perm.T.point t
+            y' = P.yCoord $ Perm.T.point t'
