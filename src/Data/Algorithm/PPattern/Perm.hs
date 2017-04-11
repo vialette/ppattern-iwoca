@@ -376,11 +376,11 @@ where
   leftToRightMaxima :: Perm a -> Perm a
   leftToRightMaxima = Perm . Perm.T.List.leftToRightMaxima . toList
 
-  rightToLefttMinima :: Perm a -> Perm a
-  rightToLefttMinima = Perm . Perm.T.List.rightToLefttMinima . toList
+  rightToLeftMinima :: Perm a -> Perm a
+  rightToLeftMinima = Perm . Perm.T.List.rightToLefttMinima . toList
 
-  rightToLefttMaxima :: Perm a -> Perm a
-  rightToLefttMaxima = Perm . Perm.T.List.rightToLefttMaxima . toList
+  rightToLeftMaxima :: Perm a -> Perm a
+  rightToLeftMaxima = Perm . Perm.T.List.rightToLefttMaxima . toList
 
     -- simionSchmidt :: Perm a -> Perm a
     -- simionSchmidt = id
