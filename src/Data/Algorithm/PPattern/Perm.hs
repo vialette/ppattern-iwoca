@@ -56,7 +56,20 @@ module Data.Algorithm.PPattern.Perm
 , isMonotone
 , isSeparable
 , isStackSortable
+
+  -- * Avoiding a pattern of length 3
+, is123Avoiding
+, is132Avoiding
+, is213Avoiding
 , is231Avoiding
+, is312Avoiding
+, is321Avoiding
+
+  -- * Separating tree
+, separatingTree
+
+  -- * Statictics
+, leftRightMinima
 )
 where
 
@@ -95,10 +108,13 @@ where
   mk :: (Foldable t, Ord a) => t a -> Perm a
   mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
 
-
+  {-|
+  -}
   sub :: Int -> Int -> Perm a -> Perm a
   sub xMin xMax = Perm . Perm.T.List.sub xMin xMax . toList
 
+  {-|
+  -}
   subRed :: (Ord a) => Int -> Int -> Perm a -> Perm a
   subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.T.List.sub xMin xMax . toList
 
@@ -113,7 +129,6 @@ where
   -}
   prefixesRed :: (Ord a) => Perm a -> [Perm a]
   prefixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.prefixes . toList
-
 
   {-|
     Construct all Perm suffixes of a permutation.
@@ -145,15 +160,20 @@ where
   reversal :: Perm a -> Perm a
   reversal = Perm . Perm.T.List.reversal . toList
 
+  {-|
+  -}
   complement :: Perm a -> Perm a
   complement = Perm . Perm.T.List.complement . toList
 
+  {-|
+  -}
   reversalComplement :: Perm a -> Perm a
   reversalComplement = Perm . Perm.T.List.reversalComplement . toList
 
+  {-|
+  -}
   inverse :: Perm a  -> Perm a
   inverse = Perm . Perm.T.List.inverse . toList
-
 
   {-|
     Turn a permutation into a list with annotations.
@@ -295,7 +315,10 @@ where
     (i.e., it avoids both 2413 and 3142).
   -}
   isSeparable :: Perm a -> Bool
-  isSeparable = Maybe.isJust . ST.mk . toPoints
+  isSeparable = Maybe.isJust . separatingTree
+
+  separatingTree :: Perm a -> Maybe ST.SeparatingTree
+  separatingTree = ST.mk . toPoints
 
   {-|
     Stack sort a permutation.
@@ -304,14 +327,59 @@ where
   stackSort = Perm . Perm.T.List.stackSort . toList
 
   {-|
+    'isStackSortable p' returns True if an only if permutation 'p' is stack
+    sortable (i.e. it avoids 231).
+  -}
+  isStackSortable :: Perm a -> Bool
+  isStackSortable = List.Tools.allConsecutivePairs (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
+
+  {-|
+    'is123Avoiding p' returns True if an only if permutation 'p' avoids 123.
+  -}
+  is123Avoiding :: Perm a -> Bool
+  is123Avoiding _ = True
+
+  {-|
+    'is132Avoiding p' returns True if an only if permutation 'p' avoids 132.
+  -}
+  is132Avoiding :: Perm a -> Bool
+  is132Avoiding = is231Avoiding . reversal
+
+  {-|
+    'is213Avoiding p' returns True if an only if permutation 'p' avoids 213.
+  -}
+  is213Avoiding :: Perm a -> Bool
+  is213Avoiding = is132Avoiding . reversal . complement
+
+  {-|
     'is231Avoiding p' returns True if an only if permutation 'p' avoids 231.
   -}
   is231Avoiding :: Perm a -> Bool
   is231Avoiding = isStackSortable
 
   {-|
-    'isStackSortable p' returns True if an only if permutation 'p' is stack
-    sortable (i.e. it avoids 231).
+    'is312Avoiding p' returns True if an only if permutation 'p' avoids 312.
   -}
-  isStackSortable :: Perm a -> Bool
-  isStackSortable = List.Tools.allConsecutivePairs (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
+  is312Avoiding :: Perm a -> Bool
+  is312Avoiding = is132Avoiding . complement
+
+  {-|
+    'is321Avoiding p' returns True if an only if permutation 'p' avoids 321.
+  -}
+  is321Avoiding :: Perm a -> Bool
+  is321Avoiding _ = True
+
+  leftRightMinima :: Perm a -> Perm a
+  leftRightMinima = Perm . go [] . toList
+    where
+      go acc []       = List.reverse acc
+      go []  (t : ts) = go [t] ts
+      go acc@(t' : _) (t : ts)
+        | y' > y    = go (t : acc) ts
+        | otherwise = go acc ts
+        where
+          y  = P.yCoord $ Perm.T.point t
+          y' = P.yCoord $ Perm.T.point t'
+
+    -- simionSchmidt :: Perm a -> Perm a
+    -- simionSchmidt = id
