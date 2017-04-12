@@ -28,7 +28,7 @@
 
 ##### Skew sum
 
-```math #skewsum
+$$
 (\pi \ominus \sigma)(i)
 =
 {
@@ -36,7 +36,7 @@
 \sigma (i-m)&{\text{for }}m+1\leq i\leq m+n,
 \end{cases}
 }
-```
+$$
 
 ##### Direct-sum
 
