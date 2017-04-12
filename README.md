@@ -35,15 +35,24 @@
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: import qualified Data.Algorithm.PPattern.Perm.Statistics as Perm.Statistics
 λ: let p = Perm.mk [7,5,3,2,1,4,6,8]
-λ: Perm.leftToRightMinima p
+λ: Perm.Statistics.leftToRightMinima p
 [7,5,3,2,1]
-λ: Perm.leftToRightMaxima p
+λ: Perm.Statistics.leftToRightMaxima p
 [7,8]
-λ: Perm.rightToLeftMinima p
+λ: Perm.Statistics.rightToLeftMinima p
 [1,4,6,8]
-λ: Perm.rightToLeftMaxima p
+λ: Perm.Statistics.rightToLeftMaxima p
 [8]
+λ: Perm.Statistics.ascents p
+[1,4,6]
+λ: Perm.Statistics.descents p
+[7,5,3,2]
+λ: Perm.Statistics.peaks p
+[]
+λ: Perm.Statistics.valleys p
+[7,5,3,2]
 λ:
 ```
 

@@ -26,16 +26,6 @@ module Data.Algorithm.PPattern.Perm.List
 , inverse
 
 , stackSort
-
--- * Statictics
-, ascents
-, descents
-, peaks
-, valleys
-, leftToRightMinima
-, leftToRightMaxima
-, rightToLeftMinima
-, rightToLeftMaxima
 )
   where
 

@@ -87,12 +87,12 @@ where
   anyConsecutivePairs f = Foldable.any f . consecutivePairs
 
   consecutiveTriples :: Foldable t => t a -> [(a, a, a)]
-  consecutivePairs = aux . Foldable.toList
+  consecutiveTriples = aux . Foldable.toList
     where
       aux []  = []
       aux [_] = []
       aux [_, _] = []
-      aux xs = List.zip xs xs' xs''
+      aux xs = List.zip3 xs xs' xs''
         where
           xs'  = List.tail xs
           xs'' = List.tail xs'
