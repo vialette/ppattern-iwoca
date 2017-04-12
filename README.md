@@ -26,20 +26,17 @@
 
 #### Sums
 
-##### Skew sum
-
-$$
-(\pi \ominus \sigma)(i)
-=
-{
-  \begin{cases}\pi (i)+n&{\text{for }}1\leq i\leq m,\\
-\sigma (i-m)&{\text{for }}m+1\leq i\leq m+n,
-\end{cases}
-}
-$$
-
-##### Direct-sum
-
+```haskell
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: import qualified Data.Algorithm.PPattern.Perm.Sum as Perm.Sum
+λ: let p = Perm.mk [2,4,1,3]
+λ: let q = Perm.mk [3,5,1,4,2]
+λ: Perm.Sum.skewSum p q
+[2,4,1,3,3,5,1,4,2]
+λ: Perm.Sum.directSum  p q
+[2,4,1,3,3,5,1,4,2]
+λ:
+```
 
 ### Basic statistics
 

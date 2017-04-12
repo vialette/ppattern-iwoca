@@ -20,8 +20,6 @@ module Data.Algorithm.PPattern.Perm
 , sub
 , subRed
 , reversal
-, skewSum
-, directSum
 , prefixes
 , prefixesRed
 , suffixes
@@ -74,14 +72,11 @@ where
   import qualified Data.List     as List
   import qualified Data.Foldable as Foldable
   import qualified Data.Function as Function
-  import qualified Data.Monoid   as Monoid
   import qualified Data.Maybe    as Maybe
-  import qualified Control.Applicative as Applicative
 
   import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
   import qualified Data.Algorithm.PPattern.Perm.List           as Perm.T.List
   import qualified Data.Algorithm.PPattern.Geometry.Point      as P
-  import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
   import qualified Data.Algorithm.PPattern.SeparatingTree      as ST
   import qualified Data.Algorithm.PPattern.List                as List.Tools
   import qualified Data.Algorithm.PPattern.StackSort           as StackSort
@@ -283,29 +278,6 @@ where
   -}
   longestDecreasingLength :: Perm a -> Int
   longestDecreasingLength = size . longestDecreasing
-
-  {-|
-
-  -}
-  skewSum :: Perm a -> Perm a -> Perm a
-  skewSum p q = Perm $ ppas `Monoid.mappend` qpas
-    where
-      m = size p
-      n = size q
-      pps  = P.updateYCoord' (+n) Applicative.<$> toPoints p
-      ppas = fmap (Tuple.uncurry Perm.T.mk) . List.zip pps $ toAnnotations p
-      qps  = P.List.mkFromList . List.zip [(m+1)..] . fmap P.yCoord $ toPoints q
-      qpas = fmap (Tuple.uncurry Perm.T.mk) . List.zip qps $ toAnnotations q
-
-  {-|
-
-  -}
-  directSum :: Perm a -> Perm a -> Perm a
-  directSum Perm { toList = ppas } q = Perm $ ppas `Monoid.mappend` qpas
-    where
-      m = List.length ppas
-      qps  = fmap (\ (x, p) -> P.mk x (m + P.yCoord p)) . List.zip [(m+1)..] $ toPoints q
-      qpas = fmap (Tuple.uncurry Perm.T.mk) . List.zip qps $ toAnnotations q
 
   {-|
     'isSeparable p' returns True if an only if permutation 'p' is separable
