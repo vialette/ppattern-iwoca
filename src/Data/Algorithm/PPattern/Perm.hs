@@ -67,8 +67,6 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Separating tree
 , separatingTree
-
-
 )
 where
 
@@ -246,13 +244,13 @@ where
     Return True iff the permutation is alternating and starts with an up-step.
   -}
   isUpDown :: Perm a -> Bool
-  isUpDown = List.Tools.isUpDown . List.Tools.consecutivePairs . yCoords
+  isUpDown = List.Tools.isUpDown . List.Tools.consecutive2 . yCoords
 
   {-|
     Return True iff the permutation is alternating and starts with an down-step.
   -}
   isDownUp :: Perm a -> Bool
-  isDownUp = List.Tools.isDownUp . List.Tools.consecutivePairs . yCoords
+  isDownUp = List.Tools.isDownUp . List.Tools.consecutive2 . yCoords
 
   {-|
     Return True iff the permutation is alternating.
@@ -330,7 +328,7 @@ where
     sortable (i.e. it avoids 231).
   -}
   isStackSortable :: Perm a -> Bool
-  isStackSortable = List.Tools.allConsecutivePairs (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
+  isStackSortable = List.Tools.allConsecutive2 (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
 
   {-|
     'is123Avoiding p' returns True if an only if permutation 'p' avoids 123.

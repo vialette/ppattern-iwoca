@@ -24,14 +24,14 @@ module Data.Algorithm.PPattern.List
 , factors
 
   -- *
-, consecutivePairs
-, allConsecutivePairs
-, anyConsecutivePairs
+, consecutive2
+, allConsecutive2
+, anyConsecutive2
 
 -- *
-, consecutiveTriples
-, allConsecutiveTriples
-, anyConsecutiveTriples
+, consecutive3
+, allConsecutive3
+, anyConsecutive3
 
   -- *
 , isUpDown
@@ -74,20 +74,20 @@ where
   factors :: [a] -> [[a]]
   factors = Foldable.concatMap prefixes . suffixes
 
-  consecutivePairs :: Foldable t => t a -> [(a, a)]
-  consecutivePairs = aux . Foldable.toList
+  consecutive2 :: Foldable t => t a -> [(a, a)]
+  consecutive2 = aux . Foldable.toList
     where
       aux []  = []
       aux xs = List.zip xs (List.tail xs)
 
-  allConsecutivePairs :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
-  allConsecutivePairs f = Foldable.all f . consecutivePairs
+  allConsecutive2 :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
+  allConsecutive2 f = Foldable.all f . consecutive2
 
-  anyConsecutivePairs :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
-  anyConsecutivePairs f = Foldable.any f . consecutivePairs
+  anyConsecutive2 :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
+  anyConsecutive2 f = Foldable.any f . consecutive2
 
-  consecutiveTriples :: Foldable t => t a -> [(a, a, a)]
-  consecutiveTriples = aux . Foldable.toList
+  consecutive3 :: Foldable t => t a -> [(a, a, a)]
+  consecutive3 = aux . Foldable.toList
     where
       aux []  = []
       aux [_] = []
@@ -97,11 +97,11 @@ where
           xs'  = List.tail xs
           xs'' = List.tail xs'
 
-  allConsecutiveTriples :: Foldable t => ((a, a, a) -> Bool) -> t a -> Bool
-  allConsecutiveTriples f = Foldable.all f . consecutiveTriples
+  allConsecutive3 :: Foldable t => ((a, a, a) -> Bool) -> t a -> Bool
+  allConsecutive3 f = Foldable.all f . consecutive3
 
-  anyConsecutiveTriples :: Foldable t => ((a, a, a) -> Bool) -> t a -> Bool
-  anyConsecutiveTriples f = Foldable.any f . consecutiveTriples
+  anyConsecutive3 :: Foldable t => ((a, a, a) -> Bool) -> t a -> Bool
+  anyConsecutive3 f = Foldable.any f . consecutive3
 
   isUpDown ::(Ord a) => [(a, a)] -> Bool
   isUpDown [] = True

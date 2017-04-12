@@ -14,7 +14,9 @@ module Data.Algorithm.PPattern.Perm.Statistics
 (
 -- * Statictics
   ascents
+, doubleAscents
 , descents
+, doubleDescents
 , peaks
 , valleys
 , leftToRightMinima
@@ -30,14 +32,20 @@ module Data.Algorithm.PPattern.Perm.Statistics
     ascents :: Perm.Perm a -> Perm.Perm a
     ascents = Perm.Perm . Perm.T.Statistics.ascents . Perm.toList
 
+    doubleAscents :: Perm.Perm a -> Perm.Perm a
+    doubleAscents = Perm.Perm . Perm.T.Statistics.doubleAscents . Perm.toList
+
     descents :: Perm.Perm a -> Perm.Perm a
     descents = Perm.Perm . Perm.T.Statistics.descents . Perm.toList
+
+    doubleDescents :: Perm.Perm a -> Perm.Perm a
+    doubleDescents = Perm.Perm . Perm.T.Statistics.doubleDescents . Perm.toList
 
     peaks :: Perm.Perm a -> Perm.Perm a
     peaks = Perm.Perm . Perm.T.Statistics.peaks . Perm.toList
 
     valleys :: Perm.Perm a -> Perm.Perm a
-    valleys = Perm.Perm . Perm.T.Statistics.descents . Perm.toList
+    valleys = Perm.Perm . Perm.T.Statistics.valleys . Perm.toList
 
     leftToRightMinima :: Perm.Perm a -> Perm.Perm a
     leftToRightMinima = Perm.Perm . Perm.T.Statistics.leftToRightMinima . Perm.toList

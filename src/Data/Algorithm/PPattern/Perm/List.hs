@@ -58,7 +58,7 @@ module Data.Algorithm.PPattern.Perm.List
       where
         go []  = True
         go [_] = True
-        go ts   = Foldable.foldl f True $ List.Tools.consecutivePairs ts
+        go ts   = Foldable.foldl f True $ List.Tools.consecutive2 ts
           where
             f acc (Perm.T.T (p, _), Perm.T.T (p', _)) = acc && P.yCoord p `cmp` P.yCoord p'
 

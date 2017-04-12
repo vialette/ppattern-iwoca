@@ -14,7 +14,9 @@ module Data.Algorithm.PPattern.Perm.T.Statistics
 (
 -- * Statictics
   ascents
+, doubleAscents
 , descents
+, doubleDescents
 , peaks
 , valleys
 , leftToRightMinima
@@ -25,40 +27,46 @@ module Data.Algorithm.PPattern.Perm.T.Statistics
   where
 
     import qualified Data.List     as List
+    import qualified Data.Tuple    as Tuple
     import qualified Data.Foldable as Foldable
 
     import qualified Data.Algorithm.PPattern.Geometry.Point as P
     import qualified Data.Algorithm.PPattern.Perm.T         as Perm.T
     import qualified Data.Algorithm.PPattern.List           as List.Tools
 
-
     ascents :: [Perm.T.T a] -> [Perm.T.T a]
-    ascents = ascentsDescentsAux (<)
+    ascents = fmap Tuple.fst . consecutive2 (<)
+
+    doubleAscents :: [Perm.T.T a] -> [Perm.T.T a]
+    doubleAscents = fmap (\ (t, _, _) -> t) . consecutive3 (<) (<)
 
     descents :: [Perm.T.T a] -> [Perm.T.T a]
-    descents = ascentsDescentsAux (>)
+    descents = fmap Tuple.fst . consecutive2 (>)
 
-    ascentsDescentsAux :: (Int -> Int -> Bool) -> [Perm.T.T a] -> [Perm.T.T a]
-    ascentsDescentsAux cmp = Foldable.foldr f [] . List.Tools.consecutivePairs
+    doubleDescents :: [Perm.T.T a] -> [Perm.T.T a]
+    doubleDescents = fmap (\ (t, _, _) -> t) . consecutive3 (>) (>)
+
+    peaks :: [Perm.T.T a] -> [Perm.T.T a]
+    peaks = fmap (\ (_, t, _) -> t) . consecutive3 (<) (>)
+
+    valleys :: [Perm.T.T a] -> [Perm.T.T a]
+    valleys = fmap (\ (_, t, _) -> t) . consecutive3 (>) (<)
+
+    consecutive2 :: (Int -> Int -> Bool) -> [Perm.T.T a] -> [(Perm.T.T a, Perm.T.T a)]
+    consecutive2 cmp = Foldable.foldr f [] . List.Tools.consecutive2
       where
         f (t, t') acc
-          | y `cmp` y' = t : acc
+          | y `cmp` y' = (t, t') : acc
           | otherwise  = acc
           where
             y  = P.yCoord $ Perm.T.point t
             y' = P.yCoord $ Perm.T.point t'
 
-    peaks :: [Perm.T.T a] -> [Perm.T.T a]
-    peaks = peaksValleysAux (<) (>)
-
-    valleys :: [Perm.T.T a] -> [Perm.T.T a]
-    valleys = peaksValleysAux (<) (>)
-
-    peaksValleysAux :: (Int -> Int -> Bool) -> (Int -> Int -> Bool) -> [Perm.T.T a] -> [Perm.T.T a]
-    peaksValleysAux cmp1 cmp2 = Foldable.foldr f [] . List.Tools.consecutiveTriples
+    consecutive3 :: (Int -> Int -> Bool) -> (Int -> Int -> Bool) -> [Perm.T.T a] -> [(Perm.T.T a, Perm.T.T a, Perm.T.T a)]
+    consecutive3 cmp1 cmp2 = Foldable.foldr f [] . List.Tools.consecutive3
       where
         f (t, t', t'') acc
-          | y `cmp1` y' && y' `cmp2` y'' = t' : acc
+          | y `cmp1` y' && y' `cmp2` y'' = (t, t', t'') : acc
           | otherwise  = acc
           where
             y   = P.yCoord $ Perm.T.point t
