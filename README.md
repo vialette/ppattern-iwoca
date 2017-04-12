@@ -26,7 +26,17 @@
 
 #### Sums
 
-##### Skew-sum
+##### Skew sum
+
+```math #skewsum
+(\pi \ominus \sigma)(i)
+=
+{
+  \begin{cases}\pi (i)+n&{\text{for }}1\leq i\leq m,\\
+\sigma (i-m)&{\text{for }}m+1\leq i\leq m+n,
+\end{cases}
+}
+```
 
 ##### Direct-sum
 
