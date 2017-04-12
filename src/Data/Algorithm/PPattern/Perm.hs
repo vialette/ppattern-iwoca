@@ -68,11 +68,7 @@ module Data.Algorithm.PPattern.Perm
   -- * Separating tree
 , separatingTree
 
-  -- * Statictics
-, leftToRightMinima
-, leftToRightMaxima
-, rightToLeftMinima
-, rightToLeftMaxima
+
 )
 where
 
@@ -372,17 +368,6 @@ where
   is321Avoiding :: Perm a -> Bool
   is321Avoiding _ = True
 
-  leftToRightMinima :: Perm a -> Perm a
-  leftToRightMinima = Perm . Perm.T.List.leftToRightMinima . toList
-
-  leftToRightMaxima :: Perm a -> Perm a
-  leftToRightMaxima = Perm . Perm.T.List.leftToRightMaxima . toList
-
-  rightToLeftMinima :: Perm a -> Perm a
-  rightToLeftMinima = Perm . Perm.T.List.rightToLeftMinima . toList
-
-  rightToLeftMaxima :: Perm a -> Perm a
-  rightToLeftMaxima = Perm . Perm.T.List.rightToLeftMaxima . toList
 
     -- simionSchmidt :: Perm a -> Perm a
     -- simionSchmidt = id

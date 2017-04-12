@@ -28,6 +28,11 @@ module Data.Algorithm.PPattern.List
 , allConsecutivePairs
 , anyConsecutivePairs
 
+-- *
+, consecutiveTriples
+, allConsecutiveTriples
+, anyConsecutiveTriples
+
   -- *
 , isUpDown
 , isDownUp
@@ -81,6 +86,22 @@ where
   anyConsecutivePairs :: Foldable t => ((a, a) -> Bool) -> t a -> Bool
   anyConsecutivePairs f = Foldable.any f . consecutivePairs
 
+  consecutiveTriples :: Foldable t => t a -> [(a, a, a)]
+  consecutivePairs = aux . Foldable.toList
+    where
+      aux []  = []
+      aux [_] = []
+      aux [_, _] = []
+      aux xs = List.zip xs xs' xs''
+        where
+          xs'  = List.tail xs
+          xs'' = List.tail xs'
+
+  allConsecutiveTriples :: Foldable t => ((a, a, a) -> Bool) -> t a -> Bool
+  allConsecutiveTriples f = Foldable.all f . consecutiveTriples
+
+  anyConsecutiveTriples :: Foldable t => ((a, a, a) -> Bool) -> t a -> Bool
+  anyConsecutiveTriples f = Foldable.any f . consecutiveTriples
 
   isUpDown ::(Ord a) => [(a, a)] -> Bool
   isUpDown [] = True
