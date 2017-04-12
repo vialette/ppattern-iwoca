@@ -33,8 +33,12 @@
 λ: let q = Perm.mk [3,5,1,4,2]
 λ: Perm.Sum.skewSum p q
 [2,4,1,3,3,5,1,4,2]
-λ: Perm.Sum.directSum  p q
+λ: Perm.Sum.skewSum q p
+[3,5,1,4,2,2,4,1,3]
+λ: Perm.Sum.directSum p q
 [2,4,1,3,3,5,1,4,2]
+λ: Perm.Sum.directSum q p
+[3,5,1,4,2,2,4,1,3]
 λ:
 ```
 
