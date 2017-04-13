@@ -62,6 +62,11 @@ instance Show (Perm a) where
 
 #### Sums
 
+![alt text](https://github.com/vialette/ppattern/blob/master/images/skew-sum.svg "Logo Title Text 1")
+
+![alt text](https://github.com/vialette/ppattern/blob/master/images/diretc-sum.svg "Logo Title Text 1")
+
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: import qualified Data.Algorithm.PPattern.Perm.Sum as Perm.Sum
