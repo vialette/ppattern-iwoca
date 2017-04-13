@@ -4,6 +4,22 @@
 
 ### Basic manipulation
 
+```haskell
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk "acedb"
+λ: p
+[1,3,5,4,2]
+λ: Perm.annotations p
+"acedb"
+λ: Perm.toList p
+[T (Point (1,1),'a'),T (Point (2,3),'c'),T (Point (3,5),'e'),T (Point (4,4),'d'),T (Point (5,2),'b')]
+λ: Perm.xCoords p
+[1,2,3,4,5]
+λ: Perm.yCoords p
+[1,3,5,4,2]
+λ:
+```
+
 ### Basic properties
 
 ### Transforming permutations
