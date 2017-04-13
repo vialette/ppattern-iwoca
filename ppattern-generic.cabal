@@ -23,6 +23,7 @@ Library
   Exposed-Modules: Data.Algorithm.PPattern.Perm
                  , Data.Algorithm.PPattern.Perm.Statistics
                  , Data.Algorithm.PPattern.Perm.Sum
+                 , Data.Algorithm.PPattern.Perm.Enumerate
                  , Data.Algorithm.PPattern.Strategy
                  , Data.Algorithm.PPattern.Occurrence
                  , Data.Algorithm.PPattern.SeparatingTree
