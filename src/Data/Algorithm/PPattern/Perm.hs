@@ -43,7 +43,7 @@ module Data.Algorithm.PPattern.Perm
 , toPoints
 , xCoords
 , yCoords
-, toAnnotations
+, annotations
 
   -- * Testing
 , isAlernating
@@ -84,10 +84,8 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm a = Perm { toList :: [Perm.T.T a] } deriving (Eq, Ord)
-
-  instance (Show a) => Show (Perm a) where
-    show = show . toAnnotations
+  newtype Perm a = Perm { toList :: [Perm.T.T a] }
+                   deriving (Show, Eq, Ord)
 
   instance Foldable.Foldable Perm  where
     foldr f z (Perm xs) = List.foldr f' z xs
@@ -194,8 +192,8 @@ where
   {-|
     Points projection.
   -}
-  toAnnotations :: Perm a -> [a]
-  toAnnotations = fmap Perm.T.annotation . toList
+  annotations :: Perm a -> [a]
+  annotations = fmap Perm.T.annotation . toList
 
   {-|
     'reduce p' returns the reduced form of the permutation 'p'.

@@ -15,16 +15,42 @@ module Data.Algorithm.PPattern.Geometry.Point.List
   -- * Constructing
   mkFromList
 , mkSequential
+
+  -- * Moving
+, moveX
+, moveY
+, move
 )
   where
 
     import qualified Data.List  as List
     import qualified Data.Tuple as Tuple
 
-    import qualified Data.Algorithm.PPattern.Geometry.Point as P
+    import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
-    mkFromList :: [(Int, Int)] -> [P.Point]
-    mkFromList = fmap (Tuple.uncurry P.mk)
+    mkFromList :: [(Int, Int)] -> [Point.Point]
+    mkFromList = fmap (Tuple.uncurry Point.mk)
 
-    mkSequential :: [Int] -> [P.Point]
+    mkSequential :: [Int] -> [Point.Point]
     mkSequential = mkFromList . List.zip [1..]
+
+    moveX :: Int -> [Point.Point] -> [Point.Point]
+    moveX i ps = mkFromList xys
+      where
+        xs  = fmap (+i) $ fmap Point.xCoord ps
+        ys  = fmap Point.yCoord ps
+        xys = List.zip xs ys
+
+    moveY :: Int -> [Point.Point] -> [Point.Point]
+    moveY j ps = mkFromList xys
+      where
+        xs  = fmap Point.xCoord ps
+        ys  = fmap (+j) $ fmap Point.yCoord ps
+        xys = List.zip xs ys
+
+    move :: Int -> Int -> [Point.Point] -> [Point.Point]
+    move i j ps = mkFromList xys
+      where
+        xs  = fmap (+i) $ fmap Point.xCoord ps
+        ys  = fmap (+j) $ fmap Point.yCoord ps
+        xys = List.zip xs ys
