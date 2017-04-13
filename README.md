@@ -114,6 +114,12 @@
 
 ### Separable permutations
 
+A separable permutation is a permutation that can be obtained from the trivial
+permutation 1 by direct sums and skew sums;
+separable permutations may be characterized by the forbidden permutation patterns
+2413 and 3142
+(see <https://en.wikipedia.org/wiki/Separable_permutation>).
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: import qualified Data.Algorithm.PPattern.SeparatingTree as SeparatingTree
