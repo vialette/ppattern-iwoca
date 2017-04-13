@@ -25,7 +25,7 @@
 As you might have guessed, `show`reduces to `yCoords`:
 
 ```haskell
-instance (Show a) => Show (Perm a) where
+instance Show (Perm a) where
   show = show . yCoords
 ```
 

@@ -17,6 +17,9 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Constructing
 , mk
+, empty
+
+  -- *
 , sub
 , subRed
 , reversal
@@ -84,10 +87,10 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm a = Perm { toList :: [Perm.T.T a] }
+  newtype Perm a = Perm { getList :: [Perm.T.T a] }
                    deriving (Eq, Ord)
 
-  instance (Show a) => Show (Perm a) where
+  instance Show (Perm a) where
     show = show . yCoords
 
   instance Foldable.Foldable Perm  where
@@ -104,81 +107,81 @@ where
   {-|
   -}
   sub :: Int -> Int -> Perm a -> Perm a
-  sub xMin xMax = Perm . Perm.T.List.sub xMin xMax . toList
+  sub xMin xMax = Perm . Perm.T.List.sub xMin xMax . getList
 
   {-|
   -}
   subRed :: (Ord a) => Int -> Int -> Perm a -> Perm a
-  subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.T.List.sub xMin xMax . toList
+  subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.T.List.sub xMin xMax . getList
 
   {-|
     Construct all Perm prefixes of a permutation.
   -}
   prefixes :: Perm a -> [Perm a]
-  prefixes = fmap Perm . List.Tools.prefixes . toList
+  prefixes = fmap Perm . List.Tools.prefixes . getList
 
   {-|
     Construct all reduced Perm prefixes of a permutation.
   -}
   prefixesRed :: (Ord a) => Perm a -> [Perm a]
-  prefixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.prefixes . toList
+  prefixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.prefixes . getList
 
   {-|
     Construct all Perm suffixes of a permutation.
   -}
   suffixes :: Perm a -> [Perm a]
-  suffixes = fmap Perm . List.Tools.suffixes . toList
+  suffixes = fmap Perm . List.Tools.suffixes . getList
 
   {-|
     Construct all reduced Perm suffixes of a permutation.
   -}
   suffixesRed :: (Ord a) => Perm a -> [Perm a]
-  suffixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.suffixes . toList
+  suffixesRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.suffixes . getList
 
   {-|
     Construct all Perm factors of a permutation.
   -}
   factors :: Perm a -> [Perm a]
-  factors = fmap Perm . List.Tools.factors . toList
+  factors = fmap Perm . List.Tools.factors . getList
 
   {-|
     Construct all reduced Perm factors of a permutation.
   -}
   factorsRed :: (Ord a) => Perm a -> [Perm a]
-  factorsRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.factors . toList
+  factorsRed = fmap (mk . fmap Perm.T.annotation) . List.Tools.factors . getList
 
   {-|
     Reverse a permutation.
   -}
   reversal :: Perm a -> Perm a
-  reversal = Perm . Perm.T.List.reversal . toList
+  reversal = Perm . Perm.T.List.reversal . getList
 
   {-|
   -}
   complement :: Perm a -> Perm a
-  complement = Perm . Perm.T.List.complement . toList
+  complement = Perm . Perm.T.List.complement . getList
 
   {-|
   -}
   reversalComplement :: Perm a -> Perm a
-  reversalComplement = Perm . Perm.T.List.reversalComplement . toList
+  reversalComplement = Perm . Perm.T.List.reversalComplement . getList
 
   {-|
   -}
   inverse :: Perm a  -> Perm a
-  inverse = Perm . Perm.T.List.inverse . toList
+  inverse = Perm . Perm.T.List.inverse . getList
 
   {-|
     Turn a permutation into a list with annotations.
   -}
   toAnnotedList :: Perm a -> [(P.Point, a)]
-  toAnnotedList = fmap Perm.T.toTuple . toList
+  toAnnotedList = fmap Perm.T.toTuple . getList
 
   {-|
     Points projection.
   -}
   toPoints :: Perm a -> [P.Point]
-  toPoints = fmap Perm.T.point . toList
+  toPoints = fmap Perm.T.point . getList
 
   {-|
     x-ccordinates projection.
@@ -196,7 +199,7 @@ where
     Points projection.
   -}
   annotations :: Perm a -> [a]
-  annotations = fmap Perm.T.annotation . toList
+  annotations = fmap Perm.T.annotation . getList
 
   {-|
     'reduce p' returns the reduced form of the permutation 'p'.
@@ -212,7 +215,7 @@ where
     Return the size of the permutation.
   -}
   size :: Perm a -> Int
-  size = List.length . toList
+  size = List.length . getList
 
   {-|
     Return True iff the permutation is increasing.
@@ -234,7 +237,7 @@ where
 
   -- Auxiliary function for isIncreasing and isDecreasing
   isMonotoneAux :: (Int -> Int -> Bool) -> Perm a -> Bool
-  isMonotoneAux cmp = Perm.T.List.isMonotone cmp . toList
+  isMonotoneAux cmp = Perm.T.List.isMonotone cmp . getList
 
   {-|
     Return True iff the permutation is alternating and starts with an up-step.
@@ -258,7 +261,7 @@ where
     'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
   -}
   longestIncreasing :: Perm a -> Perm a
-  longestIncreasing = Perm . Perm.T.List.longestIncreasing . toList
+  longestIncreasing = Perm . Perm.T.List.longestIncreasing . getList
 
   {-|
     'longestIncreasingLength xs' returns the length of the longest increasing
@@ -271,7 +274,7 @@ where
     'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
   -}
   longestDecreasing :: Perm a -> Perm a
-  longestDecreasing = Perm . Perm.T.List.longestDecreasing . toList
+  longestDecreasing = Perm . Perm.T.List.longestDecreasing . getList
 
   {-|
     'longestDecreasingLength xs' returns the length of the longest decreasing
@@ -294,7 +297,7 @@ where
     Stack sort a permutation.
   -}
   stackSort :: Perm a -> Perm a
-  stackSort = Perm . Perm.T.List.stackSort . toList
+  stackSort = Perm . Perm.T.List.stackSort . getList
 
   {-|
     'isStackSortable p' returns True if an only if permutation 'p' is stack

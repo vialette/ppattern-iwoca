@@ -24,7 +24,7 @@ module Data.Algorithm.PPattern.Perm.Sum
     import qualified Data.Algorithm.PPattern.Perm                as Perm
     import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
     import qualified Data.Algorithm.PPattern.Geometry.Point.List as Point.List
-
+        
     {-|
 
     -}
@@ -46,7 +46,7 @@ module Data.Algorithm.PPattern.Perm.Sum
     directSum p q = Perm.Perm ts
       where
         m   = Perm.size p
-        pts = Perm.toList p
+        pts = Perm.getList p
         qps = Point.List.move m m $ Perm.toPoints q
         qts = fmap (Tuple.uncurry Perm.T.mk) . List.zip qps $ Perm.annotations q
         ts  = pts `Monoid.mappend` qts

@@ -13,10 +13,20 @@ commentary with @some markup@.
 module Data.Algorithm.PPattern.Perm.Enumerate
 (
   perms
+, perms'
 )
   where
 
+    import Data.List as List
+
     import Data.Algorithm.PPattern.Perm as Perm
 
-    perms :: Int -> [Perm.Perm a]
+    {-|
+    -}
+    perms :: (Enum a, Num a, Ord a) => a -> [Perm a]
     perms n = [Perm.mk xs | xs <- List.permutations [1..n]]
+
+    {-|
+    -}
+    perms' :: (Ord a) => [a] -> [Perm a]
+    perms' xs = [Perm.mk xs' | xs' <- List.permutations xs]
