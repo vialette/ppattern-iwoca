@@ -62,9 +62,9 @@ instance Show (Perm a) where
 
 #### Sums
 
-![skew sum](https://github.com/vialette/ppattern/blob/master/images/skew-sum.svg "skew sum")
+![skew sum](images/skew-sum.svg)
 
-![direct sum](https://github.com/vialette/ppattern/blob/master/images/diretc-sum.svg "direct sum")
+![direct sum](https://github.com/vialette/ppattern/blob/master/images/diretc-sum.svg)
 
 
 ```haskell
