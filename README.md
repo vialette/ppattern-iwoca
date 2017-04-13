@@ -32,12 +32,8 @@
 λ: let p = Perm.mk [2,4,1,3]
 λ: let q = Perm.mk [3,5,1,4,2]
 λ: Perm.Sum.skewSum p q
-Perm {toList = [T (Point (1,7),2),T (Point (2,9),4),T (Point (3,6),1),T (Point (4,8),3),T (Point (5,3),3),T (Point (6,5),5),T (Point (7,1),1),T (Point (8,4),4),T (Point (9,2),2)]}
-λ: Perm.yCoords $ Perm.Sum.skewSum p q
 [7,9,6,8,3,5,1,4,2]
 λ: Perm.Sum.directSum p q
-Perm {toList = [T (Point (1,2),2),T (Point (2,4),4),T (Point (3,1),1),T (Point (4,3),3),T (Point (5,7),3),T (Point (6,9),5),T (Point (7,5),1),T (Point (8,8),4),T (Point (9,6),2)]}
-λ: Perm.yCoords $ Perm.Sum.directSum p q
 [2,4,1,3,7,9,5,8,6]
 λ:
 ```
