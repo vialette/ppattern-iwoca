@@ -24,6 +24,17 @@
 
 ### Basic properties
 
+
+### Ties
+
+```haskell
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk "ababc"
+λ: p
+[1,3,2,4,5]
+λ:
+```
+
 ### Transforming permutations
 
 ```haskell
