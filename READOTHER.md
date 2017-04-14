@@ -64,7 +64,23 @@ instance Show (Perm a) where
 
 In combinatorics, the skew sum and direct sum of permutations are two operations
 to combine shorter permutations into longer ones. Given a permutation $\pi$
-
+of length $m$ and the permutation $\sigma$ of length $n$,
+the skew sum of $\pi$ and $\sigma$ is the permutation of length $m + n$ defined by
+$$
+(\pi \ominus \sigma )(i)=
+\begin{cases}
+  \pi (i)+n    & \text{for } 1\leq i\leq m,\\
+  \sigma (i-m) & \text{for } m+1\leq i\leq m+n,
+\end{cases},
+$$
+and the direct sum of $\pi$ and $\sigma$ is the permutation of length $m + n$ defined by
+$$
+(\pi \oplus \sigma )(i)=
+\begin{cases}
+  \pi (i)          & \text{for } 1\leq i\leq m,\\
+  \sigma (i-m) + m & \text{for } m+1\leq i\leq m+n,
+\end{cases},
+$$
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
