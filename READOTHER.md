@@ -47,8 +47,8 @@ instance Show (Perm a) where
 The *reverse* of a permutation $\sigma = \sigma_1 \sigma_2 \ldots \sigma_n$
 is the permutation $r(\sigma) = \sigma_n \sigma_{n-1} \ldots \sigma_1$.
 The *complement* $c(\sigma)$ of $\sigma$ is the permutation
-$\sigma_1' \sigma_2' \ldots \sigma_n'$ where
-$\sigma_i' = n+1-\sigma_i$.
+$\beta \beta \ldots \beta$ where
+$\beta = n+1-\sigma_i$.
 The *inverse* is the regular group theoretical inverse on permutations;
 that is, the $\sigma-i$-th position of the inverse $\sigma^{-1}$ is occupied by
 $i$.
