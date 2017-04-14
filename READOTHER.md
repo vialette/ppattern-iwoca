@@ -71,15 +71,15 @@ $$
 \begin{cases}
   \pi (i)+n    & \text{for } 1\leq i\leq m,\\
   \sigma (i-m) & \text{for } m+1\leq i\leq m+n,
-\end{cases},
+\end{cases}
 $$
 and the direct sum of $\pi$ and $\sigma$ is the permutation of length $m + n$ defined by
 $$
 (\pi \oplus \sigma )(i)=
 \begin{cases}
   \pi (i)          & \text{for } 1\leq i\leq m,\\
-  \sigma (i-m) + m & \text{for } m+1\leq i\leq m+n,
-\end{cases},
+  \sigma (i-m) + m & \text{for } m+1\leq i\leq m+n.
+\end{cases}
 $$
 
 ```haskell
