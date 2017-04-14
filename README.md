@@ -62,7 +62,7 @@ instance Show (Perm a) where
 
 #### Sums
 
-In combinatorics, the skew sum and direct sum of permutations are two operations
+The *skew sum* and *direct sum* of permutations are two operations
 to combine shorter permutations into longer ones. Given a permutation <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/>
 of length <img alt="$m$" src="svgs/0e51a2dede42189d77627c4d742822c3.png?invert_in_darkmode" align=middle width="14.379255000000002pt" height="14.102549999999994pt"/> and the permutation <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> of length <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.png?invert_in_darkmode" align=middle width="9.830040000000002pt" height="14.102549999999994pt"/>,
 the skew sum of <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> and <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation of length <img alt="$m + n$" src="svgs/bfc06c99d626d9ab5e6e152d22661507.png?invert_in_darkmode" align=middle width="44.25267pt" height="19.10667000000001pt"/> defined by

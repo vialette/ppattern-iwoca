@@ -62,7 +62,7 @@ instance Show (Perm a) where
 
 #### Sums
 
-In combinatorics, the skew sum and direct sum of permutations are two operations
+The *skew sum* and *direct sum* of permutations are two operations
 to combine shorter permutations into longer ones. Given a permutation $\pi$
 of length $m$ and the permutation $\sigma$ of length $n$,
 the skew sum of $\pi$ and $\sigma$ is the permutation of length $m + n$ defined by
