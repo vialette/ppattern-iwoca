@@ -66,12 +66,13 @@ In combinatorics, the skew sum and direct sum of permutations are two operations
 to combine shorter permutations into longer ones. Given a permutation $\pi$ of
 length $m$ and the permutation $\sigma$ of length $n$, the skew sum of $\pi$ and
 $\sigma$ is the permutation of length $m + n$ defined by
-{\displaystyle
+$$
   (\pi \ominus \sigma)(i) =
     \begin{cases}
-      \pi(i)+n     & {\text{for }}1\leq i\leq m,\\
-      \sigma (i-m) & {\text{for }}m+1\leq i\leq m+n,
+      \pi(i)+n     & \text{for } 1\leq i\leq m,\\
+      \sigma (i-m) & \text{for } m+1\leq i\leq m+n,
     \end{cases}
+$$
 
 <!-- and the direct sum of π and σ is the permutation of length m + n defined by
 {\displaystyle (\pi \oplus \sigma )(i)={\begin{cases}\pi (i)&{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&{\text{for }}m+1\leq i\leq m+n.\end{cases}}} (\pi \oplus \sigma )(i)={\begin{cases}\pi (i)&{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&{\text{for }}m+1\leq i\leq m+n.\end{cases}}
