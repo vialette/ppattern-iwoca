@@ -73,10 +73,15 @@ $$
       \sigma (i-m) & \text{for } m+1\leq i\leq m+n,
     \end{cases}
 $$
-
-<!-- and the direct sum of π and σ is the permutation of length m + n defined by
-{\displaystyle (\pi \oplus \sigma )(i)={\begin{cases}\pi (i)&{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&{\text{for }}m+1\leq i\leq m+n.\end{cases}}} (\pi \oplus \sigma )(i)={\begin{cases}\pi (i)&{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&{\text{for }}m+1\leq i\leq m+n.\end{cases}}
- -->
+and the direct sum of $\pi$ and $\sigma$ is the permutation of length $m + n$
+defined by
+$$
+  (\pi \oplus \sigma)(i) =
+    \begin{cases}
+      \pi(i)           & \text{for } 1\leq i\leq m,\\
+      \sigma (i-m) + m & \text{for } m+1\leq i\leq m+n,
+    \end{cases}
+$$
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
