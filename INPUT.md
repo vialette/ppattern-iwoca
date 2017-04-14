@@ -63,9 +63,9 @@ instance Show (Perm a) where
 #### Sums
 
 In combinatorics, the skew sum and direct sum of permutations are two operations
-to combine shorter permutations into longer ones. Given a permutation <img alt="$\pi$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/f30fdded685c83b0e7b446aa9c9aa120.svg?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> of
-length <img alt="$m$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/0e51a2dede42189d77627c4d742822c3.svg?invert_in_darkmode" align=middle width="14.379255000000002pt" height="14.102549999999994pt"/> and the permutation <img alt="$\sigma$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/8cda31ed38c6d59d14ebefa440099572.svg?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> of length <img alt="$n$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/55a049b8f161ae7cfeb0197d75aff967.svg?invert_in_darkmode" align=middle width="9.830040000000002pt" height="14.102549999999994pt"/>, the skew sum of <img alt="$\pi$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/f30fdded685c83b0e7b446aa9c9aa120.svg?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> and
-<img alt="$\sigma$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/8cda31ed38c6d59d14ebefa440099572.svg?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation of length <img alt="$m + n$" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/bfc06c99d626d9ab5e6e152d22661507.svg?invert_in_darkmode" align=middle width="44.25267pt" height="19.10667000000001pt"/> defined by
+to combine shorter permutations into longer ones. Given a permutation $\pi$ of
+length $m$ and the permutation $\sigma$ of length $n$, the skew sum of $\pi$ and
+$\sigma$ is the permutation of length $m + n$ defined by
 {\displaystyle
   (\pi \ominus \sigma)(i) =
     \begin{cases}
@@ -74,7 +74,7 @@ length <img alt="$m$" src="https://rawgit.com/in	git@github.com:vialette/ppatter
     \end{cases}
 
 <!-- and the direct sum of π and σ is the permutation of length m + n defined by
-{\displaystyle (\pi \oplus \sigma )(i)={<p align="center"><img alt="\begin{cases}\pi (i)&amp;{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&amp;{\text{for }}m+1\leq i\leq m+n.\end{cases}" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/7387bcd3b1c905b9aed066e22afbe315.svg?invert_in_darkmode" align=middle width="293.11589999999995pt" height="49.131389999999996pt"/></p>}} (\pi \oplus \sigma )(i)={<p align="center"><img alt="\begin{cases}\pi (i)&amp;{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&amp;{\text{for }}m+1\leq i\leq m+n.\end{cases}" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/7387bcd3b1c905b9aed066e22afbe315.svg?invert_in_darkmode" align=middle width="293.11589999999995pt" height="49.131389999999996pt"/></p>}
+{\displaystyle (\pi \oplus \sigma )(i)={\begin{cases}\pi (i)&{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&{\text{for }}m+1\leq i\leq m+n.\end{cases}}} (\pi \oplus \sigma )(i)={\begin{cases}\pi (i)&{\text{for }}1\leq i\leq m,\\\sigma (i-m)+m&{\text{for }}m+1\leq i\leq m+n.\end{cases}}
  -->
 
 ```haskell
@@ -150,7 +150,13 @@ separable permutations may be characterized by the forbidden permutation pattern
 λ: Perm.isSeparable p                  
 False
 λ: -- so that no separating tree of p can be obtained
-λ: SeparatingTree.mk <img alt="$ Perm.toPoints p&#10;Nothing&#10;λ: let q = Perm.mk [3,1,2,4,6,5,7]&#10;λ: Perm.isSeparable q                             -- q does avoid 2413 and 3142, and hence is separable&#10;True&#10;λ: import Data.Maybe&#10;λ: fromJust . SeparatingTree.mk $" src="https://rawgit.com/in	git@github.com:vialette/ppattern/master/svgs/c7be5bdfada4253d65cf69b07d4cdacb.svg?invert_in_darkmode" align=middle width="1011.5407499999999pt" height="45.82083000000002pt"/> Perm.toPoints q -- so that a separating tree of q can be obtained
+λ: SeparatingTree.mk $ Perm.toPoints p
+Nothing
+λ: let q = Perm.mk [3,1,2,4,6,5,7]
+λ: Perm.isSeparable q                             -- q does avoid 2413 and 3142, and hence is separable
+True
+λ: import Data.Maybe
+λ: fromJust . SeparatingTree.mk $ Perm.toPoints q -- so that a separating tree of q can be obtained
 + Interval (1,7)
 .+ Interval (1,6)
 ..+ Interval (1,4)
