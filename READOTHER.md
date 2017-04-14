@@ -44,6 +44,15 @@ instance Show (Perm a) where
 
 ### Transforming permutations
 
+The *reverse* of a permutation $\sigma = \sigma_1 \sigma_2 \ldots \sigma_n$
+is the permutation $r(\sigma) = \sigma_n \sigma_{n-1} \ldots \sigma_1$.
+The *complement* $c(\sigma)$ of $\sigma$ is the permutation
+$\sigma_1' \sigma_2' \ldots \sigma_n'$ where
+$\sigma_i' = n+1-\sigma_i$.
+The *inverse* is the regular group theoretical inverse on permutations;
+that is, the $\sigma-i$-th position of the inverse $\sigma^{-1}$ is occupied by
+$i$.
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: let p = Perm.mk [3,5,7,1,8,4,2,6]
