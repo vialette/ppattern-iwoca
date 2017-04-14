@@ -73,6 +73,7 @@ $$
   \sigma (i-m) & \text{for } m+1\leq i\leq m+n,
 \end{cases}
 $$
+
 and the direct sum of $\pi$ and $\sigma$ is the permutation of length $m + n$ defined by
 $$
 (\pi \oplus \sigma )(i)=
