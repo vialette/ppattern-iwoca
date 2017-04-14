@@ -52,6 +52,10 @@ The *complement* <img alt="$c(\sigma)$" src="svgs/d0c33829c8fc0e2f48f678b2b15ebe
 The *inverse* is the regular group theoretical inverse on permutations;
 that is, the <img alt="$\sigma-i$" src="svgs/b445a63ee573fc22f4bd8ef07545914b.png?invert_in_darkmode" align=middle width="35.6334pt" height="21.602129999999985pt"/>-th position of the inverse <img alt="$\sigma^{-1}$" src="svgs/ec6538b98abdca3ca617fefc81ab0cb8.png?invert_in_darkmode" align=middle width="26.71152pt" height="26.70657pt"/> is occupied by
 <img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.png?invert_in_darkmode" align=middle width="5.642109000000004pt" height="21.602129999999985pt"/>.
+`reversal`, `complement` and `inverse` yield the reverse, complement and
+inverse operations, respectivelly.
+`reversalComplement` is the composition of the complement and reverse
+(he complement is applied first).
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm

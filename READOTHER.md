@@ -52,6 +52,10 @@ $\sigma_i' = n+1-\sigma_i$.
 The *inverse* is the regular group theoretical inverse on permutations;
 that is, the $\sigma-i$-th position of the inverse $\sigma^{-1}$ is occupied by
 $i$.
+`reversal`, `complement` and `inverse` yield the reverse, complement and
+inverse operations, respectivelly.
+`reversalComplement` is the composition of the complement and reverse
+(he complement is applied first).
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
