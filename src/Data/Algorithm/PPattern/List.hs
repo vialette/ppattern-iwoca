@@ -14,6 +14,9 @@ module Data.Algorithm.PPattern.List
 , removeAt'
 
   -- *
+, splitAtMax
+
+  -- *
 , tuplify2
 
   -- *
@@ -52,6 +55,15 @@ where
 
   removeAt' :: (Eq a, Num a) => [b] -> a -> [b]
   removeAt' xs i = Tuple.snd $ removeAt xs i
+
+  splitAtMax :: (Ord a) => [a] -> Maybe ([a], a, [a])
+  splitAtMax [] = Nothing
+  splitAtMax xs = Just $ aux (Foldable.maximum xs) [] xs
+    where
+      aux _ _  [] = error "We shouldn't be there"
+      aux m ys (z : zs)
+        | m == z    = (List.reverse ys, z, zs)
+        | otherwise = aux m (z : ys) zs
 
   -- Transform a list of length 2 to a pair.
   tuplify2 :: [a] -> (a, a)

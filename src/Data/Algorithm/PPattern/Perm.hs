@@ -17,7 +17,6 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Constructing
 , mk
-, empty
 
   -- *
 , sub
@@ -57,6 +56,7 @@ module Data.Algorithm.PPattern.Perm
 , isMonotone
 , isSeparable
 , isStackSortable
+, stackSortIndex
 
   -- * Avoiding a pattern of length 3
 , is123Avoiding
@@ -298,6 +298,13 @@ where
   -}
   stackSort :: Perm a -> Perm a
   stackSort = Perm . Perm.T.List.stackSort . getList
+
+  stackSortIndex :: Perm a -> Int
+  stackSortIndex = aux 0
+    where
+      aux i p
+        | isIncreasing p = i
+        | otherwise      = aux (i+1) (stackSort p)
 
   {-|
     'isStackSortable p' returns True if an only if permutation 'p' is stack

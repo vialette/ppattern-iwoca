@@ -40,16 +40,24 @@ where
 
   import qualified Data.Tuple as Tuple
 
-  newtype Interval = Interval { lowerBound :: Int
-                              , upperBound :: Int
-                              }
-                              deriving (Eq, Show)
+  data Interval = Interval (Int, Int)
+                  deriving (Eq, Show)
 
   {-|
     Construct an interval from two integers.
   -}
   mk :: Int -> Int -> Interval
   mk = Tuple.curry Interval
+
+  {-|
+  -}
+  lowerBound :: Interval -> Int
+  lowerBound (Interval i) = Tuple.fst i
+
+  {-|
+  -}
+  upperBound :: Interval -> Int
+  upperBound (Interval i) = Tuple.snd i
 
   {-|
     Return the interval intersection of two intervals.
@@ -120,5 +128,5 @@ where
   {-|
     Return `True` if the first interval is included in the second interval.
   -}
-  intervalIn :: Int -> Interval -> Bool
+  intervalIn :: Interval -> Interval -> Bool
   intervalIn i i' = lowerBound i' <= lowerBound i && upperBound i <= upperBound i'

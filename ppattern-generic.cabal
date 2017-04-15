@@ -24,6 +24,8 @@ Library
                  , Data.Algorithm.PPattern.Perm.Statistics
                  , Data.Algorithm.PPattern.Perm.Sum
                  , Data.Algorithm.PPattern.Perm.Enumerate
+                 , Data.Algorithm.PPattern.Geometry.Point
+                 , Data.Algorithm.PPattern.Geometry.APoint
                  , Data.Algorithm.PPattern.Strategy
                  , Data.Algorithm.PPattern.Occurrence
                  , Data.Algorithm.PPattern.SeparatingTree
@@ -32,7 +34,7 @@ Library
                  , Data.Algorithm.PPattern.StackSort
                  , Data.Algorithm.PPattern
   Other-Modules:   Data.Algorithm.PPattern.Perm.T
-                 , Data.Algorithm.PPattern.Perm.T.Statistics
+                 , Data.Algorithm.PPattern.Perm.Inner.Statistics
                  , Data.Algorithm.PPattern.Perm.List
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context
@@ -43,7 +45,6 @@ Library
                  , Data.Algorithm.PPattern.State.IncreasingFactorization
                  , Data.Algorithm.PPattern.Strategy.Link
                  , Data.Algorithm.PPattern.Strategy.PLink
-                 , Data.Algorithm.PPattern.Geometry.Point
                  , Data.Algorithm.PPattern.Geometry.Point.List
                  , Data.Algorithm.PPattern.Geometry.ColorPoint
                  , Data.Algorithm.PPattern.Geometry.Interval

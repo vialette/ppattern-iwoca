@@ -26,8 +26,8 @@ module Data.Algorithm.PPattern.Perm.Statistics
 )
   where
 
-    import qualified Data.Algorithm.PPattern.Perm              as Perm
-    import qualified Data.Algorithm.PPattern.Perm.T.Statistics as Perm.T.Statistics
+    import qualified Data.Algorithm.PPattern.Perm                  as Perm
+    import qualified Data.Algorithm.PPattern.Perm.Inner.Statistics as Perm.Inner.Statistics
 
     {-|
     -}
