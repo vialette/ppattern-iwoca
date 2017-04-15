@@ -39,65 +39,65 @@ module Data.Algorithm.PPattern.Geometry.ColorPoint
 )
 where
 
-  import qualified Data.Algorithm.PPattern.Color          as C
-  import qualified Data.Algorithm.PPattern.Geometry.Point as P
+  import qualified Data.Algorithm.PPattern.Color          as Color
+  import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
   {-|
     'ColorPoint' type encapsulates a point and a color.
   -}
-  newtype ColorPoint = ColorPoint (P.Point, C.Color) deriving (Show, Eq, Ord)
+  newtype ColorPoint = ColorPoint (Point.Point, Color.Color) deriving (Show, Eq, Ord)
 
   {-|
     'mk' makes a colored point from two coordinates and a color.
   -}
-  mk ::Int -> Int -> C.Color -> ColorPoint
-  mk x y c = ColorPoint (P.mk x y, c)
+  mk ::Int -> Int -> Color.Color -> ColorPoint
+  mk x y c = ColorPoint (Point.mk x y, c)
 
   {-|
     'mkPoint' makes a colored point from a point and a color.
   -}
-  mk2 :: P.Point -> C.Color -> ColorPoint
+  mk2 :: Point.Point -> Color.Color -> ColorPoint
   mk2 p c = ColorPoint (p, c)
 
   {-|
     'mkBlank' makes a blank point from two coordinates.
   -}
   mkBlank :: Int -> Int -> ColorPoint
-  mkBlank x y = ColorPoint (P.mk x y, C.blankColor)
+  mkBlank x y = ColorPoint (Point.mk x y, Color.blankColor)
 
   {-|
     'mkPoint' makes a blank point from a point.
   -}
-  mk2Blank :: P.Point -> ColorPoint
-  mk2Blank p = ColorPoint (p, C.blankColor)
+  mk2Blank :: Point.Point -> ColorPoint
+  mk2Blank p = ColorPoint (p, Color.blankColor)
 
   {-|
     Transform a color point into a triple (x-ccordinate, y-ccordinate, color).
   -}
-  toTuple :: ColorPoint -> (Int, Int, C.Color)
+  toTuple :: ColorPoint -> (Int, Int, Color.Color)
   toTuple (ColorPoint (p, c)) = (x, y, c)
     where
-      (x, y) = P.toTuple p
+      (x, y) = Point.toTuple p
 
-  point :: ColorPoint -> P.Point
+  point :: ColorPoint -> Point.Point
   point (ColorPoint (p, _)) = p
 
   {-|
     Get color point x-coordinate.
   -}
   xCoord :: ColorPoint -> Int
-  xCoord (ColorPoint (p, _)) = P.xCoord p
+  xCoord (ColorPoint (p, _)) = Point.xCoord p
 
   {-|
     Get color point y-coordinate.
   -}
   yCoord :: ColorPoint -> Int
-  yCoord (ColorPoint (p, _)) = P.yCoord p
+  yCoord (ColorPoint (p, _)) = Point.yCoord p
 
   {-|
     Get color point color.
   -}
-  color :: ColorPoint -> C.Color
+  color :: ColorPoint -> Color.Color
   color (ColorPoint (_, c)) = c
 
   {-|
@@ -118,7 +118,7 @@ where
   updateXCoord :: Int -> ColorPoint -> ColorPoint
   updateXCoord x (ColorPoint (p, c)) = mk2 p' c
     where
-      p' = P.updateXCoord x p
+      p' = Point.updateXCoord x p
 
   {-|
     Update color point x-coordinate.
@@ -126,7 +126,7 @@ where
   updateXCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
   updateXCoord' f (ColorPoint (p, c)) = mk2 p' c
     where
-      p' = P.updateXCoord' f p
+      p' = Point.updateXCoord' f p
 
   {-|
     Update color point y-coordinate.
@@ -134,7 +134,7 @@ where
   updateYCoord :: Int -> ColorPoint -> ColorPoint
   updateYCoord y (ColorPoint (p, c)) = mk2 p' c
     where
-      p' = P.updateYCoord y p
+      p' = Point.updateYCoord y p
 
   {-|
     Update color point y-coordinate.
@@ -142,18 +142,18 @@ where
   updateYCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
   updateYCoord' f (ColorPoint (p, c)) = mk2 p' c
     where
-      p' = P.updateYCoord' f p
+      p' = Point.updateYCoord' f p
 
   {-|
     Update color point color.
   -}
-  updateColor :: C.Color -> ColorPoint -> ColorPoint
+  updateColor :: Color.Color -> ColorPoint -> ColorPoint
   updateColor c' (ColorPoint (p, _)) = mk2 p c'
 
   {-|
     Update color point color.
   -}
-  updateColor' :: (C.Color -> C.Color) -> ColorPoint -> ColorPoint
+  updateColor' :: (Color.Color -> Color.Color) -> ColorPoint -> ColorPoint
   updateColor' f (ColorPoint (p, c)) = mk2 p c'
     where
       c' = f c

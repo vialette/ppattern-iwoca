@@ -35,6 +35,7 @@ Library
                  , Data.Algorithm.PPattern
   Other-Modules:   Data.Algorithm.PPattern.Perm.T
                  , Data.Algorithm.PPattern.Perm.Inner.Statistics
+                 , Data.Algorithm.PPattern.Perm.Inner.Operation
                  , Data.Algorithm.PPattern.Perm.List
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context

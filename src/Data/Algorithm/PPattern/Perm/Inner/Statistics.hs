@@ -73,8 +73,8 @@ module Data.Algorithm.PPattern.Perm.Inner.Statistics
           | y `cmp` y' = (t, t') : acc
           | otherwise  = acc
           where
-            y  = P.yCoord $ Perm.T.point t
-            y' = P.yCoord $ Perm.T.point t'
+            y  = Point.yCoord $ Perm.T.point t
+            y' = Point.yCoord $ Perm.T.point t'
 
     {-|
     -}
@@ -85,9 +85,9 @@ module Data.Algorithm.PPattern.Perm.Inner.Statistics
           | y `cmp1` y' && y' `cmp2` y'' = (t, t', t'') : acc
           | otherwise  = acc
           where
-            y   = P.yCoord $ Perm.T.point t
-            y'  = P.yCoord $ Perm.T.point t'
-            y'' = P.yCoord $ Perm.T.point t''
+            y   = Point.yCoord $ Perm.T.point t
+            y'  = Point.yCoord $ Perm.T.point t'
+            y'' = Point.yCoord $ Perm.T.point t''
 
     {-|
     -}
@@ -120,5 +120,5 @@ module Data.Algorithm.PPattern.Perm.Inner.Statistics
           | y' `cmp` y = aux (t : acc) ts
           | otherwise  = aux acc ts
           where
-            y  = P.yCoord $ Perm.T.point t
-            y' = P.yCoord $ Perm.T.point t'
+            y  = Point.yCoord $ Perm.T.point t
+            y' = Point.yCoord $ Perm.T.point t'
