@@ -55,13 +55,7 @@ module Data.Algorithm.PPattern.Perm
 , isSeparable
 
 
-  -- * Avoiding a pattern of length 3
-, is123Avoiding
-, is132Avoiding
-, is213Avoiding
-, is231Avoiding
-, is312Avoiding
-, is321Avoiding
+
 
   -- * Separating tree
 , separatingTree
@@ -281,41 +275,7 @@ where
   separatingTree = ST.mk . toPoints
 
 
-  {-|
-    'is123Avoiding p' returns True if an only if permutation 'p' avoids 123.
-  -}
-  is123Avoiding :: Perm a -> Bool
-  is123Avoiding _ = True
 
-  {-|
-    'is132Avoiding p' returns True if an only if permutation 'p' avoids 132.
-  -}
-  is132Avoiding :: Perm a -> Bool
-  is132Avoiding = is231Avoiding . reversal
-
-  {-|
-    'is213Avoiding p' returns True if an only if permutation 'p' avoids 213.
-  -}
-  is213Avoiding :: Perm a -> Bool
-  is213Avoiding = is132Avoiding . reversal . complement
-
-  {-|
-    'is231Avoiding p' returns True if an only if permutation 'p' avoids 231.
-  -}
-  is231Avoiding :: Perm a -> Bool
-  is231Avoiding = Perm.Sort.isStackSortable
-
-  {-|
-    'is312Avoiding p' returns True if an only if permutation 'p' avoids 312.
-  -}
-  is312Avoiding :: Perm a -> Bool
-  is312Avoiding = is132Avoiding . complement
-
-  {-|
-    'is321Avoiding p' returns True if an only if permutation 'p' avoids 321.
-  -}
-  is321Avoiding :: Perm a -> Bool
-  is321Avoiding _ = True
 
 
     -- simionSchmidt :: Perm a -> Perm a

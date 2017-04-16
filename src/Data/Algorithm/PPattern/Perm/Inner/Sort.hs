@@ -23,11 +23,11 @@ module Data.Algorithm.PPattern.Perm.Inner.Sort
 
     import qualified Data.Algorithm.Patience as Patience
 
-    import qualified Data.Algorithm.PPattern.Geometry.APoint             as APoint
+    import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
     import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
     import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
     import qualified Data.Algorithm.PPattern.List                as List.Tools
-    import qualified Data.Algorithm.PPattern.StackSort           as StackSort
+    import qualified Data.Algorithm.PPattern.Sort                as Sort
 
     stackSort :: [APoint.APoint a] -> [APoint.APoint a]
     stackSort ts = fmap (Tuple.uncurry APoint.mk) . injectAnnotations m . Point.List.mkSequential $ StackSort.stackSort ys
