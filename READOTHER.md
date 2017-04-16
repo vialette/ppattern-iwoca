@@ -8,13 +8,18 @@
 
 ```haskell
 -- Define in Data.Algorithm.PPattern.Geometry.Point.hs
-newtype Point    = Point (Int, Int) deriving (Show, Eq, Ord)
+newtype Point = Point (Int, Int) deriving (Show, Eq, Ord)
 
 -- Define in Data.Algorithm.PPattern.Geometry.APoint.hs
 newtype APoint a = APoint (Point, a) deriving (Eq, Ord, Show)
 
 -- Define in Data.Algorithm.PPattern.Perm.hs
-newtype Perm a   = Perm { getList :: [APoint a] } deriving (Eq, Ord)
+newtype Perm a = Perm { getList :: [APoint a] } deriving (Eq, Ord)
+```
+
+```haskell
+mk :: (Foldable t, Ord a) => t a -> Perm a
+mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
 ```
 
 ### Basic manipulation
