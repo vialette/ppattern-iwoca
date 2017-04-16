@@ -30,19 +30,19 @@ module Data.Algorithm.PPattern.Perm.Sort
       'isStackSortable p' returns True if an only if permutation 'p' is stack
       sortable (i.e. it avoids 231).
     -}
-    isStackSortable :: Perm a -> Bool
+    isStackSortable :: Perm.Perm a -> Bool
     isStackSortable = List.Tools.allConsecutive2 (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
 
     {-|
       Stack sort a permutation.
     -}
-    stackSort :: Perm a -> Perm a
+    stackSort :: Perm.Perm a -> Perm.Perm a
     stackSort = Perm . Perm.Inner.Sort.stackSort . Perm.getList
 
     {-|
       How may stacks are needed to stack sort a permutation ?
     -}
-    stackSortIndex :: Perm a -> Int
+    stackSortIndex :: Perm.Perm a -> Int
     stackSortIndex = aux 0
       where
         aux i p
