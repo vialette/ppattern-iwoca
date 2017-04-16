@@ -34,7 +34,8 @@ Library
                  , Data.Algorithm.PPattern.CompactSeparatingTree
                  , Data.Algorithm.PPattern.SplitTree
                  , Data.Algorithm.PPattern
-  Other-Modules:   Data.Algorithm.PPattern.Perm.Inner.Statistics
+  Other-Modules:   Data.Algorithm.PPattern.Perm.Inner.Annotation
+                 , Data.Algorithm.PPattern.Perm.Inner.Statistics
                  , Data.Algorithm.PPattern.Perm.Inner.Operation
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context
@@ -45,7 +46,7 @@ Library
                  , Data.Algorithm.PPattern.State.IncreasingFactorization
                  , Data.Algorithm.PPattern.Strategy.Link
                  , Data.Algorithm.PPattern.Strategy.PLink
-                 , Data.Algorithm.PPattern.Sort.Sort
+                 , Data.Algorithm.PPattern.Sort
                  , Data.Algorithm.PPattern.Geometry.Point.List
                  , Data.Algorithm.PPattern.Geometry.ColorPoint
                  , Data.Algorithm.PPattern.Geometry.Interval

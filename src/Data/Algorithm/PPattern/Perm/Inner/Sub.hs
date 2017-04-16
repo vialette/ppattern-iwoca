@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Perm.Inner.Sort
+Module      : Data.Algorithm.PPattern.Perm.Inner.Sub
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-2017
 License     : MIT
@@ -10,7 +10,7 @@ Here is a longer description of this module, containing some
 commentary with @some markup@.
 -}
 
-module Data.Algorithm.PPattern.Perm.Inner.Sort
+module Data.Algorithm.PPattern.Perm.Inner.Sub
 (
   -- *
   sub

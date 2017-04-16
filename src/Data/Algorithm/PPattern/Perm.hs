@@ -79,7 +79,7 @@ where
   import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
   import qualified Data.Algorithm.PPattern.SeparatingTree      as ST
   import qualified Data.Algorithm.PPattern.List                as List.Tools
-  import qualified Data.Algorithm.PPattern.StackSort           as StackSort
+  import qualified Data.Algorithm.PPattern.Perm.Sort         as Perm.Sort
 
   {-|
     Permutation type.
@@ -303,7 +303,7 @@ where
     'is231Avoiding p' returns True if an only if permutation 'p' avoids 231.
   -}
   is231Avoiding :: Perm a -> Bool
-  is231Avoiding = isStackSortable
+  is231Avoiding = Perm.Sort.isStackSortable
 
   {-|
     'is312Avoiding p' returns True if an only if permutation 'p' avoids 312.

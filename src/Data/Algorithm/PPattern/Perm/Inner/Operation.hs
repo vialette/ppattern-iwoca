@@ -30,7 +30,7 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     import qualified Data.Algorithm.PPattern.Geometry.Point      as P
     import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
     import qualified Data.Algorithm.PPattern.List                as List.Tools
-    import qualified Data.Algorithm.PPattern.StackSort           as StackSort
+    import qualified Data.Algorithm.PPattern.Sort           as Sort
 
     {-|
     -}
@@ -46,29 +46,16 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
 
             p' = Point.updateXCoord x' p
 
-    {-|
-    -}
-    injectAnnotations :: IntMap.IntMap a -> [Point.Point] -> [(Point.Point, a)]
-    injectAnnotations m = fmap mk
-      where
-        mk p = case IntMap.lookup (P.yCoord p) m of
-                 Nothing -> error "Data.Algorithm.PPattern.Perm.List.merge. Empty map"
-                 Just a  -> (p, a)
-
-    {-|
-    -}
-    mkAnnotationMap :: [Int] -> [a] -> IntMap.IntMap a
-    mkAnnotationMap ys as = IntMap.fromList $ List.zip ys as
 
     {-|
     -}
     complement :: [APoint.APoint a] -> [APoint.APoint a]
-    complement ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m $ complementAux ys
+    complement ts = fmap (Tuple.uncurry Perm.T.mk) . Perm.Inner.Annotation.inject m $ complementAux ys
       where
         ps = fmap Perm.T.point ts
         ys = fmap Point.yCoord ps
         as = fmap Perm.T.annotation ts
-        m  = mkAnnotationMap ys as
+        m  = Perm.Inner.Annotation.mkMap ys as
 
     {-|
     -}
@@ -81,12 +68,12 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     {-|
     -}
     reversalComplement :: [APoint.APoint a] -> [APoint.APoint a]
-    reversalComplement ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m $ reversalComplementAux ys
+    reversalComplement ts = fmap (Tuple.uncurry Perm.T.mk) . Perm.Inner.Annotation.inject m $ reversalComplementAux ys
       where
         ps = fmap Perm.T.point ts
         ys = fmap Point.yCoord ps
         as = fmap Perm.T.annotation ts
-        m  = mkAnnotationMap ys as
+        m  = Perm.Inner.Annotation.mkMap ys as
 
     {-|
     -}
@@ -99,12 +86,12 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     {-|
     -}
     inverse :: [APoint.APoint a] -> [APoint.APoint a]
-    inverse ts = fmap (Tuple.uncurry Perm.T.mk) . injectAnnotations m $ inverseAux ys
+    inverse ts = fmap (Tuple.uncurry Perm.T.mk) . Perm.Inner.Annotation.inject m $ inverseAux ys
       where
         ps = fmap Perm.T.point ts
         ys = fmap Point.yCoord ps
         as = fmap Perm.T.annotation ts
-        m  = mkAnnotationMap ys as
+        m  = Perm.Inner.Annotation.mkMap ys as
 
     -- inverse auxialiary function.
     inverseAux :: [Int] -> [Point.Point]

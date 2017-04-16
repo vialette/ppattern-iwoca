@@ -19,18 +19,12 @@ module Data.Algorithm.PPattern.Perm.Sort
 )
   where
 
-    import qualified Data.List          as List
-    import qualified Data.Tuple         as Tuple
-    import qualified Data.Foldable      as Foldable
-    import qualified Data.IntMap.Strict as IntMap
+    import qualified Data.List  as List
+    import qualified Data.Tuple as Tuple
 
-    import qualified Data.Algorithm.Patience as Patience
-
-    import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
-    import qualified Data.Algorithm.PPattern.Geometry.Point      as P
-    import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
-    import qualified Data.Algorithm.PPattern.List                as List.Tools
-    import qualified Data.Algorithm.PPattern.Perm.Inner.Sort   as Perm.Inner.Sort
+    import qualified Data.Algorithm.PPattern.Perm            as Perm
+    import qualified Data.Algorithm.PPattern.Perm.Inner.Sort as Perm.Inner.Sort
+    import qualified Data.Algorithm.PPattern.List            as List.Tools
 
     {-|
       'isStackSortable p' returns True if an only if permutation 'p' is stack
@@ -43,7 +37,7 @@ module Data.Algorithm.PPattern.Perm.Sort
       Stack sort a permutation.
     -}
     stackSort :: Perm a -> Perm a
-    stackSort = Perm . Perm.Inner.Sort.stackSort . getList
+    stackSort = Perm . Perm.Inner.Sort.stackSort . Perm.getList
 
     {-|
       How may stacks are needed to stack sort a permutation ?
