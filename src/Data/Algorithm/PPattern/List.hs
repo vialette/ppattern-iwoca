@@ -56,9 +56,9 @@ where
   removeAt' :: (Eq a, Num a) => [b] -> a -> [b]
   removeAt' xs i = Tuple.snd $ removeAt xs i
 
-  splitAtMax :: (Ord a) => [a] -> Maybe ([a], a, [a])
-  splitAtMax [] = Nothing
-  splitAtMax xs = Just $ aux (Foldable.maximum xs) [] xs
+  splitAtMax :: (Ord a) => [a] -> ([a], a, [a])
+  splitAtMax [] = error "Data.PPattern.Algorithm.List.splitAtMax: empty list "
+  splitAtMax xs = aux (Foldable.maximum xs) [] xs
     where
       aux _ _  [] = error "We shouldn't be there"
       aux m ys (z : zs)

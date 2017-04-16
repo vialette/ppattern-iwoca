@@ -30,8 +30,18 @@ where
   import qualified Data.Algorithm.PPattern.Geometry.APoint as APoint
 
   data DecreasingBinaryTree a = Empty
-                              | Node {-# UNPACK #-} APoint.APoint (DecreasingBinaryTree a) (DecreasingBinaryTree a)
+                              | Node APoint.APoint (DecreasingBinaryTree a) (DecreasingBinaryTree a)
                               deriving (Eq)
 
-  mk :: [P.Point] -> DecreasingBinaryTree
-  mk = mkAux []
+  mk :: [APoint.APoint a] -> DecreasingBinaryTree a
+  mk []  = Empty
+  mk aps = Node ap (mk aps') (mk aps'')
+    where
+      (aps', ap, aps'') = Tools.List.splitAtMax aps
+
+  height :: DecreasingBinaryTree a -> Int
+  height Empty = 0
+  height (DecreasingBinaryTree _ leftTree rightTree) = 1 + max hLeft hRight
+    where
+      hLeft  = height leftTree
+      hRight = height rightTree

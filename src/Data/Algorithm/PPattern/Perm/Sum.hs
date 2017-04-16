@@ -22,9 +22,9 @@ module Data.Algorithm.PPattern.Perm.Sum
     import qualified Data.Monoid as Monoid
 
     import qualified Data.Algorithm.PPattern.Perm                as Perm
-    import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
+    import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
     import qualified Data.Algorithm.PPattern.Geometry.Point.List as Point.List
-        
+
     {-|
 
     -}

@@ -79,6 +79,9 @@ where
     where
       (x, y) = Point.toTuple p
 
+  {-|
+    Get point.
+  -}
   point :: ColorPoint -> Point.Point
   point (ColorPoint (p, _)) = p
 

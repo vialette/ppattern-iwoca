@@ -21,7 +21,9 @@ Library
     containers >=0.5 && <0.6,
     patience >=0.1
   Exposed-Modules: Data.Algorithm.PPattern.Perm
+                 , Data.Algorithm.PPattern.Perm.Sort
                  , Data.Algorithm.PPattern.Perm.Statistics
+                 , Data.Algorithm.PPattern.Perm.Sub
                  , Data.Algorithm.PPattern.Perm.Sum
                  , Data.Algorithm.PPattern.Perm.Enumerate
                  , Data.Algorithm.PPattern.Geometry.Point
@@ -31,12 +33,9 @@ Library
                  , Data.Algorithm.PPattern.SeparatingTree
                  , Data.Algorithm.PPattern.CompactSeparatingTree
                  , Data.Algorithm.PPattern.SplitTree
-                 , Data.Algorithm.PPattern.StackSort
                  , Data.Algorithm.PPattern
-  Other-Modules:   Data.Algorithm.PPattern.Perm.T
-                 , Data.Algorithm.PPattern.Perm.Inner.Statistics
+  Other-Modules:   Data.Algorithm.PPattern.Perm.Inner.Statistics
                  , Data.Algorithm.PPattern.Perm.Inner.Operation
-                 , Data.Algorithm.PPattern.Perm.List
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context
                  , Data.Algorithm.PPattern.State
@@ -46,6 +45,7 @@ Library
                  , Data.Algorithm.PPattern.State.IncreasingFactorization
                  , Data.Algorithm.PPattern.Strategy.Link
                  , Data.Algorithm.PPattern.Strategy.PLink
+                 , Data.Algorithm.PPattern.Sort.Sort
                  , Data.Algorithm.PPattern.Geometry.Point.List
                  , Data.Algorithm.PPattern.Geometry.ColorPoint
                  , Data.Algorithm.PPattern.Geometry.Interval

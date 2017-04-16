@@ -19,8 +19,6 @@ module Data.Algorithm.PPattern.Perm
 , mk
 
   -- *
-, sub
-, subRed
 , reversal
 , prefixes
 , prefixesRed
@@ -55,8 +53,7 @@ module Data.Algorithm.PPattern.Perm
 , isDecreasing
 , isMonotone
 , isSeparable
-, isStackSortable
-, stackSortIndex
+
 
   -- * Avoiding a pattern of length 3
 , is123Avoiding
@@ -77,9 +74,9 @@ where
   import qualified Data.Function as Function
   import qualified Data.Maybe    as Maybe
 
-  import qualified Data.Algorithm.PPattern.Perm.T              as Perm.T
   import qualified Data.Algorithm.PPattern.Perm.List           as Perm.T.List
   import qualified Data.Algorithm.PPattern.Geometry.Point      as P
+  import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
   import qualified Data.Algorithm.PPattern.SeparatingTree      as ST
   import qualified Data.Algorithm.PPattern.List                as List.Tools
   import qualified Data.Algorithm.PPattern.StackSort           as StackSort
@@ -87,7 +84,7 @@ where
   {-|
     Permutation type.
   -}
-  newtype Perm a = Perm { getList :: [Perm.T.T a] }
+  newtype Perm a = Perm { getList :: [APoint.APoint a] }
                    deriving (Eq, Ord)
 
   instance Show (Perm a) where
@@ -96,23 +93,13 @@ where
   instance Foldable.Foldable Perm  where
     foldr f z (Perm xs) = List.foldr f' z xs
       where
-        f' (Perm.T.T (_, a)) = f a
+        f' (APoint.APoint (_, a)) = f a
 
   {-|
     Construct a Perm from foldable.
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm a
   mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
-
-  {-|
-  -}
-  sub :: Int -> Int -> Perm a -> Perm a
-  sub xMin xMax = Perm . Perm.T.List.sub xMin xMax . getList
-
-  {-|
-  -}
-  subRed :: (Ord a) => Int -> Int -> Perm a -> Perm a
-  subRed xMin xMax = mk . fmap Perm.T.annotation . Perm.T.List.sub xMin xMax . getList
 
   {-|
     Construct all Perm prefixes of a permutation.
@@ -175,7 +162,7 @@ where
     Turn a permutation into a list with annotations.
   -}
   toAnnotedList :: Perm a -> [(P.Point, a)]
-  toAnnotedList = fmap Perm.T.toTuple . getList
+  toAnnotedList = fmap APoint.APointoTuple . getList
 
   {-|
     Points projection.
@@ -293,25 +280,6 @@ where
   separatingTree :: Perm a -> Maybe ST.SeparatingTree
   separatingTree = ST.mk . toPoints
 
-  {-|
-    Stack sort a permutation.
-  -}
-  stackSort :: Perm a -> Perm a
-  stackSort = Perm . Perm.T.List.stackSort . getList
-
-  stackSortIndex :: Perm a -> Int
-  stackSortIndex = aux 0
-    where
-      aux i p
-        | isIncreasing p = i
-        | otherwise      = aux (i+1) (stackSort p)
-
-  {-|
-    'isStackSortable p' returns True if an only if permutation 'p' is stack
-    sortable (i.e. it avoids 231).
-  -}
-  isStackSortable :: Perm a -> Bool
-  isStackSortable = List.Tools.allConsecutive2 (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
 
   {-|
     'is123Avoiding p' returns True if an only if permutation 'p' avoids 123.
