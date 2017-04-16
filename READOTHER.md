@@ -2,6 +2,14 @@
 
 ## Permutations
 
+### Implementation
+
+```haskell
+newtype Point    = Point (Int, Int) deriving (Show, Eq, Ord)
+newtype APoint a = APoint (Point, a) deriving (Eq, Ord, Show)
+newtype Perm a   = Perm { getList :: [APoint a] } deriving (Eq, Ord)
+```
+
 ### Basic manipulation
 
 ```haskell
