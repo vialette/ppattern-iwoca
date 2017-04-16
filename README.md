@@ -1,6 +1,16 @@
+<!-- python -m readme2tex --usepackage "tikz" --usepackage "xcolor" --output README.md --readme  READOTHER.md --nocdn --pngtrick -->
+
 # PPattern :
 
 ## Permutations
+
+### Implementation
+
+```haskell
+newtype Point    = Point (Int, Int) deriving (Show, Eq, Ord)
+newtype APoint a = APoint (Point, a) deriving (Eq, Ord, Show)
+newtype Perm a   = Perm { getList :: [APoint a] } deriving (Eq, Ord)
+```
 
 ### Basic manipulation
 
@@ -47,8 +57,8 @@ instance Show (Perm a) where
 The *reverse* of a permutation <img alt="$\sigma = \sigma_1 \sigma_2 \ldots \sigma_n$" src="svgs/a1cee0d8d3d6654f230ee21d0e3b760f.png?invert_in_darkmode" align=middle width="107.393715pt" height="14.102549999999994pt"/>
 is the permutation <img alt="$r(\sigma) = \sigma_n \sigma_{n-1} \ldots \sigma_1$" src="svgs/df2ffc92edd280590ab07553acd8568f.png?invert_in_darkmode" align=middle width="146.38239pt" height="24.56552999999997pt"/>.
 The *complement* <img alt="$c(\sigma)$" src="svgs/d0c33829c8fc0e2f48f678b2b15ebe56.png?invert_in_darkmode" align=middle width="29.772765pt" height="24.56552999999997pt"/> of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation
-<img alt="$\beta \beta \ldots \beta$" src="svgs/8b750b48f70d9d43e5a56ed5b4c6d54e.png?invert_in_darkmode" align=middle width="55.046474999999994pt" height="22.745910000000016pt"/> where
-<img alt="$\beta = n+1-\sigma_i$" src="svgs/0ff82f6a2ce96983b17ee584e71acb52.png?invert_in_darkmode" align=middle width="104.097675pt" height="22.745910000000016pt"/>.
+<img alt="$\sigma_1' \sigma_2' \ldots \sigma_n'$" src="svgs/0922a5a4b14a88fb2760df363dddf28f.png?invert_in_darkmode" align=middle width="75.57594pt" height="24.668490000000013pt"/> where
+<img alt="$\sigma_i' = n+1-\sigma_i$" src="svgs/7092faba1cb42d817c4333a6db603044.png?invert_in_darkmode" align=middle width="108.79769999999999pt" height="24.668490000000013pt"/>.
 The *inverse* is the regular group theoretical inverse on permutations;
 that is, the <img alt="$\sigma-i$" src="svgs/b445a63ee573fc22f4bd8ef07545914b.png?invert_in_darkmode" align=middle width="35.6334pt" height="21.602129999999985pt"/>-th position of the inverse <img alt="$\sigma^{-1}$" src="svgs/ec6538b98abdca3ca617fefc81ab0cb8.png?invert_in_darkmode" align=middle width="26.71152pt" height="26.70657pt"/> is occupied by
 <img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.png?invert_in_darkmode" align=middle width="5.642109000000004pt" height="21.602129999999985pt"/>.

@@ -1,3 +1,5 @@
+<!-- python -m readme2tex --usepackage "tikz" --usepackage "xcolor" --output README.md --readme  READOTHER.md --nocdn --pngtrick -->
+
 # PPattern :
 
 ## Permutations
