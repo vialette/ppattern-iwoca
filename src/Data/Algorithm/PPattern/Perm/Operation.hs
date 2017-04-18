@@ -21,7 +21,6 @@ module Data.Algorithm.PPattern.Perm.Operation
   where
 
     import qualified Data.Algorithm.PPattern.Perm                 as Perm
-    import qualified Data.Algorithm.PPattern.Geometry.APoint      as APoint
     import qualified Data.Algorithm.PPattern.Perm.Inner.Operation as Perm.Inner.Operation
 
 
@@ -44,4 +43,4 @@ module Data.Algorithm.PPattern.Perm.Operation
     {-|
     -}
     inverse :: Perm.Perm a  -> Perm.Perm a
-    inverse = Perm.apply Perm.Inner.Operation.inverse 
+    inverse = Perm.apply Perm.Inner.Operation.inverse

@@ -25,13 +25,14 @@ module Data.Algorithm.PPattern.Perm.Sort
     import qualified Data.Algorithm.PPattern.Perm            as Perm
     import qualified Data.Algorithm.PPattern.Perm.Inner.Sort as Perm.Inner.Sort
     import qualified Data.Algorithm.PPattern.List            as List.Tools
+    import qualified Data.Algorithm.PPattern.Sort            as Sort
 
     {-|
       'isStackSortable p' returns True if an only if permutation 'p' is stack
       sortable (i.e. it avoids 231).
     -}
     isStackSortable :: Perm.Perm a -> Bool
-    isStackSortable = List.Tools.allConsecutive2 (Tuple.uncurry (<)) . StackSort.stackSort . yCoords
+    isStackSortable = List.Tools.allConsecutive2 (Tuple.uncurry (<)) . Sort.stackSort . yCoords
 
     {-|
       Stack sort a permutation.

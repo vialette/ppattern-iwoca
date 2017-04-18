@@ -35,23 +35,23 @@ module Data.Algorithm.PPattern.Perm.Monotone
     {-|
       Return True iff the permutation is increasing.
     -}
-    isIncreasing :: Perm.Perm.Perm a -> Bool
+    isIncreasing :: Perm.Perm a -> Bool
     isIncreasing = isMonotoneAux (<)
 
     {-|
       Return True iff the permutation is decreasing.
     -}
-    isDecreasing :: Perm.Perm.Perm a -> Bool
+    isDecreasing :: Perm.Perm a -> Bool
     isDecreasing = isMonotoneAux (>)
 
     {-|
       Return True iff the permutation is monotone (i.e. increasing or decreasing).
     -}
-    isMonotone :: Perm.Perm.Perm a -> Bool
+    isMonotone :: Perm.Perm a -> Bool
     isMonotone p = isIncreasing p || isDecreasing p
 
     -- Auxiliary function for isIncreasing and isDecreasing
-    isMonotoneAux :: (Int -> Int -> Bool) -> Perm.Perm.Perm a -> Bool
+    isMonotoneAux :: (Int -> Int -> Bool) -> Perm.Perm a -> Bool
     isMonotoneAux cmp = Perm.Inner.Monotone.isMonotone cmp . getList
 
     {-|

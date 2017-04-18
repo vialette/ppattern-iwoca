@@ -31,6 +31,7 @@ where
   import qualified Data.Algorithm.PPattern.Search.Context      as Context
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
   import qualified Data.Algorithm.PPattern.Perm                as Perm
+  import qualified Data.Algorithm.PPattern.Perm.Monotone       as Perm.Monotone
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
   import qualified Data.Algorithm.PPattern.Occurrence          as Occurrence
 
@@ -92,16 +93,16 @@ where
       pSize = Perm.size p
       qSize = Perm.size q
 
-      qLongestDecreasing = Perm.longestDecreasing q
+      qLongestDecreasing = Perm.Monotone.longestDecreasing q
       qLongestDecreasingLength = Perm.size qLongestDecreasing
 
-      qLongestIncreasing = Perm.longestIncreasing q
+      qLongestIncreasing = Perm.Monotone.longestIncreasing q
       qLongestIncreasingLength = Perm.size qLongestIncreasing
 
       pReverse = Perm.reversal p
       qReverse = Perm.reversal q
 
-      qReverseLongestDecreasing = Perm.longestDecreasing qReverse
+      qReverseLongestDecreasing = Perm.Monotone.longestDecreasing qReverse
       qReverseLongestDecreasingLength = Perm.size qReverseLongestDecreasing
 
   searchAux :: Perm.Perm a -> Perm.Perm b -> Int -> S.Strategy -> Maybe State.State

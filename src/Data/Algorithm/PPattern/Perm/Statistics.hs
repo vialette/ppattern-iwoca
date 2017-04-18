@@ -40,7 +40,8 @@ module Data.Algorithm.PPattern.Perm.Statistics
 
     import qualified Data.Algorithm.PPattern.Perm                  as Perm
     import qualified Data.Algorithm.PPattern.Perm.Inner.Statistics as Perm.Inner.Statistics
-
+    import qualified Data.Algorithm.PPattern.Geometry.APoint       as APoint
+    
     {-|
     -}
     ascents :: Perm.Perm a -> APoint.APoint a

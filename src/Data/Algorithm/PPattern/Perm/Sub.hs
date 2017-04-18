@@ -29,6 +29,7 @@ module Data.Algorithm.PPattern.Perm.Sub
     import qualified Data.Algorithm.PPattern.Geometry.APoint as APoint
     import qualified Data.Algorithm.PPattern.Perm            as Perm
     import qualified Data.Algorithm.PPattern.Perm.Inner.Sub  as Perm.Inner.Sub
+    import qualified Data.Algorithm.PPattern.List            as List.Tools
 
     {-|
     -}
