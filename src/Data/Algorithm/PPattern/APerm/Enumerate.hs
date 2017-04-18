@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Perm.Enumerate
+Module      : Data.Algorithm.PPattern.APerm.Enumerate
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-2017
 License     : MIT
@@ -10,7 +10,7 @@ Here is a longer description of this module, containing some
 commentary with @some markup@.
 -}
 
-module Data.Algorithm.PPattern.Perm.Enumerate
+module Data.Algorithm.PPattern.APerm.Enumerate
 (
   perms
 , perms'
@@ -19,7 +19,7 @@ module Data.Algorithm.PPattern.Perm.Enumerate
 
     import Data.List as List
 
-    import Data.Algorithm.PPattern.Perm as Perm
+    import Data.Algorithm.PPattern.APerm as Perm
 
     {-|
     -}
