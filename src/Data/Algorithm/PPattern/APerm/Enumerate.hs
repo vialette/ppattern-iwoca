@@ -19,14 +19,14 @@ module Data.Algorithm.PPattern.APerm.Enumerate
 
     import Data.List as List
 
-    import Data.Algorithm.PPattern.APerm as Perm
+    import Data.Algorithm.PPattern.APerm as APerm
 
     {-|
     -}
-    perms :: (Enum a, Num a, Ord a) => a -> [Perm a]
-    perms n = [Perm.mk xs | xs <- List.permutations [1..n]]
+    perms :: (Enum a, Num a, Ord a) => a -> [APerm.APerm a]
+    perms n = [APerm.mk xs | xs <- List.permutations [1..n]]
 
     {-|
     -}
-    perms' :: (Ord a) => [a] -> [Perm a]
-    perms' xs = [Perm.mk xs' | xs' <- List.permutations xs]
+    perms' :: (Ord a) => [a] -> [APerm.APerm a]
+    perms' xs = [APerm.mk xs' | xs' <- List.permutations xs]
