@@ -32,7 +32,7 @@ where
 
   import qualified Data.Algorithm.PPattern.Color               as Color
 
-  -- Context type for constructing increasing colorings of permutation p.
+  -- Context type for constructing increasing colorings of APermutation p.
   data Context = Context  { precede                 :: IntMap.IntMap Int
                           , follow                  :: IntMap.IntMap Int
                           , rightLongestDecreasings :: IntMap.IntMap Int

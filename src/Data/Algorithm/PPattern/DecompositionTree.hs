@@ -20,13 +20,13 @@ module Data.Algorithm.PPattern.DecompositionTree
 )
 where
 
-  import qualified Data.Algorithm.PPattern.APerm             as APerm
+  import qualified Data.Algorithm.PPattern.AAPerm             as AAPerm
   import qualified Data.Algorithm.PPattern.Geometry.Interval as I
 
-  data DecompositionTree = Leaf APerm.APerm
+  data DecompositionTree = Leaf AAPerm.AAPerm
                          | Plus  (I.Interval, I.Interval) DecompositionTree DecompositionTree
                          | Minus (I.Interval, I.Interval) DecompositionTree DecompositionTree
 
 
-  mk :: APerm.APerm -> DecompositionTree
+  mk :: AAPerm.AAPerm -> DecompositionTree
   mk p

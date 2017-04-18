@@ -20,13 +20,13 @@ Library
     base >=4.8,
     containers >=0.5 && <0.6,
     patience >=0.1
-  Exposed-Modules: Data.Algorithm.PPattern.Perm
-                 , Data.Algorithm.PPattern.Perm.Avoidance
-                 , Data.Algorithm.PPattern.Perm.Sort
-                 , Data.Algorithm.PPattern.Perm.Statistics
-                 , Data.Algorithm.PPattern.Perm.Sub
-                 , Data.Algorithm.PPattern.Perm.Compose
-                 , Data.Algorithm.PPattern.Perm.Enumerate
+  Exposed-Modules: Data.Algorithm.PPattern.APerm
+                 , Data.Algorithm.PPattern.APerm.Avoidance
+                 , Data.Algorithm.PPattern.APerm.Sort
+                 , Data.Algorithm.PPattern.APerm.Statistics
+                 , Data.Algorithm.PPattern.APerm.Sub
+                 , Data.Algorithm.PPattern.APerm.Compose
+                 , Data.Algorithm.PPattern.APerm.Enumerate
                  , Data.Algorithm.PPattern.Geometry.Point
                  , Data.Algorithm.PPattern.Geometry.APoint
                  , Data.Algorithm.PPattern.Strategy
@@ -35,9 +35,9 @@ Library
                  , Data.Algorithm.PPattern.CompactSeparatingTree
                  , Data.Algorithm.PPattern.SplitTree
                  , Data.Algorithm.PPattern
-  Other-Modules:   Data.Algorithm.PPattern.Perm.Inner.Annotation
-                 , Data.Algorithm.PPattern.Perm.Inner.Statistics
-                 , Data.Algorithm.PPattern.Perm.Inner.Operation
+  Other-Modules:   Data.Algorithm.PPattern.APerm.Inner.Annotation
+                 , Data.Algorithm.PPattern.APerm.Inner.Statistics
+                 , Data.Algorithm.PPattern.APerm.Inner.Operation
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context
                  , Data.Algorithm.PPattern.State

@@ -6,7 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
 
-Pattern matching for permutations.
+Pattern matching for APermutations.
 -}
 
 module Data.Algorithm.PPattern.State
@@ -30,7 +30,7 @@ where
   import qualified Data.Monoid as Monoid
 
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint           as CP
-  import qualified Data.Algorithm.PPattern.Perm                         as Perm
+  import qualified Data.Algorithm.PPattern.APerm                         as APerm
   import qualified Data.Algorithm.PPattern.State.Next                    as State.Next
   import qualified Data.Algorithm.PPattern.State.Access                  as State.Access
   import qualified Data.Algorithm.PPattern.State.Embedding               as State.Embedding
@@ -54,9 +54,9 @@ where
     show State { embedding = e } = State.Embedding.showEmbedding e
 
   {-|
-    Make a new state. Permutation q is required.
+    Make a new state. APermutation q is required.
   -}
-  mk :: Perm.Perm a -> State
+  mk :: APerm.APerm a -> State
   mk q  = State { pColorPoints            = []
                 , qColorPoints            = qcps
                 , embedding               = State.Embedding.empty
@@ -76,7 +76,7 @@ where
 
   {-|
     Add a new colored point to the list of colored points associated
-    to permutation p. Update the state accordingly.
+    to APermutation p. Update the state accordingly.
   -}
   pAppend :: CP.ColorPoint -> State -> Maybe State
   pAppend pcp s =

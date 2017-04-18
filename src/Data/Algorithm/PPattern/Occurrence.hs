@@ -25,7 +25,7 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.Point      as P
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
-  import qualified Data.Algorithm.PPattern.Perm                as Perm
+  import qualified Data.Algorithm.PPattern.APerm                as APerm
 
   data Element a = Element { getX          :: {-# UNPACK #-} !Int
                            , getY          :: {-# UNPACK #-} !Int
@@ -42,15 +42,15 @@ where
                                      , getAnnotation = annotation
                                      }
 
-  mk :: Perm.Perm a -> Perm.Perm b -> [(CP.ColorPoint, CP.ColorPoint)] -> Occurrence a b
+  mk :: APerm.APerm a -> APerm.APerm b -> [(CP.ColorPoint, CP.ColorPoint)] -> Occurrence a b
   mk p q cps = Occurrence $ List.zip pElements qElements
     where
       pcps = List.sort $ fmap Tuple.fst cps
-      ps   = Perm.toAnnotedList p
+      ps   = APerm.toAnnotedList p
       pElements = List.reverse $ mkElements ps pcps
 
       qcps = List.sort $ fmap Tuple.snd cps
-      qs   = Perm.toAnnotedList q
+      qs   = APerm.toAnnotedList q
       qElements = List.reverse $ mkElements qs qcps
 
   mkElements :: [(P.Point, a)] -> [CP.ColorPoint] -> [Element a]
