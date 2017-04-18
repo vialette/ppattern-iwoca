@@ -17,6 +17,11 @@ module Data.Algorithm.PPattern.Perm.Inner.Annotation
 )
   where
 
+    import qualified Data.List          as List
+    import qualified Data.IntMap.Strict as IntMap
+
+    import qualified Data.Algorithm.PPattern.Geometry.Point as Point
+
     {-|
     -}
     mkMap :: [Int] -> [a] -> IntMap.IntMap a
@@ -27,6 +32,6 @@ module Data.Algorithm.PPattern.Perm.Inner.Annotation
     inject :: IntMap.IntMap a -> [Point.Point] -> [(Point.Point, a)]
     inject m = fmap mk
       where
-        mk p = case IntMap.lookup (P.yCoord p) m of
+        mk p = case IntMap.lookup (Point.yCoord p) m of
                  Nothing -> error "Data.Algorithm.PPattern.Perm.Inner.Annotation.inject. Empty map"
                  Just a  -> (p, a)

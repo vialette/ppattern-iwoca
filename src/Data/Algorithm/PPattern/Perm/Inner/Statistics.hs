@@ -69,25 +69,25 @@ module Data.Algorithm.PPattern.Perm.Inner.Statistics
     consecutive2 :: (Int -> Int -> Bool) -> [APoint.APoint a] -> [(APoint.APoint a, APoint.APoint a)]
     consecutive2 cmp = Foldable.foldr f [] . List.Tools.consecutive2
       where
-        f (t, t') acc
-          | y `cmp` y' = (t, t') : acc
+        f (ap, ap') acc
+          | y `cmp` y' = (ap, ap') : acc
           | otherwise  = acc
           where
-            y  = Point.yCoord $ Perm.T.point t
-            y' = Point.yCoord $ Perm.T.point t'
+            y  = Point.yCoord $ APoint.point ap
+            y' = Point.yCoord $ APoint.point ap'
 
     {-|
     -}
     consecutive3 :: (Int -> Int -> Bool) -> (Int -> Int -> Bool) -> [APoint.APoint a] -> [(APoint.APoint a, APoint.APoint a, APoint.APoint a)]
     consecutive3 cmp1 cmp2 = Foldable.foldr f [] . List.Tools.consecutive3
       where
-        f (t, t', t'') acc
-          | y `cmp1` y' && y' `cmp2` y'' = (t, t', t'') : acc
+        f (ap, ap', ap'') acc
+          | y `cmp1` y' && y' `cmp2` y'' = (ap, ap', ap'') : acc
           | otherwise  = acc
           where
-            y   = Point.yCoord $ Perm.T.point t
-            y'  = Point.yCoord $ Perm.T.point t'
-            y'' = Point.yCoord $ Perm.T.point t''
+            y   = Point.yCoord $ APoint.point ap
+            y'  = Point.yCoord $ APoint.point ap'
+            y'' = Point.yCoord $ APoint.point ap''
 
     {-|
     -}
@@ -115,10 +115,10 @@ module Data.Algorithm.PPattern.Perm.Inner.Statistics
     leftToRightAux cmp = aux []
       where
         aux acc []       = List.reverse acc
-        aux []  (t : ts) = aux [t] ts
-        aux acc@(t' : _) (t : ts)
-          | y' `cmp` y = aux (t : acc) ts
-          | otherwise  = aux acc ts
+        aux []  (ap : aps) = aux [ap] aps
+        aux acc@(ap' : _) (ap : aps)
+          | y' `cmp` y = aux (ap : acc) aps
+          | otherwise  = aux acc aps
           where
-            y  = Point.yCoord $ Perm.T.point t
-            y' = Point.yCoord $ Perm.T.point t'
+            y  = Point.yCoord $ APoint.point ap
+            y' = Point.yCoord $ APoint.point ap'

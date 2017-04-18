@@ -22,25 +22,24 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     import qualified Data.List          as List
     import qualified Data.Tuple         as Tuple
     import qualified Data.Foldable      as Foldable
-    import qualified Data.IntMap.Strict as IntMap
 
-    import qualified Data.Algorithm.Patience as Patience
-
-    import qualified Data.Algorithm.PPattern.Geometry.APoint      as APoint
-    import qualified Data.Algorithm.PPattern.Geometry.Point      as P
-    import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
-    import qualified Data.Algorithm.PPattern.List                as List.Tools
-    import qualified Data.Algorithm.PPattern.Sort           as Sort
+    import qualified Data.Algorithm.PPattern.Perm.Inner.Annotation as Perm.Inner.Annotation
+    import qualified Data.Algorithm.PPattern.Geometry.APoint       as APoint
+    import qualified Data.Algorithm.PPattern.Geometry.Point        as Point
+    import qualified Data.Algorithm.PPattern.Geometry.Point.List   as Point.List
 
     {-|
     -}
     reversal :: [APoint.APoint a] -> [APoint.APoint a]
-    reversal ts = Foldable.foldl f [] ts
+    reversal aps = Foldable.foldl f [] aps
       where
-        n = List.length ts
+        n = List.length aps
 
-        f acc (Perm.T.T (p, a)) = Perm.T.mk p' a : acc
+        f acc ap = APoint.mk p' a : acc
           where
+            p = APoint.point ap
+            a = APoint.annotation ap
+
             x = Point.xCoord p
             x' = n + 1 - x
 
@@ -50,11 +49,11 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     {-|
     -}
     complement :: [APoint.APoint a] -> [APoint.APoint a]
-    complement ts = fmap (Tuple.uncurry Perm.T.mk) . Perm.Inner.Annotation.inject m $ complementAux ys
+    complement aps = fmap (Tuple.uncurry APoint.mk) . Perm.Inner.Annotation.inject m $ complementAux ys
       where
-        ps = fmap Perm.T.point ts
+        ps = fmap APoint.point aps
         ys = fmap Point.yCoord ps
-        as = fmap Perm.T.annotation ts
+        as = fmap APoint.annotation aps
         m  = Perm.Inner.Annotation.mkMap ys as
 
     {-|
@@ -68,11 +67,11 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     {-|
     -}
     reversalComplement :: [APoint.APoint a] -> [APoint.APoint a]
-    reversalComplement ts = fmap (Tuple.uncurry Perm.T.mk) . Perm.Inner.Annotation.inject m $ reversalComplementAux ys
+    reversalComplement aps = fmap (Tuple.uncurry APoint.mk) . Perm.Inner.Annotation.inject m $ reversalComplementAux ys
       where
-        ps = fmap Perm.T.point ts
+        ps = fmap APoint.point aps
         ys = fmap Point.yCoord ps
-        as = fmap Perm.T.annotation ts
+        as = fmap APoint.annotation aps
         m  = Perm.Inner.Annotation.mkMap ys as
 
     {-|
@@ -86,11 +85,11 @@ module Data.Algorithm.PPattern.Perm.Inner.Operation
     {-|
     -}
     inverse :: [APoint.APoint a] -> [APoint.APoint a]
-    inverse ts = fmap (Tuple.uncurry Perm.T.mk) . Perm.Inner.Annotation.inject m $ inverseAux ys
+    inverse aps = fmap (Tuple.uncurry APoint.mk) . Perm.Inner.Annotation.inject m $ inverseAux ys
       where
-        ps = fmap Perm.T.point ts
+        ps = fmap APoint.point aps
         ys = fmap Point.yCoord ps
-        as = fmap Perm.T.annotation ts
+        as = fmap APoint.annotation aps
         m  = Perm.Inner.Annotation.mkMap ys as
 
     -- inverse auxialiary function.

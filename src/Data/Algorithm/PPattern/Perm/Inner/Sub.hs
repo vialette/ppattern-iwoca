@@ -17,18 +17,16 @@ module Data.Algorithm.PPattern.Perm.Inner.Sub
 )
   where
 
-    import qualified Data.List          as List
-    import qualified Data.Tuple         as Tuple
-    import qualified Data.Foldable      as Foldable
-    import qualified Data.IntMap.Strict as IntMap
-
-    import qualified Data.Algorithm.Patience as Patience
+    -- import qualified Data.List          as List
+    -- import qualified Data.Tuple         as Tuple
+    -- import qualified Data.Foldable      as Foldable
+    -- import qualified Data.IntMap.Strict as IntMap
 
     import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
     import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
-    import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
-    import qualified Data.Algorithm.PPattern.List                as List.Tools
-    import qualified Data.Algorithm.PPattern.StackSort           as StackSort
+    -- import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
+    -- import qualified Data.Algorithm.PPattern.List                as List.Tools
+    -- import qualified Data.Algorithm.PPattern.Sort                as Sort
 
     --
     sub :: Int -> Int -> [APoint.APoint a] -> [APoint.APoint a]

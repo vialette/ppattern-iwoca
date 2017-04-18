@@ -16,23 +16,18 @@ module Data.Algorithm.PPattern.Perm.Inner.Sort
 )
   where
 
-    import qualified Data.List          as List
     import qualified Data.Tuple         as Tuple
-    import qualified Data.Foldable      as Foldable
-    import qualified Data.IntMap.Strict as IntMap
 
-    import qualified Data.Algorithm.Patience as Patience
-
+    import qualified Data.Algorithm.PPattern.Perm.Inner.Annotation as Perm.Inner.Annotation
     import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
     import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
-    import qualified Data.Algorithm.PPattern.Geometry.Point.List as P.List
-    import qualified Data.Algorithm.PPattern.List                as List.Tools
+    import qualified Data.Algorithm.PPattern.Geometry.Point.List as Point.List
     import qualified Data.Algorithm.PPattern.Sort                as Sort
 
     stackSort :: [APoint.APoint a] -> [APoint.APoint a]
-    stackSort ts = fmap (Tuple.uncurry APoint.mk) . injectAnnotations m . Point.List.mkSequential $ StackSort.stackSort ys
+    stackSort aps = fmap (Tuple.uncurry APoint.mk) . Perm.Inner.Annotation.inject m . Point.List.mkSequential $ Sort.stackSort ys
       where
-        ps = fmap Perm.T.point ts
-        ys = fmap P.yCoord ps
-        as = fmap Perm.T.annotation ts
-        m  = mkAnnotationMap ys as
+        ps = fmap APoint.point aps
+        ys = fmap Point.yCoord ps
+        as = fmap APoint.annotation aps
+        m  = Perm.Inner.Annotation.mkMap ys as
