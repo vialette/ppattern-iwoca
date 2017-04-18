@@ -10,7 +10,7 @@ Stability   : experimental
 module Data.Algorithm.PPattern.Geometry.APoint
 (
   -- * The @CPoint@ type
-  APoint
+  APoint(..)
 
   -- * Constructing
 , mk

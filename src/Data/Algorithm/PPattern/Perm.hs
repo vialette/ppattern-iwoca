@@ -17,20 +17,13 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Constructing
 , mk
+, fromList
 
-  -- *
-, reversal
-, complement
-, reversalComplement
-, inverse
-, stackSort
+, apply
 
   -- * Querying
 , size
-, longestIncreasing
-, longestIncreasingLength
-, longestDecreasing
-, longestDecreasingLength
+
 
   -- * Converting
 , toAnnotedList
@@ -43,9 +36,6 @@ module Data.Algorithm.PPattern.Perm
 , isAlernating
 , isUpDown
 , isDownUp
-, isIncreasing
-, isDecreasing
-, isMonotone
 , isSeparable
 
 
@@ -87,32 +77,18 @@ where
   mk :: (Foldable t, Ord a) => t a -> Perm a
   mk = Perm . fmap (uncurry APoint.mk) . reduce . Foldable.toList
 
-  {-|
-    Reverse a permutation.
-  -}
-  reversal :: Perm a -> Perm a
-  reversal = Perm . APoint.List.reversal . getList
+  fromList :: [APoint.APoint a] -> Perm a
+  fromList = Perm
 
-  {-|
-  -}
-  complement :: Perm a -> Perm a
-  complement = Perm . APoint.List.complement . getList
+  apply :: ([APoint.APoint a] -> [APoint.APoint a]) -> Perm a -> Perm a
+  apply f = fromList . f . getList
 
-  {-|
-  -}
-  reversalComplement :: Perm a -> Perm a
-  reversalComplement = Perm . APoint.List.reversalComplement . getList
-
-  {-|
-  -}
-  inverse :: Perm a  -> Perm a
-  inverse = Perm . APoint.List.inverse . getList
 
   {-|
     Turn a permutation into a list with annotations.
   -}
   toAnnotedList :: Perm a -> [(Point.Point, a)]
-  toAnnotedList = fmap APoint.APointoTuple . getList
+  toAnnotedList = fmap APoint.toTuple . getList
 
   {-|
     Points projection.
@@ -154,27 +130,6 @@ where
   size :: Perm a -> Int
   size = List.length . getList
 
-  {-|
-    Return True iff the permutation is increasing.
-  -}
-  isIncreasing :: Perm a -> Bool
-  isIncreasing = isMonotoneAux (<)
-
-  {-|
-    Return True iff the permutation is decreasing.
-  -}
-  isDecreasing :: Perm a -> Bool
-  isDecreasing = isMonotoneAux (>)
-
-  {-|
-    Return True iff the permutation is monotone (i.e. increasing or decreasing).
-  -}
-  isMonotone :: Perm a -> Bool
-  isMonotone p = isIncreasing p || isDecreasing p
-
-  -- Auxiliary function for isIncreasing and isDecreasing
-  isMonotoneAux :: (Int -> Int -> Bool) -> Perm a -> Bool
-  isMonotoneAux cmp = APoint.List.isMonotone cmp . getList
 
   {-|
     Return True iff the permutation is alternating and starts with an up-step.
@@ -193,32 +148,6 @@ where
   -}
   isAlernating :: Perm a -> Bool
   isAlernating p = isUpDown p || isDownUp p
-
-  {-|
-    'longestIncreasing xs' returns a longest increasing subsequences in 'xs'.
-  -}
-  longestIncreasing :: Perm a -> Perm a
-  longestIncreasing = Perm . APoint.List.longestIncreasing . getList
-
-  {-|
-    'longestIncreasingLength xs' returns the length of the longest increasing
-    subsequences in 'xs'.
-  -}
-  longestIncreasingLength :: Perm a -> Int
-  longestIncreasingLength = size . longestIncreasing
-
-  {-|
-    'longestDecreasing xs' returns a longest decreasing subsequences in 'xs'.
-  -}
-  longestDecreasing :: Perm a -> Perm a
-  longestDecreasing = Perm . APoint.List.longestDecreasing . getList
-
-  {-|
-    'longestDecreasingLength xs' returns the length of the longest decreasing
-    subsequences in 'xs'.
-  -}
-  longestDecreasingLength :: Perm a -> Int
-  longestDecreasingLength = size . longestDecreasing
 
   {-|
     'isSeparable p' returns True if an only if permutation 'p' is separable

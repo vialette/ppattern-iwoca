@@ -33,7 +33,7 @@ module Data.Algorithm.PPattern.Perm.Sub
     {-|
     -}
     sub :: Int -> Int -> Perm.Perm a -> Perm.Perm a
-    sub xMin xMax = Perm.Perm . Perm.Inner.Sub.sub xMin xMax . Perm.getList
+    sub xMin xMax = Perm.fromList . Perm.Inner.Sub.sub xMin xMax . Perm.getList
 
     {-|
     -}
@@ -44,34 +44,34 @@ module Data.Algorithm.PPattern.Perm.Sub
       Construct all Perm prefixes of a permutation.
     -}
     prefixes :: Perm a -> [Perm a]
-    prefixes = fmap Perm . List.Tools.prefixes . getList
+    prefixes = fmap Perm.fromList . List.Tools.prefixes . getList
 
     {-|
       Construct all reduced Perm prefixes of a permutation.
     -}
     prefixesRed :: (Ord a) => Perm a -> [Perm a]
-    prefixesRed = fmap (mk . fmap APoint.annotation) . List.Tools.prefixes . getList
+    prefixesRed = fmap (Perm.mk . fmap APoint.annotation) . List.Tools.prefixes . getList
 
     {-|
       Construct all Perm suffixes of a permutation.
     -}
     suffixes :: Perm a -> [Perm a]
-    suffixes = fmap Perm . List.Tools.suffixes . getList
+    suffixes = fmap Perm.fromList . List.Tools.suffixes . getList
 
     {-|
       Construct all reduced Perm suffixes of a permutation.
     -}
     suffixesRed :: (Ord a) => Perm a -> [Perm a]
-    suffixesRed = fmap (mk . fmap APoint.annotation) . List.Tools.suffixes . getList
+    suffixesRed = fmap (Perm.mk . fmap APoint.annotation) . List.Tools.suffixes . getList
 
     {-|
       Construct all Perm factors of a permutation.
     -}
     factors :: Perm a -> [Perm a]
-    factors = fmap Perm . List.Tools.factors . getList
+    factors = fmap Perm.fromList . List.Tools.factors . getList
 
     {-|
       Construct all reduced Perm factors of a permutation.
     -}
     factorsRed :: (Ord a) => Perm a -> [Perm a]
-    factorsRed = fmap (mk . fmap APoint.annotation) . List.Tools.factors . getList
+    factorsRed = fmap (Perm.mk . fmap APoint.annotation) . List.Tools.factors . getList

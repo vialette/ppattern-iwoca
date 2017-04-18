@@ -44,7 +44,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     ascents :: Perm.Perm a -> APoint.APoint a
-    ascents = Perm.T.Statistics.ascents . Perm.getList
+    ascents = Perm.Inner.Statistics.ascents . Perm.getList
 
     {-|
     -}
@@ -54,7 +54,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     doubleAscents :: Perm.Perm a -> APoint.APoint a
-    doubleAscents = Perm.T.Statistics.doubleAscents . Perm.getList
+    doubleAscents = Perm.Inner.Statistics.doubleAscents . Perm.getList
 
     {-|
     -}
@@ -64,7 +64,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     descents :: Perm.Perm a -> APoint.APoint a
-    descents = Perm.T.Statistics.descents . Perm.getList
+    descents = Perm.Inner.Statistics.descents . Perm.getList
 
     {-|
     -}
@@ -74,7 +74,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     doubleDescents :: Perm.Perm a -> APoint.APoint a
-    doubleDescents = Perm.T.Statistics.doubleDescents . Perm.getList
+    doubleDescents = Perm.Inner.Statistics.doubleDescents . Perm.getList
 
     {-|
     -}
@@ -84,7 +84,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     peaks :: Perm.Perm a -> APoint.APoint a
-    peaks = Perm.T.Statistics.peaks . Perm.getList
+    peaks = Perm.Inner.Statistics.peaks . Perm.getList
 
     {-|
     -}
@@ -94,7 +94,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     valleys :: Perm.Perm a -> APoint.APoint a
-    valleys = Perm.T.Statistics.valleys . Perm.getList
+    valleys = Perm.Inner.Statistics.valleys . Perm.getList
 
     {-|
     -}
@@ -104,7 +104,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     leftToRightMinima :: Perm.Perm a -> APoint.APoint a
-    leftToRightMinima = Perm.T.Statistics.leftToRightMinima . Perm.getList
+    leftToRightMinima = Perm.Inner.Statistics.leftToRightMinima . Perm.getList
 
     {-|
     -}
@@ -114,7 +114,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     leftToRightMaxima :: Perm.Perm a -> APoint.APoint a
-    leftToRightMaxima = Perm.T.Statistics.leftToRightMaxima . Perm.getList
+    leftToRightMaxima = Perm.Inner.Statistics.leftToRightMaxima . Perm.getList
 
     {-|
     -}
@@ -124,7 +124,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     rightToLeftMinima :: Perm.Perm a -> APoint.APoint a
-    rightToLeftMinima = Perm.T.Statistics.rightToLeftMinima . Perm.getList
+    rightToLeftMinima = Perm.Inner.Statistics.rightToLeftMinima . Perm.getList
 
     {-|
     -}
@@ -134,7 +134,7 @@ module Data.Algorithm.PPattern.Perm.Statistics
     {-|
     -}
     rightToLeftMaxima :: Perm.Perm a -> APoint.APoint a
-    rightToLeftMaxima = Perm.T.Statistics.rightToLeftMaxima . Perm.getList
+    rightToLeftMaxima = Perm.Inner.Statistics.rightToLeftMaxima . Perm.getList
 
     {-|
     -}
