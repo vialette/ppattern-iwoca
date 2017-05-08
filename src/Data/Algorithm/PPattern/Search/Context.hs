@@ -38,6 +38,8 @@ where
                           , rightLongestDecreasings :: IntMap.IntMap Int
                           }
 
+  {-|
+  -}
   mk :: IntMap.IntMap Int -> IntMap.IntMap Int -> IntMap.IntMap Int -> Context
   mk precedeMap followMap rightLongestDecreasingsMap =
     Context { precede = precedeMap
@@ -45,6 +47,8 @@ where
             , rightLongestDecreasings = rightLongestDecreasingsMap
             }
 
+  {-|
+  -}
   allowedColor :: Color.Color -> Int -> [Color.Color] -> Context -> Bool
   allowedColor c y cs context =
     case IntMap.lookup y m of
@@ -54,24 +58,32 @@ where
       m = rightLongestDecreasings context
       k = List.length $ List.filter (> c) cs
 
+  {-|
+  -}
   agree :: Color.Color -> Int -> Context -> Bool
   agree c y context = agreeForPrecede && agreeForFollow
     where
       agreeForPrecede = agreePrecede c y (precede context)
       agreeForFollow  = agreeFollow  c y (follow  context)
 
+  {-|
+  -}
   agreePrecede :: Color.Color -> Int -> IntMap.IntMap Int -> Bool
   agreePrecede c y m =
     case IntMap.lookup c m of
       Nothing -> True
       Just y' -> y' < y
 
+  {-|
+  -}
   agreeFollow :: Color.Color -> Int -> IntMap.IntMap Int -> Bool
   agreeFollow c y m =
     case IntMap.lookup c m of
       Nothing -> True
       Just y' -> y < y'
 
+  {-|
+  -}
   update :: Color.Color -> Int -> Context -> Context
   update c y context = mk precede' follow' rightLongestDecreasings'
     where
@@ -79,6 +91,8 @@ where
       follow'  = updateFollow  c y (follow  context)
       rightLongestDecreasings' = rightLongestDecreasings context
 
+  {-|
+  -}
   updatePrecede :: Color.Color -> Int-> IntMap.IntMap Int -> IntMap.IntMap Int
   updatePrecede = aux (1 :: Color.Color)
     where
@@ -90,6 +104,8 @@ where
                    Nothing  -> IntMap.insert c y          m
                    Just y'  -> IntMap.insert c (max y y') m
 
+  {-|
+  -}
   updateFollow :: Color.Color -> Int -> IntMap.IntMap Int -> IntMap.IntMap Int
   updateFollow c y m =
     case IntMap.lookup c m of

@@ -26,7 +26,3 @@ where
   data DecompositionTree = Leaf AAPerm.AAPerm
                          | Plus  (I.Interval, I.Interval) DecompositionTree DecompositionTree
                          | Minus (I.Interval, I.Interval) DecompositionTree DecompositionTree
-
-
-  mk :: AAPerm.AAPerm -> DecompositionTree
-  mk p
