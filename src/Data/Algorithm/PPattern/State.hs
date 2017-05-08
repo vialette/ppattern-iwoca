@@ -29,7 +29,7 @@ where
 
   import qualified Data.Monoid as Monoid
 
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint           as CP
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint           as ColorPoint
   import qualified Data.Algorithm.PPattern.APerm                         as APerm
   import qualified Data.Algorithm.PPattern.State.Next                    as State.Next
   import qualified Data.Algorithm.PPattern.State.Access                  as State.Access
@@ -38,13 +38,13 @@ where
 
   -- The state of a search
   data State =
-    State { pColorPoints            :: [CP.ColorPoint]
-          , qColorPoints            :: [CP.ColorPoint]
+    State { pColorPoints            :: [ColorPoint.ColorPoint]
+          , qColorPoints            :: [ColorPoint.ColorPoint]
           , embedding               :: State.Embedding.Embedding
           , pRightmostMappedByColor :: State.Access.Access
           , qLeftmostByColor        :: State.Access.Access
           , qRightmostMappedByColor :: State.Access.Access
-          , qRightmost              :: Maybe CP.ColorPoint
+          , qRightmost              :: Maybe ColorPoint.ColorPoint
           , pNext                   :: State.Next.Next
           , qNext                   :: State.Next.Next
           }
@@ -71,29 +71,29 @@ where
       qcps = State.IncreasingFactorization.increasingFactorization q
       n    = State.Next.mk qcps
 
-  toList :: State -> [(CP.ColorPoint, CP.ColorPoint)]
+  toList :: State -> [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)]
   toList = State.Embedding.toList . embedding
 
   {-|
     Add a new colored point to the list of colored points associated
     to APermutation p. Update the state accordingly.
   -}
-  pAppend :: CP.ColorPoint -> State -> Maybe State
+  pAppend :: ColorPoint.ColorPoint -> State -> Maybe State
   pAppend pcp s =
-    case State.Access.query (CP.color pcp) (pRightmostMappedByColor s) of
+    case State.Access.query (ColorPoint.color pcp) (pRightmostMappedByColor s) of
       Nothing   -> pAppendAux1 pcp  pcp s
       Just pcp' -> pAppendAux1 pcp' pcp s
 
-  pAppendAux1 :: CP.ColorPoint -> CP.ColorPoint -> State -> Maybe State
+  pAppendAux1 :: ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> State -> Maybe State
   pAppendAux1 pcp pcp' s =
     case State.Embedding.query pcp (embedding s) of
-      Nothing  -> State.Access.query (CP.color pcp) (qLeftmostByColor s) >>=
+      Nothing  -> State.Access.query (ColorPoint.color pcp) (qLeftmostByColor s) >>=
                   pAppendAux2 pcp pcp' s
       Just qcp -> State.Next.query qcp (qNext s) >>=
                   pAppendAux2 pcp pcp' s
 
   pAppendAux2 ::
-    CP.ColorPoint -> CP.ColorPoint  -> State -> CP.ColorPoint ->
+    ColorPoint.ColorPoint -> ColorPoint.ColorPoint  -> State -> ColorPoint.ColorPoint ->
     Maybe State
   pAppendAux2 pcp pcp' s qcp =
     case qRightmost s of
@@ -101,21 +101,21 @@ where
       Just qcp' -> pAppendAux3 pcp pcp' qcp' s qcp
 
   pAppendAux3 ::
-    CP.ColorPoint -> CP.ColorPoint -> CP.ColorPoint -> State -> CP.ColorPoint ->
+    ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> State -> ColorPoint.ColorPoint ->
     Maybe State
   pAppendAux3 pcp pcp' qcp s qcp'
     | x' < x    = State.Next.query qcp' (qNext s) >>= pAppendAux3 pcp pcp' qcp s
     | otherwise = pAppendFinalize pcp pcp' qcp qcp' s
     where
-      x  = CP.xCoord qcp
-      x' = CP.xCoord qcp'
+      x  = ColorPoint.xCoord qcp
+      x' = ColorPoint.xCoord qcp'
 
   pAppendFinalize ::
-    CP.ColorPoint -> CP.ColorPoint -> CP.ColorPoint -> CP.ColorPoint -> State ->
+    ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> State ->
     Maybe State
   pAppendFinalize pcp pcp' _ qcp' s = Just s'
     where
-      c                        = CP.color pcp
+      c                        = ColorPoint.color pcp
       pColorPoints'            = pColorPoints s `Monoid.mappend` [pcp']
       embedding'               = State.Embedding.insert pcp' qcp' (embedding s)
       pRightmostMappedByColor' = State.Access.insert c pcp' (pRightmostMappedByColor s)
@@ -133,17 +133,17 @@ where
                , pNext                   = pNext'
                }
 
-  xResolve :: CP.ColorPoint -> Int -> State -> Maybe State
+  xResolve :: ColorPoint.ColorPoint -> Int -> State -> Maybe State
   xResolve pcp t s = State.Embedding.query pcp (embedding s) >>=
                      State.Next.xJumpThreshold t (qNext s)    >>=
                      resolve pcp s
 
-  yResolve :: CP.ColorPoint -> Int -> State -> Maybe State
+  yResolve :: ColorPoint.ColorPoint -> Int -> State -> Maybe State
   yResolve pcp t s = State.Embedding.query pcp (embedding s) >>=
                      State.Next.yJumpThreshold t (qNext s)    >>=
                      resolve pcp s
 
-  resolve :: CP.ColorPoint -> State -> CP.ColorPoint -> Maybe State
+  resolve :: ColorPoint.ColorPoint -> State -> ColorPoint.ColorPoint -> Maybe State
   resolve pcp s qcp =
     resolveAux (State.Next.query pcp (pNext s)) (State.Next.query qcp (qNext s)) s'
     where
@@ -152,15 +152,15 @@ where
       qRightmost' =
         case qRightmost s of
           Nothing   -> Just qcp
-          Just qcp' -> if CP.xCoord qcp > CP.xCoord qcp'
+          Just qcp' -> if ColorPoint.xCoord qcp > ColorPoint.xCoord qcp'
                        then Just qcp
                        else Just qcp'
 
       qRightmostMappedByColor' =
-        case State.Access.query (CP.color qcp) (qRightmostMappedByColor s) of
-          Nothing   -> State.Access.insert (CP.color qcp) qcp (qRightmostMappedByColor s)
-          Just qcp' -> if CP.xCoord qcp > CP.xCoord qcp'
-                       then State.Access.insert (CP.color qcp) qcp (qRightmostMappedByColor s)
+        case State.Access.query (ColorPoint.color qcp) (qRightmostMappedByColor s) of
+          Nothing   -> State.Access.insert (ColorPoint.color qcp) qcp (qRightmostMappedByColor s)
+          Just qcp' -> if ColorPoint.xCoord qcp > ColorPoint.xCoord qcp'
+                       then State.Access.insert (ColorPoint.color qcp) qcp (qRightmostMappedByColor s)
                        else qRightmostMappedByColor s
 
       s' = s { embedding               = embedding'
@@ -168,12 +168,12 @@ where
              , qRightmostMappedByColor = qRightmostMappedByColor'
              }
 
-  resolveAux :: Maybe CP.ColorPoint -> Maybe CP.ColorPoint -> State -> Maybe State
+  resolveAux :: Maybe ColorPoint.ColorPoint -> Maybe ColorPoint.ColorPoint -> State -> Maybe State
   resolveAux Nothing    _          s = Just s
   resolveAux _          Nothing    _ = Nothing
   resolveAux (Just pcp) (Just qcp) s = State.Embedding.query pcp (embedding s) >>= resolveAux' pcp qcp s
 
-  resolveAux' :: CP.ColorPoint -> CP.ColorPoint -> State -> CP.ColorPoint -> Maybe State
+  resolveAux' :: ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> State -> ColorPoint.ColorPoint -> Maybe State
   resolveAux' pcp qcp s qcp'
-    | CP.xCoord qcp <= CP.xCoord qcp' = Just s
+    | ColorPoint.xCoord qcp <= ColorPoint.xCoord qcp' = Just s
     | otherwise                       = resolve pcp s qcp

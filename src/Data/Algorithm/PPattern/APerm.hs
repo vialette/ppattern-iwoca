@@ -24,7 +24,6 @@ module Data.Algorithm.PPattern.APerm
   -- * Querying
 , size
 
-
   -- * Converting
 , toAnnotedList
 , toPoints
@@ -72,20 +71,25 @@ where
         f' (APoint.APoint (_, a)) = f a
 
   {-|
-    Construct a APerm from foldable.
+    Construct a APerm from some foldable instance.
   -}
   mk :: (Foldable t, Ord a) => t a -> APerm a
   mk = APerm . fmap (uncurry APoint.mk) . reduce . Foldable.toList
 
+  {-|
+    Construct a APerm from a list of APoints.
+  -}
   fromList :: [APoint.APoint a] -> APerm a
   fromList = APerm
 
+  {-|
+    Construct a APerm by applying function on an existing APerm..
+  -}
   apply :: ([APoint.APoint a] -> [APoint.APoint a]) -> APerm a -> APerm a
   apply f = fromList . f . getList
 
-
   {-|
-    Turn a APermutation into a list with annotations.
+    Turn a APermutation into annotated Point list.
   -}
   toAnnotedList :: APerm a -> [(Point.Point, a)]
   toAnnotedList = fmap APoint.toTuple . getList
@@ -97,19 +101,19 @@ where
   toPoints = fmap APoint.point . getList
 
   {-|
-    x-ccordinates projection.
+    x-ccordinates projection (i.e. the list of all x-coordinates).
   -}
   xCoords :: APerm a -> [Int]
   xCoords = fmap Point.xCoord . toPoints
 
   {-|
-    y-ccordinates projection.
+    y-ccordinates projection (i.e. the list of all y-coordinates)..
   -}
   yCoords :: APerm a -> [Int]
   yCoords = fmap Point.yCoord . toPoints
 
   {-|
-    Points projection.
+    Points projection (i.e. the list of all annotations)..
   -}
   annotations :: APerm a -> [a]
   annotations = fmap APoint.annotation . getList
@@ -125,37 +129,41 @@ where
       f (y, (x, a)) = (Point.mk x y, a)
 
   {-|
-    Return the size of the APermutation.
+    Return the size of a APermutation.
   -}
   size :: APerm a -> Int
   size = List.length . getList
 
 
   {-|
-    Return True iff the APermutation is alternating and starts with an up-step.
+    Return True iff a APermutation is alternating and starts with an up-step.
   -}
   isUpDown :: APerm a -> Bool
   isUpDown = List.Tools.isUpDown . List.Tools.consecutive2 . yCoords
 
   {-|
-    Return True iff the APermutation is alternating and starts with an down-step.
+    Return True iff a APermutation is alternating and starts with an down-step.
   -}
   isDownUp :: APerm a -> Bool
   isDownUp = List.Tools.isDownUp . List.Tools.consecutive2 . yCoords
 
   {-|
-    Return True iff the APermutation is alternating.
+    Return True iff a APerm is alternating (it may start with an up-step
+    or a down-step).
   -}
   isAlernating :: APerm a -> Bool
   isAlernating p = isUpDown p || isDownUp p
 
   {-|
-    'isSeparable p' returns True if an only if APermutation 'p' is separable
+    Return True if an only if a APerm is separable
     (i.e., it avoids both 2413 and 3142).
   -}
   isSeparable :: APerm a -> Bool
   isSeparable = Maybe.isJust . separatingTree
 
+  {-|
+    Return (if it exists) the separating tree of a APerm.
+  -}
   separatingTree :: APerm a -> Maybe ST.SeparatingTree
   separatingTree = ST.mk . toPoints
 

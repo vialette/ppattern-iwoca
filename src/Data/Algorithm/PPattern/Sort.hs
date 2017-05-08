@@ -28,7 +28,7 @@ where
       aux output (x' : xs') []       = aux (x' : output) xs' []
       aux output []         (x : xs) = aux output [x] xs
       aux output stack@(x' : xs') input@(x : _)
-        | x' > x    = aux (x' : output) xs' input
+        | x' < x    = aux (x' : output) xs' input
         | otherwise = aux output (x : stack) xs'
 
   {-|

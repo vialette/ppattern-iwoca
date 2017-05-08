@@ -7,7 +7,7 @@ License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
 
-Pattern matching for APermutations.
+Pattern matching for Permutations.
 -}
 
 module Data.Algorithm.PPattern

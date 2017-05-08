@@ -22,11 +22,13 @@ Library
     patience >=0.1
   Exposed-Modules: Data.Algorithm.PPattern.APerm
                  , Data.Algorithm.PPattern.APerm.Avoidance
+                 , Data.Algorithm.PPattern.APerm.Compose
+                 , Data.Algorithm.PPattern.APerm.Enumerate
+                 , Data.Algorithm.PPattern.APerm.Monotone
+                 , Data.Algorithm.PPattern.APerm.Operation
                  , Data.Algorithm.PPattern.APerm.Sort
                  , Data.Algorithm.PPattern.APerm.Statistics
                  , Data.Algorithm.PPattern.APerm.Sub
-                 , Data.Algorithm.PPattern.APerm.Compose
-                 , Data.Algorithm.PPattern.APerm.Enumerate
                  , Data.Algorithm.PPattern.Geometry.Point
                  , Data.Algorithm.PPattern.Geometry.APoint
                  , Data.Algorithm.PPattern.Strategy
@@ -35,9 +37,12 @@ Library
                  , Data.Algorithm.PPattern.CompactSeparatingTree
                  , Data.Algorithm.PPattern.SplitTree
                  , Data.Algorithm.PPattern
-  Other-Modules:   Data.Algorithm.PPattern.APerm.Inner.Annotation
-                 , Data.Algorithm.PPattern.APerm.Inner.Statistics
+                 , Data.Algorithm.PPattern.APerm.Inner.Annotation
+                 , Data.Algorithm.PPattern.APerm.Inner.Monotone
                  , Data.Algorithm.PPattern.APerm.Inner.Operation
+                 , Data.Algorithm.PPattern.APerm.Inner.Sort
+                 , Data.Algorithm.PPattern.APerm.Inner.Statistics
+                 , Data.Algorithm.PPattern.APerm.Inner.Sub
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context
                  , Data.Algorithm.PPattern.State
