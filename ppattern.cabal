@@ -1,0 +1,71 @@
+Name:                ppattern-generic
+Version:             0.1.0.0
+-- synopsis:
+-- description:
+License:             MIT
+License-File:        LICENSE
+Author:              Laurent Bulteau, Romeo Rizzi, Stéphane Vialette
+Maintainer:          vialette@gmail.com
+-- copyright:
+Category:            Math
+Build-Type:          Simple
+Extra-Source-Files:  README.md
+Cabal-Version:       >=1.22
+
+Library
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Hs-Source-Dirs: src
+  Build-Depends:
+    base >=4.8,
+    containers >=0.5 && <0.6,
+    patience >=0.1
+  Exposed-Modules: Data.Algorithm.PPattern.APerm
+                 , Data.Algorithm.PPattern.APerm.Avoidance
+                 , Data.Algorithm.PPattern.APerm.Compose
+                 , Data.Algorithm.PPattern.APerm.Enumerate
+                 , Data.Algorithm.PPattern.APerm.Monotone
+                 , Data.Algorithm.PPattern.APerm.Operation
+                 , Data.Algorithm.PPattern.APerm.Sort
+                 , Data.Algorithm.PPattern.APerm.Statistics
+                 , Data.Algorithm.PPattern.APerm.Sub
+                 , Data.Algorithm.PPattern.Geometry.Point
+                 , Data.Algorithm.PPattern.Geometry.APoint
+                 , Data.Algorithm.PPattern.Strategy
+                 , Data.Algorithm.PPattern.Occurrence
+                 , Data.Algorithm.PPattern.SeparatingTree
+                 , Data.Algorithm.PPattern.CompactSeparatingTree
+                 , Data.Algorithm.PPattern.SplitTree
+                 , Data.Algorithm.PPattern
+                 , Data.Algorithm.PPattern.APerm.Inner.Annotation
+                 , Data.Algorithm.PPattern.APerm.Inner.Monotone
+                 , Data.Algorithm.PPattern.APerm.Inner.Operation
+                 , Data.Algorithm.PPattern.APerm.Inner.Sort
+                 , Data.Algorithm.PPattern.APerm.Inner.Statistics
+                 , Data.Algorithm.PPattern.APerm.Inner.Sub
+                 , Data.Algorithm.PPattern.Search
+                 , Data.Algorithm.PPattern.Search.Context
+                 , Data.Algorithm.PPattern.State
+                 , Data.Algorithm.PPattern.State.Access
+                 , Data.Algorithm.PPattern.State.Embedding
+                 , Data.Algorithm.PPattern.State.Next
+                 , Data.Algorithm.PPattern.State.IncreasingFactorization
+                 , Data.Algorithm.PPattern.Strategy.Link
+                 , Data.Algorithm.PPattern.Strategy.PLink
+                 , Data.Algorithm.PPattern.Sort
+                 , Data.Algorithm.PPattern.Geometry.Point.List
+                 , Data.Algorithm.PPattern.Geometry.ColorPoint
+                 , Data.Algorithm.PPattern.Geometry.Interval
+                 , Data.Algorithm.PPattern.Conflict
+                 , Data.Algorithm.PPattern.List
+                 , Data.Algorithm.PPattern.Combinatorics
+                 , Data.Algorithm.PPattern.Color
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  hs-source-dirs: tests
+  main-is: Spec.hs
+  Default-Language: Haskell2010
+  build-depends: base  >=4.8
+               , hspec >= 2.4.3
+               , ppattern-generic
