@@ -28,7 +28,7 @@ module Data.Algorithm.PPattern.APerm.Compose
     import qualified Data.Algorithm.PPattern.Geometry.Point.List as Point.List
 
     {-|
-
+      Compute the skew sum of two APerms.
     -}
     skewSum :: APerm.APerm a -> APerm.APerm a -> APerm.APerm a
     skewSum p q = APerm.APerm aps
@@ -42,7 +42,7 @@ module Data.Algorithm.PPattern.APerm.Compose
         aps  = paps `Monoid.mappend` qaps
 
     {-|
-
+      Compute the skew sum of a list of APerms.
     -}
     skewSums :: [APerm.APerm a] -> Maybe (APerm.APerm a)
     skewSums []       = Nothing
@@ -53,7 +53,7 @@ module Data.Algorithm.PPattern.APerm.Compose
     skewSumsAux p (p' : ps) = skewSumsAux (skewSum p p') ps
 
     {-|
-
+      Compute the direct sum of two APerms.
     -}
     directSum :: APerm.APerm a -> APerm.APerm a -> APerm.APerm a
     directSum p q = APerm.APerm aps
@@ -65,7 +65,7 @@ module Data.Algorithm.PPattern.APerm.Compose
         aps  = paps `Monoid.mappend` qaps
 
     {-|
-
+      Compute the direct sum of a list of APerms.
     -}
     directSums :: [APerm.APerm a] -> Maybe (APerm.APerm a)
     directSums []       = Nothing

@@ -22,6 +22,7 @@ module Data.Algorithm.PPattern.APerm.Enumerate
     import Data.Algorithm.PPattern.APerm as APerm
 
     {-|
+      Enuerate all APerms of length 'n'.
     -}
     perms :: (Enum a, Num a, Ord a) => a -> [APerm.APerm a]
     perms n = [APerm.mk xs | xs <- List.permutations [1..n]]

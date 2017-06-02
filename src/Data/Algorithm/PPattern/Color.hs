@@ -16,6 +16,7 @@ module Data.Algorithm.PPattern.Color
   Color
 
   -- * Constructing
+, mk
 , blankColor
 , palette
 )
@@ -23,6 +24,14 @@ where
 
   -- |The 'Color' type encapsulates a color.
   type Color = Int
+
+  {-|
+    Make a color.
+  -}
+  mk :: Int -> Maybe Color
+  mk c
+    | c < 0     = Nothing
+    | otherwise = Just c
 
   {-|
     Set blank color as 0.

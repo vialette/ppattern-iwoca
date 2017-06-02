@@ -12,8 +12,10 @@ commentary with @some markup@.
 
 module Data.Algorithm.PPattern.APerm.Inner.Monotone
 (
+  -- * Testing
   isMonotone
 
+  -- * Computing
 , longestIncreasing
 , longestDecreasing
 )
@@ -42,6 +44,9 @@ module Data.Algorithm.PPattern.APerm.Inner.Monotone
                 y  = Point.yCoord $ APoint.point ap
                 y' = Point.yCoord $ APoint.point ap'
 
+    {-|
+      Compute a longest increasing subsequence.
+    -}
     longestIncreasing :: [APoint.APoint a] -> [APoint.APoint a]
     longestIncreasing = unformat . List.reverse . doSearch . format
       where
@@ -49,6 +54,9 @@ module Data.Algorithm.PPattern.APerm.Inner.Monotone
         doSearch = Patience.longestIncreasing
         unformat = fmap Tuple.snd
 
+    {-|
+      Compute a longest decreasing subsequence.
+    -}
     longestDecreasing :: [APoint.APoint a] -> [APoint.APoint a]
     longestDecreasing = unformat . doSearch . format
       where
