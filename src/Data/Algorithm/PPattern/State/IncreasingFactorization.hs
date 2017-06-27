@@ -23,7 +23,7 @@ where
   import qualified Data.Algorithm.PPattern.APerm               as APerm
 
   increasingFactorization :: APerm.APerm a -> [CP.ColorPoint]
-  increasingFactorization = increasingFactorization' [] IntMap.empty . APerm.toPoints
+  increasingFactorization = increasingFactorization' [] IntMap.empty . APerm.points
 
   increasingFactorization' :: [CP.ColorPoint] -> IntMap.IntMap Int -> [P.Point] -> [CP.ColorPoint]
   increasingFactorization' acc _ []       = List.reverse acc

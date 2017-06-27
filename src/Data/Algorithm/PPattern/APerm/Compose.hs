@@ -35,9 +35,9 @@ module Data.Algorithm.PPattern.APerm.Compose
       where
         m = APerm.size p
         n = APerm.size q
-        pps  = Point.List.moveY n $ APerm.toPoints p
+        pps  = Point.List.moveY n $ APerm.points p
         paps = fmap (Tuple.uncurry APoint.mk) . List.zip pps $ APerm.annotations p
-        qps  = Point.List.moveX m $ APerm.toPoints q
+        qps  = Point.List.moveX m $ APerm.points q
         qaps = fmap (Tuple.uncurry APoint.mk) . List.zip qps $ APerm.annotations q
         aps  = paps `Monoid.mappend` qaps
 
@@ -60,7 +60,7 @@ module Data.Algorithm.PPattern.APerm.Compose
       where
         m    = APerm.size p
         paps = APerm.getList p
-        qps  = Point.List.move m m $ APerm.toPoints q
+        qps  = Point.List.move m m $ APerm.points q
         qaps = fmap (Tuple.uncurry APoint.mk) . List.zip qps $ APerm.annotations q
         aps  = paps `Monoid.mappend` qaps
 

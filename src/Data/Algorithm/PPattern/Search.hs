@@ -6,8 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
 
-Here is a longer description of this module, containing some
-commentary with @some markup@.
+Pattern matching.
 -}
 
 module Data.Algorithm.PPattern.Search
@@ -112,7 +111,7 @@ where
     | otherwise                                           = computation
     where
       -- APermutation p as points
-      pPoints = APerm.toPoints p
+      pPoints = APerm.points p
 
       -- p longest decressing by suffixes
       pRightLongestDecreasings = mkRightLongestDecreasings pPoints
@@ -120,7 +119,7 @@ where
       -- APermutation p longest decreasing data
       pLongestDecreasing = APerm.Monotone.longestDecreasing p
       pLongestDecreasingLength = APerm.size pLongestDecreasing
-      pLongestDecreasingPoints = APerm.toPoints pLongestDecreasing
+      pLongestDecreasingPoints = APerm.points pLongestDecreasing
 
       -- initial state
       s = State.mk q

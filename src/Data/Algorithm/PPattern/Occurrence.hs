@@ -23,9 +23,9 @@ where
   import qualified Data.List  as List
   import qualified Data.Tuple as Tuple
 
-  import qualified Data.Algorithm.PPattern.Geometry.Point      as P
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
-  import qualified Data.Algorithm.PPattern.APerm                as APerm
+  import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
+  import qualified Data.Algorithm.PPattern.APerm               as APerm
 
   data Element a = Element { getX          :: {-# UNPACK #-} !Int
                            , getY          :: {-# UNPACK #-} !Int
@@ -42,26 +42,28 @@ where
                                      , getAnnotation = annotation
                                      }
 
-  mk :: APerm.APerm a -> APerm.APerm b -> [(CP.ColorPoint, CP.ColorPoint)] -> Occurrence a b
+  mk :: APerm.APerm a -> APerm.APerm b -> [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)] -> Occurrence a b
   mk p q cps = Occurrence $ List.zip pElements qElements
     where
       pcps = List.sort $ fmap Tuple.fst cps
-      ps   = APerm.toAnnotedList p
+      ps   = APerm.annotatedPoints p
       pElements = List.reverse $ mkElements ps pcps
 
       qcps = List.sort $ fmap Tuple.snd cps
-      qs   = APerm.toAnnotedList q
+      qs   = APerm.annotatedPoints q
       qElements = List.reverse $ mkElements qs qcps
 
-  mkElements :: [(P.Point, a)] -> [CP.ColorPoint] -> [Element a]
+  mkElements :: [APoint.APoint a] -> [ColorPoint.ColorPoint] -> [Element a]
   mkElements = aux []
     where
       aux acc _  [] = acc
       aux _   [] _  = error "Occurrence.mkElements. We shouldn't be there" -- make ghc -Werror happy
-      aux acc ((p, a) : pas) cps'@(cp : cps)
-        | p == CP.point cp = aux (e : acc) pas cps
-        | otherwise        = aux acc       pas cps'
+      aux acc (ap : aps) cps'@(cp : cps)
+        | p == ColorPoint.point cp = aux (e : acc) aps cps
+        | otherwise                = aux acc       aps cps'
         where
-          x = CP.xCoord cp
-          y = CP.yCoord cp
+          p = APoint.point ap
+          x = ColorPoint.xCoord cp
+          y = ColorPoint.yCoord cp
+          a = APoint.annotation ap
           e = mkElement x y a
