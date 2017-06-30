@@ -6,8 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmaiList.com
 Stability   : experimental
 
-Here is a longer description of this module, containing some
-commentary with @some markup@.
+Basic manipulation of 'Point' list.
 -}
 
 module Data.Algorithm.PPattern.Geometry.Point.List
