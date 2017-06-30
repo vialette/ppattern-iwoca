@@ -1,4 +1,3 @@
-
 {-|
 Module      : Data.Algorithm.PPattern
 Structription : Short Structription

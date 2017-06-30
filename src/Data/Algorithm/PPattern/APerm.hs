@@ -30,15 +30,6 @@ module Data.Algorithm.PPattern.APerm
 , xCoords
 , yCoords
 , annotations
-
-  -- * Testing
-, isAlternating
-, isUpDown
-, isDownUp
-, isSeparable
-
-  -- * Separating tree
-, separatingTree
 )
 where
 
@@ -46,12 +37,9 @@ where
   import qualified Data.List     as List
   import qualified Data.Foldable as Foldable
   import qualified Data.Function as Function
-  import qualified Data.Maybe    as Maybe
 
-  import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
-  import qualified Data.Algorithm.PPattern.Geometry.APoint     as APoint
-  import qualified Data.Algorithm.PPattern.SeparatingTree      as ST
-  import qualified Data.Algorithm.PPattern.List                as List.Tools
+  import qualified Data.Algorithm.PPattern.Geometry.Point  as Point
+  import qualified Data.Algorithm.PPattern.Geometry.APoint as APoint
 
   {-|
     APermutation type.
@@ -163,84 +151,3 @@ where
   -}
   size :: APerm a -> Int
   size = List.length . getList
-
-
-  {-|
-    Return True iff a APermutation is alternating and starts with an up-step.
-
-    >>> APerm.isUpDown $ APerm.mk [1,5,4,6,2,3]
-    True
-    >>> APerm.isUpDown $ APerm.mk [3,1,6,2,5,4]
-    False
-  -}
-  isUpDown :: APerm a -> Bool
-  isUpDown = List.Tools.isUpDown . List.Tools.consecutive2 . yCoords
-
-  {-|
-    Return True iff a APermutation is alternating and starts with an down-step.
-
-    >>> APerm.isDownUp $ APerm.mk [1,5,4,6,2,3]
-    False
-    >>> APerm.isDownUp $ APerm.mk [3,1,6,2,5,4]
-    True
-  -}
-  isDownUp :: APerm a -> Bool
-  isDownUp = List.Tools.isDownUp . List.Tools.consecutive2 . yCoords
-
-  {-|
-    Return True iff a APerm is alternating (it may start with an up-step
-    or a down-step).
-
-    >>> APerm.isAlternating $ APerm.mk [1,5,4,6,2,3]
-    True
-    >>> APerm.isAlternating $ APerm.mk [1,5,4,6,3,2]
-    True
-    >>> APerm.isAlternating $ APerm.mk [1..6]
-    False
-  -}
-  isAlternating :: APerm a -> Bool
-  isAlternating p = isUpDown p || isDownUp p
-
-  {-|
-    Return True if an only if a APerm is separable
-    (i.e., it avoids both 2413 and 3142).
-
-    >>> > APerm.isSeparable $ APerm.mk [2,5,6,1,4,3]
-    False
-    >>> APerm.isSeparable $ APerm.mk [4,5,1,2,6,3]
-    False
-    >>> APerm.isSeparable $ APerm.mk [4,6,5,3,1,2]
-    True
-  -}
-  isSeparable :: APerm a -> Bool
-  isSeparable = Maybe.isJust . separatingTree
-
-  {-|
-    Return (if it exists) the separating tree of a APerm.
-
-    >>> > APerm.separatingTree $ APerm.mk [4,3,6,1,2,5]
-    Nothing
-    >>> APerm.separatingTree $ APerm.mk [4,6,3,1,2,5]
-    Nothing
-    >>> APerm.separatingTree $ APerm.mk [4,6,5,3,1,2]
-    Just - Interval (1,6)
-         .- Interval (3,6)
-         ..+ Interval (4,6)
-         ...Point (1,4)
-         ...- Interval (5,6)
-         ....Point (2,6)
-         ....Point (3,5)
-         ..Point (4,3)
-         .+ Interval (1,2)
-         ..Point (5,1)
-         ..Point (6,2)
-  -}
-  separatingTree :: APerm a -> Maybe ST.SeparatingTree
-  separatingTree = ST.mk . points
-
-
-
-
-
-    -- simionSchmidt :: APerm a -> APerm a
-    -- simionSchmidt = id
