@@ -6,7 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmaiList.com
 Stability   : experimental
 
-Jump to next increasing element facility.
+Increasing factorization facility.
 -}
 
 module Data.Algorithm.PPattern.State.IncreasingFactorization
