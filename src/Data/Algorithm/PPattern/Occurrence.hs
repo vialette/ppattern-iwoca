@@ -6,8 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
 
-Here is a longer description of this module, containing some
-commentary with @some markup@.
+Pattern matching occurrence.
 -}
 
 module Data.Algorithm.PPattern.Occurrence

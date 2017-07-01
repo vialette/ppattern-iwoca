@@ -6,8 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
 
-Here is a longer Structription of this module, containing some
-commentary with @some markup@.
+Pattern matching search strategy.
 -}
 
 module Data.Algorithm.PPattern.Strategy
