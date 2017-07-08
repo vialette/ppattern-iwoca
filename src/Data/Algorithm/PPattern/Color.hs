@@ -15,6 +15,9 @@ module Data.Algorithm.PPattern.Color
   -- * The @Color@ type
   Color
 
+  -- * Querying
+, isBlankColor
+
   -- * Constructing
 , mk
 , blankColor
@@ -38,6 +41,9 @@ where
   -}
   blankColor :: Color
   blankColor = 0 :: Color
+
+  isBlankColor :: Color -> Bool
+  isBlankColor c = c == blankColor
 
   {-|
     'palette fromColor toColor' returns the list of all colors from 'fromColor'

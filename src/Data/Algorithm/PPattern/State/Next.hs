@@ -36,12 +36,20 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
-  -- Colored point to colored point mapping
+  {-|
+    Colored point to colored point mapping
+  -}
   newtype Next = Next (Map.Map ColorPoint.ColorPoint ColorPoint.ColorPoint)
 
+  {-|
+    Make an empty Next mapping.
+  -}
   empty :: Next
   empty = Next Map.empty
 
+  {-|
+    Make a Next mapping from a list of colored points.
+  -}
   mk :: [ColorPoint.ColorPoint] -> Next
   mk = Tuple.fst . Foldable.foldr f (empty, IntMap.empty)
     where

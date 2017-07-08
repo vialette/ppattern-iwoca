@@ -11,7 +11,7 @@ Access to extremal element facility.
 
 module Data.Algorithm.PPattern.State.Access
 (
-  -- * The @Next@ type
+  -- * The @Access@ type
   Access
 
   -- * Constructing

@@ -11,7 +11,7 @@ Pattern matching context.
 
 module Data.Algorithm.PPattern.Search.Context
 (
-  -- * The @Resolve@ type
+  -- * The @Context@ type
   Context(..)
 
   -- * Constructing
@@ -31,18 +31,20 @@ where
 
   import qualified Data.Algorithm.PPattern.Color               as Color
 
-  -- Context type for constructing increasing colorings of APermutation p.
+  -- Context type for constructing increasing colorings of a permutation.
+  -- precede y m
+  -- follow y m
   data Context = Context  { precede                 :: IntMap.IntMap Int
                           , follow                  :: IntMap.IntMap Int
                           , rightLongestDecreasings :: IntMap.IntMap Int
                           }
 
-  {-|
-  -}
+  -- Make a new context from a precede map, a follow map and a rightLongestDecreasings
+  -- map.
   mk :: IntMap.IntMap Int -> IntMap.IntMap Int -> IntMap.IntMap Int -> Context
   mk precedeMap followMap rightLongestDecreasingsMap =
-    Context { precede = precedeMap
-            , follow   = followMap
+    Context { precede                 = precedeMap
+            , follow                  = followMap
             , rightLongestDecreasings = rightLongestDecreasingsMap
             }
 
@@ -51,7 +53,7 @@ where
   allowedColor :: Color.Color -> Int -> [Color.Color] -> Context -> Bool
   allowedColor c y cs context =
     case IntMap.lookup y m of
-      Nothing -> error "allowedColor. Point should be inside the map"
+      Nothing -> error "Conext.allowedColor. Point should be inside the map"
       Just i  -> i >= k
     where
       m = rightLongestDecreasings context
@@ -86,8 +88,8 @@ where
   update :: Color.Color -> Int -> Context -> Context
   update c y context = mk precede' follow' rightLongestDecreasings'
     where
-      precede' = updatePrecede c y (precede context)
-      follow'  = updateFollow  c y (follow  context)
+      precede'                 = updatePrecede c y (precede context)
+      follow'                  = updateFollow  c y (follow  context)
       rightLongestDecreasings' = rightLongestDecreasings context
 
   {-|
@@ -112,4 +114,4 @@ where
       Just y'
         | y < y'    -> m
         | y == y'   -> IntMap.delete c m
-        | otherwise -> error "updateFollow. We shouldn't be there" -- make ghc -Werror happy
+        | otherwise -> error "Context.updateFollow. We shouldn't be there" -- make ghc -Werror happy

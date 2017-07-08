@@ -46,49 +46,53 @@ where
   newtype APerm a = APerm { getList :: [APoint.APoint a] }
                     deriving (Eq, Ord)
 
+  {-|
+    APerm Show instance.
+  -}
   instance Show (APerm a) where
     show = show . yCoords
 
+  {-|
+    APerm Foldable instance.
+  -}
   instance Foldable.Foldable APerm  where
     foldr f z (APerm xs) = List.foldr f' z xs
       where
         f' (APoint.APoint (_, a)) = f a
 
   {-|
-    Construct a APerm from some foldable instance.
+    Construct a permutation from some foldable instance.
 
-    >>> APerm.mk "acedb"
-    [1,3,5,4,2]
-
-
-    >>> APerm.mk "ababa"
-    [1,4,2,5,3]
-
+    >>> APerm.mk "acb"
+    [1,3,2]
+    >>> APerm.mk "acbacb"
+    [1,5,3,2,6,4]
+    >>> APerm.mk "acbacbacb"
+    [1,7,4,2,8,5,3,9,6]
   -}
   mk :: (Foldable t, Ord a) => t a -> APerm a
   mk = APerm . fmap (uncurry APoint.mk) . reduce . Foldable.toList
 
-  {-|
-    Construct a APerm from a list of APoints.
-
-    >>> APerm.annotatedPoints $ APerm.mk "acedb"
-    [APoint (Point (1,1),'a'),APoint (Point (2,3),'c'),APoint (Point (3,5),'e'),APoint (Point (4,4),'d'),APoint (Point (5,2),'b')]
-    >>> APerm.fromList . APerm.annotatedPoints $ APerm.mk "acedb"
-    [1,3,5,4,2]
-  -}
+  -- Construct a APerm from a list of APoints.
+  --
+  -- >>> APerm.annotatedPoints $ APerm.mk "acedb"
+  -- [APoint (Point (1,1),'a'),APoint (Point (2,3),'c'),APoint (Point (3,5),'e'),APoint (Point (4,4),'d'),APoint (Point (5,2),'b')]
+  -- >>> APerm.fromList . APerm.annotatedPoints $ APerm.mk "acedb"
+  -- [1,3,5,4,2]
   fromList :: [APoint.APoint a] -> APerm a
   fromList = APerm
 
-  {-|
-    Construct a APerm by applying function on an existing APerm..
-  -}
+  -- Construct a APerm by applying function on an existing APerm..
   apply :: ([APoint.APoint a] -> [APoint.APoint a]) -> APerm a -> APerm a
   apply f = fromList . f . getList
 
   {-|
     Annotated points projection.
 
-    >>> APerm.annotatedPoints $ APerm.mk "acedb"
+    >>> let p = APerm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> APerm.annotatedPoints p
     [(Point (1,1),'a'),(Point (2,3),'c'),(Point (3,5),'e'),(Point (4,4),'d'),(Point (5,2),'b')]
   -}
   annotatedPoints :: APerm a -> [APoint.APoint a]
@@ -97,7 +101,10 @@ where
   {-|
     Points projection.
 
-    >>> APerm.points $ APerm.mk "acedb"
+    >>> let p = APerm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> APerm.points p
     [Point (1,1),Point (2,3),Point (3,5),Point (4,4),Point (5,2)]
   -}
   points :: APerm a -> [Point.Point]
@@ -106,7 +113,10 @@ where
   {-|
     x-ccordinates projection (i.e. the list of all x-coordinates).
 
-    >>> APerm.xCoords $ APerm.mk "acedb"
+    >>> let p = APerm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> APerm.xCoords p
     [1,2,3,4,5]
   -}
   xCoords :: APerm a -> [Int]
@@ -115,7 +125,10 @@ where
   {-|
     y-ccordinates projection (i.e. the list of all y-coordinates).
 
-    >>> APerm.yCoords $ APerm.mk "acedb"
+    >>> let p = APerm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> APerm.yCoords p
     [1,3,5,4,2]
   -}
   yCoords :: APerm a -> [Int]
@@ -124,15 +137,16 @@ where
   {-|
     Points projection (i.e. the list of all annotations).
 
-    >>> APerm.annotations $ APerm.mk "acedb"
+    >>> let p = APerm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> APerm.annotations p
     "acedb"
   -}
   annotations :: APerm a -> [a]
   annotations = fmap APoint.annotation . getList
 
-  {-|
-    'reduce p' returns the reduced form of the APermutation 'p'.
-  -}
+  -- 'reduce p' returns the reduced form of the permutation 'p'.
   reduce :: (Ord a) => [a] -> [(Point.Point, a)]
   reduce = fmap f . sortByIdx . List.zip [1..] . sortByElt . List.zip [1..]
     where

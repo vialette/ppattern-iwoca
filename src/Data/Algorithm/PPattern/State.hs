@@ -36,7 +36,7 @@ where
   import qualified Data.Algorithm.PPattern.State.Embedding               as State.Embedding
   import qualified Data.Algorithm.PPattern.State.IncreasingFactorization as State.IncreasingFactorization
 
-  -- The state of a search
+  -- The state of a permutation pattern search
   data State =
     State { pColorPoints            :: [ColorPoint.ColorPoint]
           , qColorPoints            :: [ColorPoint.ColorPoint]

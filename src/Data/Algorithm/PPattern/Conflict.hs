@@ -11,7 +11,7 @@ Conflict for pattern matching.
 
 module Data.Algorithm.PPattern.Conflict
 (
-  -- * The @Resolve@ type
+  -- * The @Conflict@ type
   Conflict(..)
 
   -- * Querying
@@ -20,16 +20,19 @@ module Data.Algorithm.PPattern.Conflict
 )
 where
 
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
-  data Conflict = OrderConflict {-# UNPACK #-} !CP.ColorPoint !Int
-                | ValueConflict {-# UNPACK #-} !CP.ColorPoint !Int
+  -- Encapsulate a conflict (order or value conflict).
+  data Conflict = OrderConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
+                | ValueConflict {-# UNPACK #-} !ColorPoint.ColorPoint !Int
                 deriving (Show)
 
-  colorPoint :: Conflict -> CP.ColorPoint
+  -- Return the color point of a conflict.
+  colorPoint :: Conflict -> ColorPoint.ColorPoint
   colorPoint (OrderConflict cp _) = cp
   colorPoint (ValueConflict cp _) = cp
 
+  -- Return the threshold of a conflict
   threshold :: Conflict -> Int
   threshold (OrderConflict _ t) = t
   threshold (ValueConflict _ t) = t
