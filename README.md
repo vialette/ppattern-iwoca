@@ -153,6 +153,42 @@ True
 False
 ```
 
+```haskell
+λ: import qualified Data.Algorithm.PPattern as PPattern
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk [1..3]
+λ: let q = Perm.mk [6..1]
+λ: PPattern.search p q
+Nothing
+λ: p `PPattern.occursIn` q
+False
+λ: q `PPattern.avoids` p
+True
+```
+
+### Occurrence
+
+```haskell
+λ: import qualified Data.Algorithm.PPattern as PPattern
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk [2,1,3]
+λ: let q = Perm.mk [6,2,3,5,1,4]
+λ: let o = PPattern.search p q
+λ: :type o
+o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
+λ: import Data.Maybe
+λ: import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
+λ: Occurrence.size (fromJust o)
+3
+λ: Occurrence.target (fromJust o)
+[2,1,3]
+λ: Occurrence.targetPoints (fromJust o)
+[Point (1,2),Point (2,1),Point (3,3)]
+λ: Occurrence.pattern (fromJust o)
+[2,1,3]
+λ:
+```
+
 ### Strategy
 
 + *leftmost conflict* (`Data.Algorithm.PPattern.Strategy.leftmostConflict`)
