@@ -80,6 +80,8 @@ Ties are allowed and are resolved according to the left-to-right order.
 
 ### Basic operations
 
+The reverse of a permutation $\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.APerm as APerm
 λ: import qualified Data.Algorithm.PPattern.Perm.Operation as Perm.Operation
