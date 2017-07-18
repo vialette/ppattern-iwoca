@@ -22,22 +22,28 @@ mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
 ### Basic manipulation
 
 ```haskell
-λ: import qualified Data.Algorithm.PPattern.APerm as APerm
-λ: let p = APerm.mk "acedb"
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk "acedb"
 λ: p
 [1,3,5,4,2]
-λ: APerm.annotations p
-"acedb"
-λ: APerm.toList p
-[T (Point (1,1),'a'),T (Point (2,3),'c'),T (Point (3,5),'e'),T (Point (4,4),'d'),T (Point (5,2),'b')]
-λ: APerm.toPoints p
+λ: Perm.toPoints p
 [Point (1,1),Point (2,3),Point (3,5),Point (4,4),Point (5,2)]
-λ: APerm.xCoords p
+λ: Perm.xCoords p
 [1,2,3,4,5]
-λ: APerm.yCoords p
+λ: Perm.yCoords p
 [1,3,5,4,2]
-λ:
 ```
+
+are reduced forms for:
+
+```haskell
+λ: import qualified Data.Algorithm.PPattern.Geometry.Point as Point
+λ: fmap Point.xCoord $ Perm.points p
+[1,2,3,4,5]
+λ: fmap Point.yCoord $ Perm.points p
+[1,3,5,4,2]
+```
+
 
 As you might have guessed, `show`reduces to `yCoords`:
 
