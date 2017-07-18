@@ -64,7 +64,6 @@ instance Show Perm where
 
 ### Basic properties
 
-
 ### Ties
 
 Ties are allowed and are resolved according to the left-to-right order.
@@ -77,6 +76,26 @@ Ties are allowed and are resolved according to the left-to-right order.
 [1,5,3,2,6,4]
 λ: Perm.mk "acbacbacb"
 [1,7,4,2,8,5,3,9,6]
+```
+
+### Basic operations
+
+```haskell
+λ: import qualified Data.Algorithm.PPattern.APerm as APerm
+λ: import qualified Data.Algorithm.PPattern.Perm.Operation as Perm.Operation
+λ: let p = Perm.mk [1,4,2,5,3]
+λ: Perm.Operation.reversal p
+[3,5,2,4,1]
+λ: Perm.Operation.complement p
+[5,2,4,1,3]
+λ: Perm.Operation.reversalComplement p
+[3,1,4,2,5]
+λ: (Perm.Operation.reversal . Perm.Operation.complement) p
+[3,1,4,2,5]
+λ: (Perm.Operation.complement . Perm.Operation.reversal) p
+[3,1,4,2,5]
+λ: Perm.Operation.inverse p
+[1,3,5,2,4]
 ```
 
 ### Basic statistics
