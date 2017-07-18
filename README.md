@@ -2,7 +2,7 @@
 
 # PPattern :
 
-## APermutations
+## Permutations
 
 ### Implementation
 
