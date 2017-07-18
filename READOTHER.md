@@ -168,6 +168,14 @@ True
 
 ### Occurrence
 
+The `Data.Algorithm.PPattern.search` function has type
+
+```haskell
+search :: Perm.Perm -> Perm.Perm -> Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
+```
+
+as shown in
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern as PPattern
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
@@ -176,6 +184,9 @@ True
 λ: let o = PPattern.search p q
 λ: :type o
 o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
+```
+
+```haskell
 λ: import Data.Maybe
 λ: import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
 λ: Occurrence.size (fromJust o)
