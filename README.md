@@ -80,7 +80,9 @@ Ties are allowed and are resolved according to the left-to-right order.
 
 ### Basic operations
 
-The reverse of a permutation <img alt="$\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$" src="svgs/f00e73d0681e93ba274aa2e29bda2bb0.png?invert_in_darkmode" align=middle width="107.393715pt" height="14.102549999999994pt"/>
+The \emph{reverse} of a permutation <img alt="$\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$" src="svgs/f00e73d0681e93ba274aa2e29bda2bb0.png?invert_in_darkmode" align=middle width="107.393715pt" height="14.102549999999994pt"/>
+is the permutation <img alt="$\sigma_n \sigma_{n-1} \ldots \sigma_1$" src="svgs/136707a3c7df490ad43d3008f02c3739.png?invert_in_darkmode" align=middle width="93.981855pt" height="14.102549999999994pt"/>.
+The \emph{complement} of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/>
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.APerm as APerm
