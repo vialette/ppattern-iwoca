@@ -15,6 +15,7 @@ module Data.Algorithm.PPattern
   search
 , occursIn
 , avoids
+, contains
 
   -- * Searching with strategy
 , searchLeftmostOrderConflictFirst
@@ -49,13 +50,19 @@ where
     Alias for 'search' p q'.
   -}
   occursIn :: Perm.Perm -> Perm.Perm -> Bool
-  p `occursIn` q = search' p q
+  p `occursIn` q = Maybe.isJust $ search p q
 
   {-|
     Return True if there does not exist an order-isomorphic occurrence of 'p' into 'q'.
   -}
   avoids :: Perm.Perm -> Perm.Perm -> Bool
   q `avoids` p = not $ p `occursIn` q
+
+  {-|
+    Return True if there exists an order-isomorphic occurrence of 'p' into 'q'.
+  -}
+  contains :: Perm.Perm -> Perm.Perm -> Bool
+  q `contains` p = p `occursIn` q
 
   {-|
     Search for an order-isomorphic occurrence of 'p' into 'q' according

@@ -19,9 +19,9 @@ module Data.Algorithm.PPattern.Occurrence
 
  -- * Querying
 , patternPoints
-, patternPerm
+, pattern
 , targetPoints
-, targetPerm
+, target
 
  -- * Verifying
 , check
@@ -62,8 +62,8 @@ where
 
     >>>
   -}
-  patternPerm :: Occurrence -> Perm.Perm
-  patternPerm = Perm.mk . fmap Point.yCoord . patternPoints
+  pattern :: Occurrence -> Perm.Perm
+  pattern = Perm.mk . fmap Point.yCoord . patternPoints
 
   {-|
     Extract target  points from an occurrence.
@@ -71,15 +71,15 @@ where
     >>>
   -}
   targetPoints :: Occurrence -> [Point.Point]
-  targetPoints = fmap Tuple.fst . getList
+  targetPoints = fmap Tuple.snd . getList
 
   {-|
     Extract target pattern from an occurrence.
 
     >>>
   -}
-  targetPerm :: Occurrence -> Perm.Perm
-  targetPerm = Perm.mk . fmap Point.yCoord . targetPoints
+  target :: Occurrence -> Perm.Perm
+  target = Perm.mk . fmap Point.yCoord . targetPoints
 
   {-|
 
@@ -93,4 +93,4 @@ where
     >>>
   -}
   check :: Occurrence -> Bool
-  check occurrence = patternPerm occurrence == targetPerm  occurrence
+  check occurrence = pattern occurrence == target occurrence
