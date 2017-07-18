@@ -26,6 +26,8 @@ mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
 λ: let p = Perm.mk "acedb"
 λ: p
 [1,3,5,4,2]
+λ: Perm.size p
+5
 λ: Perm.toPoints p
 [Point (1,1),Point (2,3),Point (3,5),Point (4,4),Point (5,2)]
 λ: Perm.xCoords p
@@ -34,16 +36,15 @@ mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
 [1,3,5,4,2]
 ```
 
-`Perm.xCoords` and `PermyCoords` are reduced forms for:
+`Perm.xCoords` and `Perm.yCoords` are reduced forms for:
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Geometry.Point as Point
-λ: fmap Point.xCoord $ Perm.points p
+λ: fmap Point.xCoord (Perm.points p)
 [1,2,3,4,5]
-λ: fmap Point.yCoord $ Perm.points p
+λ: fmap Point.yCoord (Perm.points p)
 [1,3,5,4,2]
 ```
-
 
 As you might have guessed, `show`reduces to `yCoords`:
 
@@ -57,11 +58,16 @@ instance Show (APerm a) where
 
 ### Ties
 
+Ties are resolved according to the left-to-right order.
+
 ```haskell
-λ: import qualified Data.Algorithm.PPattern.APerm as APerm
-λ: let p = APerm.mk "ababc"
-λ: p
-[1,3,2,4,5]
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: Perm.mk "acb"
+[1,3,2]
+λ: Perm.mk "acbacb"
+[1,5,3,2,6,4]
+λ: Perm.mk "acbacbacb"
+[1,7,4,2,8,5,3,9,6]
 λ:
 ```
 
