@@ -1,4 +1,6 @@
-# PPattern :
+<!-- python -m readme2tex --usepackage "tikz" --usepackage "xcolor" --output README.md --readme  READOTHER.md --nocdn --pngtrick -->
+
+# PPattern - Permutation Pattern
 
 ## Permutations
 
@@ -76,7 +78,6 @@ Ties are allowed and are resolved according to the left-to-right order.
 λ: Perm.mk "acbacbacb"
 [1,7,4,2,8,5,3,9,6]
 ```
-
 
 ### Basic statistics
 
