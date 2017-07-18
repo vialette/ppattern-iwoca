@@ -34,7 +34,7 @@ mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
 [1,3,5,4,2]
 ```
 
-are reduced forms for:
+`Perm.xCoords` and `PermyCoords` are reduced forms for:
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Geometry.Point as Point
