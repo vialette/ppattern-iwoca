@@ -140,6 +140,19 @@ is occupied by $i$.
 
 ### Basic pattern matching
 
+```haskell
+λ: import qualified Data.Algorithm.PPattern as PPattern
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: let p = Perm.mk [2,1,3]
+λ: let q = Perm.mk [6,2,3,5,1,4]
+λ: PPattern.search p q
+Just [(Point (1,2),Point (2,2)),(Point (2,1),Point (5,1)),(Point (3,3),Point (6,4))]
+λ: p `PPattern.occursIn` q
+True
+λ: q `PPattern.avoids` p
+False
+```
+
 ### Strategy
 
 + *leftmost conflict* (`Data.Algorithm.PPattern.Strategy.leftmostConflict`)

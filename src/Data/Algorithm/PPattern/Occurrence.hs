@@ -38,7 +38,9 @@ where
 
   -- Permutation pattern occurrence datatype
   newtype Occurrence = Occurrence { getList :: [(Point.Point, Point.Point)] }
-                       deriving (Show)
+
+  instance Show Occurrence where
+    show = show . getList
 
   -- Construct a pattern matching ocurrence
   mk :: [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)] -> Occurrence
