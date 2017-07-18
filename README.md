@@ -6,7 +6,7 @@
 
 ### Implementation
 
-Permutations are implemented as lists of points.
+Permutations are implemented as lists of points with increasing x-coordinates.
 
 ```haskell
 -- Define in Data.Algorithm.PPattern.Geometry.Point.hs
@@ -26,7 +26,6 @@ permutations from foldable objects.
 [2,1,3]
 λ: Perm.mk ["tomorrow", "today", "yesterday"]
 [2,1,3]
-λ:
 ```
 
 ### Basic manipulation
@@ -56,7 +55,7 @@ permutations from foldable objects.
 [1,3,5,4,2]
 ```
 
-As you might have guessed, `show`reduces to `yCoords`:
+As you might have guessed, `show` for permutations reduces to `show . yCoords`:
 
 ```haskell
 instance Show Perm where
@@ -68,7 +67,7 @@ instance Show Perm where
 
 ### Ties
 
-Ties are resolved according to the left-to-right order.
+Ties are allowed and are resolved according to the left-to-right order.
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
@@ -78,7 +77,6 @@ Ties are resolved according to the left-to-right order.
 [1,5,3,2,6,4]
 λ: Perm.mk "acbacbacb"
 [1,7,4,2,8,5,3,9,6]
-λ:
 ```
 
 ### Transforming APermutations
@@ -99,16 +97,20 @@ inverse operations, respectivelly.
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.APerm as APerm
-λ: let p = APerm.mk [3,5,7,1,8,4,2,6]
-λ: APerm.reversal p
-[6,2,4,8,1,7,5,3]
-λ: APerm.complement p
-[6,4,2,8,1,5,7,3]
-λ: APerm.reversalComplement p
-[3,7,5,1,8,2,4,6]
-λ: APerm.inverse p
-[4,7,1,6,2,8,3,5]
-λ:
+λ: import qualified Data.Algorithm.PPattern.Perm.Operation as Perm.Operation
+λ: let p = Perm.mk [1,4,2,5,3]
+λ: Perm.Operation.reversal p
+[3,5,2,4,1]
+λ: Perm.Operation.complement p
+[5,2,4,1,3]
+λ: Perm.Operation.reversalComplement p
+[3,1,4,2,5]
+λ: (Perm.Operation.reversal . Perm.Operation.complement) p
+[3,1,4,2,5]
+λ: (Perm.Operation.complement . Perm.Operation.reversal) p
+[3,1,4,2,5]
+λ: Perm.Operation.inverse p
+[1,3,5,2,4]
 ```
 
 ### Composing APermutations

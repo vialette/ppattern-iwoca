@@ -63,11 +63,6 @@ where
   mk = Perm . reduce . Foldable.toList
 
   -- Construct a Perm from a list of APoints.
-  --
-  -- >>> Perm.annotatedPoints $ Perm.mk "acedb"
-  -- [APoint (Point (1,1),'a'),APoint (Point (2,3),'c'),APoint (Point (3,5),'e'),APoint (Point (4,4),'d'),APoint (Point (5,2),'b')]
-  -- >>> Perm.fromList . Perm.annotatedPoints $ Perm.mk "acedb"
-  -- [1,3,5,4,2]
   fromList :: [Point.Point] -> Perm
   fromList = Perm
 
