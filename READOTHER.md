@@ -84,7 +84,7 @@ The *reverse* of a permutation $\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$
 is the permutation $\sigma_n \sigma_{n-1} \ldots \sigma_1$.
 The *complement* of $\sigma$ is the permutation
 $\beta_1 \beta_2 \ldots \beta_n$, where
-$\beta_i = n+1-/sigma_i$.
+$\beta_i = n+1-\sigma_i$.
 That is, the complement substitutes the largest element of a permutation
 by the smallest one, the next largest element by the next smallest element, etc.
 The *inverse* of $\sigma$ is the permutation where the $\sigma_i$-th position
@@ -115,26 +115,25 @@ is occupied by $i$.
 λ: import qualified Data.Algorithm.PPattern.Perm.Statistics as Perm.Statistics
 λ: let p = Perm.mk [7,5,3,8,2,1,4,9,6]
 λ: Perm.Statistics.leftToRightMinima p
-[7,5,3,2,1]
+[Point (1,7),Point (2,5),Point (3,3),Point (5,2),Point (6,1)]
 λ: Perm.Statistics.leftToRightMaxima p
 [7,8,9]
-λ: Perm.Statistics.rightToLeftMinima p
-[1,4,6]
+λ: Perm.Statistics.leftToRightMaxima p
+[Point (1,7),Point (4,8),Point (8,9)]
 λ: Perm.Statistics.rightToLeftMaxima p
-[9,6]
+[Point (8,9),Point (9,6)]
 λ: Perm.Statistics.ascents p
-[3,1,4]
+[Point (3,3),Point (6,1),Point (7,4)]
 λ: Perm.Statistics.doubleAscents p
-[1]
+[Point (6,1)]
 λ: Perm.Statistics.descents p
-[7,5,8,2,9]
+[Point (1,7),Point (2,5),Point (4,8),Point (5,2),Point (8,9)]
 λ: Perm.Statistics.doubleDescents p
-[7,8]
+[Point (1,7),Point (4,8)]
 λ: Perm.Statistics.peaks p
-[8,9]
+[Point (4,8),Point (8,9)]
 λ: Perm.Statistics.valleys p
-[3,1]
-λ:
+[Point (3,3),Point (6,1)]
 ```
 
 ### Permutation graphs

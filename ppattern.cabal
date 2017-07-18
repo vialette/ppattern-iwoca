@@ -26,6 +26,7 @@ Library
                  , Data.Algorithm.PPattern.Perm.Monotone
                  , Data.Algorithm.PPattern.Perm.Operation
                  , Data.Algorithm.PPattern.Perm.Sub
+                 , Data.Algorithm.PPattern.Perm.Statistics
                  , Data.Algorithm.PPattern.Geometry.Point
                  , Data.Algorithm.PPattern.Strategy
                  , Data.Algorithm.PPattern.Occurrence
@@ -33,6 +34,7 @@ Library
                  , Data.Algorithm.PPattern.Perm.Inner.Monotone
                  , Data.Algorithm.PPattern.Perm.Inner.Operation
                  , Data.Algorithm.PPattern.Perm.Inner.Sub
+                 , Data.Algorithm.PPattern.Perm.Inner.Statistics
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.Context
                  , Data.Algorithm.PPattern.State

@@ -84,7 +84,7 @@ The *reverse* of a permutation <img alt="$\sigma = \sigma_1 \sigma_1 \ldots \sig
 is the permutation <img alt="$\sigma_n \sigma_{n-1} \ldots \sigma_1$" src="svgs/136707a3c7df490ad43d3008f02c3739.png?invert_in_darkmode" align=middle width="93.981855pt" height="14.102549999999994pt"/>.
 The *complement* of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation
 <img alt="$\beta_1 \beta_2 \ldots \beta_n$" src="svgs/69c5ec9825b74db00546c7649d8fcb9f.png?invert_in_darkmode" align=middle width="75.291645pt" height="22.745910000000016pt"/>, where
-<img alt="$\beta_i = n+1-/sigma_i$" src="svgs/e84f5fc1518253c82c7178ee80be16bd.png?invert_in_darkmode" align=middle width="152.28906pt" height="24.56552999999997pt"/>.
+<img alt="$\beta_i = n+1-\sigma_i$" src="svgs/859e546341232bcfdca716001b2e56df.png?invert_in_darkmode" align=middle width="108.70282499999999pt" height="22.745910000000016pt"/>.
 That is, the complement substitutes the largest element of a permutation
 by the smallest one, the next largest element by the next smallest element, etc.
 The *inverse* of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation where the <img alt="$\sigma_i$" src="svgs/e61ae7f2cb94c8418c30517775fde77d.png?invert_in_darkmode" align=middle width="13.991505000000002pt" height="14.102549999999994pt"/>-th position
@@ -115,26 +115,25 @@ is occupied by <img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.png?inv
 λ: import qualified Data.Algorithm.PPattern.Perm.Statistics as Perm.Statistics
 λ: let p = Perm.mk [7,5,3,8,2,1,4,9,6]
 λ: Perm.Statistics.leftToRightMinima p
-[7,5,3,2,1]
+[Point (1,7),Point (2,5),Point (3,3),Point (5,2),Point (6,1)]
 λ: Perm.Statistics.leftToRightMaxima p
 [7,8,9]
-λ: Perm.Statistics.rightToLeftMinima p
-[1,4,6]
+λ: Perm.Statistics.leftToRightMaxima p
+[Point (1,7),Point (4,8),Point (8,9)]
 λ: Perm.Statistics.rightToLeftMaxima p
-[9,6]
+[Point (8,9),Point (9,6)]
 λ: Perm.Statistics.ascents p
-[3,1,4]
+[Point (3,3),Point (6,1),Point (7,4)]
 λ: Perm.Statistics.doubleAscents p
-[1]
+[Point (6,1)]
 λ: Perm.Statistics.descents p
-[7,5,8,2,9]
+[Point (1,7),Point (2,5),Point (4,8),Point (5,2),Point (8,9)]
 λ: Perm.Statistics.doubleDescents p
-[7,8]
+[Point (1,7),Point (4,8)]
 λ: Perm.Statistics.peaks p
-[8,9]
+[Point (4,8),Point (8,9)]
 λ: Perm.Statistics.valleys p
-[3,1]
-λ:
+[Point (3,3),Point (6,1)]
 ```
 
 ### Permutation graphs
