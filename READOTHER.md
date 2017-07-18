@@ -169,13 +169,10 @@ True
 ### Occurrence
 
 The `Data.Algorithm.PPattern.search` function has type
-
 ```haskell
-search :: Perm.Perm -> Perm.Perm -> Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
+search :: Data.Algorithm.PPattern.Perm -> Data.Algorithm.PPattern.Perm -> Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
 ```
-
 as shown in
-
 ```haskell
 λ: import qualified Data.Algorithm.PPattern as PPattern
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
