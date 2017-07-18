@@ -13,8 +13,6 @@ module Data.Algorithm.PPattern
 (
   -- * Searching with default strategy
   search
-, occurrenceIn
-, search'
 , occursIn
 , avoids
 
@@ -46,18 +44,6 @@ where
   -}
   search :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   search p q = searchWithStrategy p q Strategy.defaultStrategy
-
-  {-|
-    Alias for 'search p q'.
-  -}
-  occurrenceIn :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  p `occurrenceIn` q = search p q
-
-  {-|
-    Test if there exists an order-isomorphic occurrence of 'p' into 'q'.
-  -}
-  search' :: Perm.Perm -> Perm.Perm -> Bool
-  search' p q = Maybe.isJust $ search p q
 
   {-|
     Alias for 'search' p q'.
