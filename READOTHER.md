@@ -1,25 +1,29 @@
-<!-- python -m readme2tex --usepackage "tikz" --usepackage "xcolor" --output README.md --readme  READOTHER.md --nocdn --pngtrick -->
-
 # PPattern :
 
 ## Permutations
 
 ### Implementation
 
+Permutations are implemented as lists of points with increasing x-coordinates.
+
 ```haskell
 -- Define in Data.Algorithm.PPattern.Geometry.Point.hs
 newtype Point = Point (Int, Int) deriving (Show, Eq, Ord)
 
--- Define in Data.Algorithm.PPattern.Geometry.APoint.hs
-newtype APoint a = APoint (Point, a) deriving (Eq, Ord, Show)
-
 -- Define in Data.Algorithm.PPattern.Perm.hs
-newtype Perm a = Perm { getList :: [APoint a] } deriving (Eq, Ord)
+newtype Perm = Perm { getList :: [Point] } deriving (Eq, Ord)
 ```
 
+The function `mk :: (Foldable t, Ord a) => t a -> Perm` is devoted to creating
+permutations from foldable objects.
+
 ```haskell
-mk :: (Foldable t, Ord a) => t a -> Perm a
-mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
+λ: Perm.mk [2,1,3]
+[2,1,3]
+λ: Perm.mk "bac"
+[2,1,3]
+λ: Perm.mk ["tomorrow", "today", "yesterday"]
+[2,1,3]
 ```
 
 ### Basic manipulation
@@ -29,19 +33,30 @@ mk = Perm . fmap (uncurry Perm.T.mk) . reduce . Foldable.toList
 λ: let p = Perm.mk "acedb"
 λ: p
 [1,3,5,4,2]
-λ: Perm.toPoints p
+λ: Perm.size p
+5
+λ: Perm.points p
 [Point (1,1),Point (2,3),Point (3,5),Point (4,4),Point (5,2)]
-λ: Perm.xCoords p -- reduce form for 'fmap Point.xCoord $ Perm.points p'
+λ: Perm.xCoords p
 [1,2,3,4,5]
-λ: Perm.yCoords p -- reduce form for 'fmap Point.yCoord $ Perm.points p'
+λ: Perm.yCoords p
 [1,3,5,4,2]
-λ:
 ```
 
-As you might have guessed, `show`reduces to `yCoords`:
+`Perm.xCoords` and `Perm.yCoords` are reduced forms for:
 
 ```haskell
-instance Show (Perm a) where
+λ: import qualified Data.Algorithm.PPattern.Geometry.Point as Point
+λ: fmap Point.xCoord (Perm.points p)
+[1,2,3,4,5]
+λ: fmap Point.yCoord (Perm.points p)
+[1,3,5,4,2]
+```
+
+As you might have guessed, `show` for permutations reduces to `show . yCoords`:
+
+```haskell
+instance Show Perm where
   show = show . yCoords
 ```
 
@@ -50,80 +65,18 @@ instance Show (Perm a) where
 
 ### Ties
 
-```haskell
-λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: let p = Perm.mk "ababc"
-λ: p
-[1,3,2,4,5]
-λ:
-```
-
-### Transforming Permutations
-
-The *reverse* of a Permutation $\sigma = \sigma_1 \sigma_2 \ldots \sigma_n$
-is the Permutation $r(\sigma) = \sigma_n \sigma_{n-1} \ldots \sigma_1$.
-The *complement* $c(\sigma)$ of $\sigma$ is the Permutation
-$\sigma_1' \sigma_2' \ldots \sigma_n'$ where
-$\sigma_i' = n+1-\sigma_i$.
-The *inverse* is the regular group theoretical inverse on Permutations;
-that is, the $\sigma-i$-th position of the inverse $\sigma^{-1}$ is occupied by
-$i$.
-Going back to the library,
-`reversal`, `complement` and `inverse` yield the reverse, complement and
-inverse operations, respectivelly.
-`reversalComplement` is the composition of the complement and reverse
-(he complement is applied first).
+Ties are allowed and are resolved according to the left-to-right order.
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: let p = Perm.mk [3,5,7,1,8,4,2,6]
-λ: Perm.reversal p
-[6,2,4,8,1,7,5,3]
-λ: Perm.complement p
-[6,4,2,8,1,5,7,3]
-λ: Perm.reversalComplement p
-[3,7,5,1,8,2,4,6]
-λ: Perm.inverse p
-[4,7,1,6,2,8,3,5]
-λ:
+λ: Perm.mk "acb"
+[1,3,2]
+λ: Perm.mk "acbacb"
+[1,5,3,2,6,4]
+λ: Perm.mk "acbacbacb"
+[1,7,4,2,8,5,3,9,6]
 ```
 
-### Composing Permutations
-
-#### Sums
-
-The *skew sum* and *direct sum* of Permutations are two operations
-to combine shorter Permutations into longer ones. Given a Permutation $\pi$
-of length $m$ and the Permutation $\sigma$ of length $n$,
-the skew sum of $\pi$ and $\sigma$ is the Permutation of length $m + n$ defined by
-$$
-(\pi \ominus \sigma )(i)=
-\begin{cases}
-  \pi (i)+n    & \text{for } 1\leq i\leq m,\\
-  \sigma (i-m) & \text{for } m+1\leq i\leq m+n,
-\end{cases}
-$$
-
-and the direct sum of $\pi$ and $\sigma$ is the Permutation of length $m + n$ defined by
-$$
-(\pi \oplus \sigma )(i)=
-\begin{cases}
-  \pi (i)          & \text{for } 1\leq i\leq m,\\
-  \sigma (i-m) + m & \text{for } m+1\leq i\leq m+n.
-\end{cases}
-$$
-
-```haskell
-λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: import qualified Data.Algorithm.PPattern.Perm.Sum as Perm.Sum
-λ: let p = Perm.mk [2,4,1,3]
-λ: let q = Perm.mk [3,5,1,4,2]
-λ: Perm.Sum.skewSum p q
-[7,9,6,8,3,5,1,4,2]
-λ: Perm.Sum.directSum p q
-[2,4,1,3,7,9,5,8,6]
-λ:
-```
 
 ### Basic statistics
 
