@@ -30,7 +30,7 @@ where
   import qualified Data.Monoid as Monoid
 
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint           as ColorPoint
-  import qualified Data.Algorithm.PPattern.APerm                         as APerm
+  import qualified Data.Algorithm.PPattern.Perm                          as Perm
   import qualified Data.Algorithm.PPattern.State.Next                    as State.Next
   import qualified Data.Algorithm.PPattern.State.Access                  as State.Access
   import qualified Data.Algorithm.PPattern.State.Embedding               as State.Embedding
@@ -56,7 +56,7 @@ where
   {-|
     Make a new state. APermutation q is required.
   -}
-  mk :: APerm.APerm a -> State
+  mk :: Perm.Perm -> State
   mk q  = State { pColorPoints            = []
                 , qColorPoints            = qcps
                 , embedding               = State.Embedding.empty

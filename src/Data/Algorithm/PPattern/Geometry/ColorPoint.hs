@@ -22,9 +22,9 @@ module Data.Algorithm.PPattern.Geometry.ColorPoint
 
   -- * Constructing
 , mk
-, mk2
+, mk'
 , mkBlank
-, mk2Blank
+, mkBlank'
 
   -- * Rendering
 , toTuple
@@ -51,25 +51,29 @@ where
     'mk' makes a colored point from two coordinates and a color.
   -}
   mk ::Int -> Int -> Color.Color -> ColorPoint
-  mk x y c = ColorPoint (Point.mk x y, c)
+  mk x y c = mk' p c
+    where
+      p = Point.mk x y
 
   {-|
     'mkPoint' makes a colored point from a point and a color.
   -}
-  mk2 :: Point.Point -> Color.Color -> ColorPoint
-  mk2 p c = ColorPoint (p, c)
+  mk' :: Point.Point -> Color.Color -> ColorPoint
+  mk' p c = ColorPoint (p, c)
 
   {-|
     'mkBlank' makes a blank point from two coordinates.
   -}
   mkBlank :: Int -> Int -> ColorPoint
-  mkBlank x y = ColorPoint (Point.mk x y, Color.blankColor)
+  mkBlank x y = mkBlank' p
+    where
+      p = Point.mk x y
 
   {-|
     'mkPoint' makes a blank point from a point.
   -}
-  mk2Blank :: Point.Point -> ColorPoint
-  mk2Blank p = ColorPoint (p, Color.blankColor)
+  mkBlank' :: Point.Point -> ColorPoint
+  mkBlank' p = mk' p Color.blankColor
 
   {-|
     Transform a color point into a triple (x-ccordinate, y-ccordinate, color).
@@ -119,7 +123,7 @@ where
     Update color point x-coordinate.
   -}
   updateXCoord :: Int -> ColorPoint -> ColorPoint
-  updateXCoord x (ColorPoint (p, c)) = mk2 p' c
+  updateXCoord x (ColorPoint (p, c)) = mk' p' c
     where
       p' = Point.updateXCoord x p
 
@@ -127,7 +131,7 @@ where
     Update color point x-coordinate.
   -}
   updateXCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
-  updateXCoord' f (ColorPoint (p, c)) = mk2 p' c
+  updateXCoord' f (ColorPoint (p, c)) = mk' p' c
     where
       p' = Point.updateXCoord' f p
 
@@ -135,7 +139,7 @@ where
     Update color point y-coordinate.
   -}
   updateYCoord :: Int -> ColorPoint -> ColorPoint
-  updateYCoord y (ColorPoint (p, c)) = mk2 p' c
+  updateYCoord y (ColorPoint (p, c)) = mk' p' c
     where
       p' = Point.updateYCoord y p
 
@@ -143,7 +147,7 @@ where
     Update color point y-coordinate.
   -}
   updateYCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
-  updateYCoord' f (ColorPoint (p, c)) = mk2 p' c
+  updateYCoord' f (ColorPoint (p, c)) = mk' p' c
     where
       p' = Point.updateYCoord' f p
 
@@ -151,12 +155,12 @@ where
     Update color point color.
   -}
   updateColor :: Color.Color -> ColorPoint -> ColorPoint
-  updateColor c' (ColorPoint (p, _)) = mk2 p c'
+  updateColor c (ColorPoint (p, _)) = mk' p c
 
   {-|
     Update color point color.
   -}
   updateColor' :: (Color.Color -> Color.Color) -> ColorPoint -> ColorPoint
-  updateColor' f (ColorPoint (p, c)) = mk2 p c'
+  updateColor' f (ColorPoint (p, c)) = mk' p c'
     where
       c' = f c

@@ -36,20 +36,14 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
-  {-|
-    Colored point to colored point mapping
-  -}
-  newtype Next = Next (Map.Map ColorPoint.ColorPoint ColorPoint.ColorPoint)
+  -- Colored point to colored point mapping
+  newtype Next = Next { getMap :: Map.Map ColorPoint.ColorPoint ColorPoint.ColorPoint }
 
-  {-|
-    Make an empty Next mapping.
-  -}
+  -- Make an empty Next mapping.
   empty :: Next
-  empty = Next Map.empty
+  empty = Next { getMap = Map.empty }
 
-  {-|
-    Make a Next mapping from a list of colored points.
-  -}
+  -- Make a Next mapping from a list of colored points.
   mk :: [ColorPoint.ColorPoint] -> Next
   mk = Tuple.fst . Foldable.foldr f (empty, IntMap.empty)
     where
@@ -59,23 +53,35 @@ where
         where
           c = ColorPoint.color cp
 
+  --
+  --
   query :: ColorPoint.ColorPoint -> Next -> Maybe ColorPoint.ColorPoint
-  query cp (Next m) = Map.lookup cp m
+  query cp = Map.lookup cp . getMap
 
+  --
+  --
   insert :: ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> Next -> Next
-  insert cp cp' (Next m) = Next $ Map.insert cp cp' m
+  insert cp cp' next = Next { getMap = m }
+    where
+      m = Map.insert cp cp' $ getMap next
 
+  --
+  --
   jumpThreshold ::
     (ColorPoint.ColorPoint -> Int) -> Int ->  Next -> ColorPoint.ColorPoint -> Maybe ColorPoint.ColorPoint
-  jumpThreshold f t n cp = aux (query cp n)
+  jumpThreshold f t next cp = aux (query cp next)
     where
       aux Nothing = Nothing
       aux (Just cp')
-        | f cp' > t = Just cp'               -- above threshold, done.
-        | otherwise = aux (query cp' n) -- below threshold, keep on searching.
+        | f cp' > t = Just cp'     -- above threshold, done.
+        | otherwise = aux (query cp' next) -- below threshold, keep on searching.
 
+  --
+  --
   xJumpThreshold :: Int -> Next -> ColorPoint.ColorPoint -> Maybe ColorPoint.ColorPoint
   xJumpThreshold = jumpThreshold ColorPoint.xCoord
 
+  --
+  --
   yJumpThreshold :: Int -> Next -> ColorPoint.ColorPoint -> Maybe ColorPoint.ColorPoint
   yJumpThreshold = jumpThreshold ColorPoint.yCoord

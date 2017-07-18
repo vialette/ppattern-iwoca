@@ -36,7 +36,7 @@ where
 
   import qualified Data.Maybe as Maybe
 
-  import qualified Data.Algorithm.PPattern.APerm      as APerm
+  import qualified Data.Algorithm.PPattern.Perm       as Perm
   import qualified Data.Algorithm.PPattern.Search     as Search
   import qualified Data.Algorithm.PPattern.Strategy   as Strategy
   import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
@@ -44,13 +44,13 @@ where
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys'.
   -}
-  search :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  search :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   search = searchWithStrategy Strategy.defaultStrategy
 
   {-|
     Alias for 'search xs ys'.
   -}
-  occurrenceIn :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  occurrenceIn :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   xs `occurrenceIn` ys = search xs ys
 
   {-|
@@ -75,11 +75,11 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to a given strategy.
   -}
-  searchWithStrategy :: (Foldable t, Ord a, Foldable f, Ord b) => Strategy.Strategy -> t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchWithStrategy :: (Foldable t, Ord a, Foldable f, Ord b) => Strategy.Strategy -> t a -> f b -> Maybe Occurrence.Occurrence
   searchWithStrategy strategy xs ys = Search.search p q strategy
     where
-      p = APerm.mk xs
-      q = APerm.mk ys
+      p = Perm.mk xs
+      q = Perm.mk ys
 
   {-|
     Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'
@@ -92,7 +92,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys'.
     Resolve conflicts according to a given strategy.
   -}
-  searchLeftmostOrderConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchLeftmostOrderConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   searchLeftmostOrderConflictFirst = searchWithStrategy Strategy.leftmostOrderConflictFirst
 
   {-|
@@ -106,7 +106,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the rightmost order conflict first strategy.
   -}
-  searchRightmostOrderConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchRightmostOrderConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   searchRightmostOrderConflictFirst = searchWithStrategy Strategy.rightmostOrderConflictFirst
 
   {-|
@@ -120,7 +120,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the leftmost value conflict first strategy.
   -}
-  searchLeftmostValueConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchLeftmostValueConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   searchLeftmostValueConflictFirst = searchWithStrategy Strategy.leftmostValueConflictFirst
 
   {-|
@@ -134,7 +134,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the rightmost value conflict first strategy.
   -}
-  searchRightmostValueConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchRightmostValueConflictFirst :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   searchRightmostValueConflictFirst = searchWithStrategy Strategy.rightmostValueConflictFirst
 
   {-|
@@ -148,7 +148,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the leftmost conflict strategy.
   -}
-  searchLeftmostConflict :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchLeftmostConflict :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   searchLeftmostConflict = searchWithStrategy Strategy.leftmostConflict
 
   {-|
@@ -162,7 +162,7 @@ where
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the rightmost conflict strategy.
   -}
-  searchRightmostConflict :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe (Occurrence.Occurrence a b)
+  searchRightmostConflict :: (Foldable t, Ord a, Foldable f, Ord b) => t a -> f b -> Maybe Occurrence.Occurrence
   searchRightmostConflict = searchWithStrategy Strategy.rightmostConflict
 
   {-|

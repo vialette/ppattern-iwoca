@@ -33,9 +33,9 @@ where
   import qualified Data.Algorithm.PPattern.State               as State
   import qualified Data.Algorithm.PPattern.Search.Context      as Context
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
-  import qualified Data.Algorithm.PPattern.APerm               as APerm
-  import qualified Data.Algorithm.PPattern.APerm.Monotone      as APerm.Monotone
-  import qualified Data.Algorithm.PPattern.APerm.Operation     as APerm.Operation
+  import qualified Data.Algorithm.PPattern.Perm                as Perm
+  import qualified Data.Algorithm.PPattern.Perm.Monotone       as Perm.Monotone
+  import qualified Data.Algorithm.PPattern.Perm.Operation      as Perm.Operation
   import qualified Data.Algorithm.PPattern.Conflict            as Conflict
   import qualified Data.Algorithm.PPattern.Occurrence          as Occurrence
 
@@ -46,18 +46,18 @@ where
   initialColorPoints _        (_ : _) []      = error "Search.initialColorPoints _ (_ : _) []" -- make ghc -Werror happy
   initialColorPoints _        []      (_ : _) = error "Search.initialColorPoints _ [] (_ : _)" -- make ghc -Werror happy
   initialColorPoints []       _   _   = []
-  initialColorPoints (p : ps) []  cs  = ColorPoint.mk2Blank p : initialColorPoints ps [] cs
+  initialColorPoints (p : ps) []  cs  = ColorPoint.mkBlank' p : initialColorPoints ps [] cs
   initialColorPoints (p : ps) ps''@(p' : ps') cs'@(c : cs)
-    | Point.yCoord p == Point.yCoord p' = ColorPoint.mk2 p c : initialColorPoints ps ps' cs
-    | otherwise                         = ColorPoint.mk2Blank p : initialColorPoints ps ps'' cs'
+    | Point.yCoord p == Point.yCoord p' = ColorPoint.mk' p c : initialColorPoints ps ps' cs
+    | otherwise                         = ColorPoint.mkBlank' p : initialColorPoints ps ps'' cs'
 
   -- Extract embedding in case of a direct search
-  present :: APerm.APerm a -> APerm.APerm b -> State.State -> Maybe (Occurrence.Occurrence a b)
-  present p q = Just . Occurrence.mk p q . State.toList
+  occurrence :: State.State -> Maybe Occurrence.Occurrence
+  occurrence = Just . Occurrence.mk . State.toList
 
   -- Extract embedding in case of a reverse search
-  presentReverse :: APerm.APerm a -> APerm.APerm b -> Int -> Int -> State.State -> Maybe (Occurrence.Occurrence a b)
-  presentReverse p q pSize qSize  = Just . Occurrence.mk p q . Foldable.foldr f [] . State.toList
+  occurrenceReverse :: Int -> Int -> State.State -> Maybe Occurrence.Occurrence
+  occurrenceReverse pSize qSize  = Just . Occurrence.mk . Foldable.foldr f [] . State.toList
     where
       f (cp1, cp2) acc = (cp1', cp2') : acc
         where
@@ -88,57 +88,61 @@ where
 
   -- Search for an order-isomorphic occurrence of a permutation p into a permutation q.
   -- Resolve conflicts according to a given strategy.
-  search :: APerm.APerm a -> APerm.APerm b -> Strategy.Strategy -> Maybe (Occurrence.Occurrence a b)
+  search :: Perm.Perm -> Perm.Perm -> Strategy.Strategy -> Maybe Occurrence.Occurrence
   search p q strategy
-    | pSize > qSize = Nothing
-    | qLongestDecreasingLength <= qLongestIncreasingLength = searchAux p q qLongestDecreasingLength strategy >>=
-                                                             present p q
-    | otherwise = searchAux pReverse qReverse qReverseLongestDecreasingLength strategy >>=
-                  presentReverse p q pSize qSize
-
+    | m > n                    = Nothing
+    | qDecLength <= qIncLength = searchAux p        q        qDecLength  strategy >>= occurrence
+    | otherwise                = searchAux pReverse qReverse qDecLength' strategy >>= occurrenceReverse m n
     where
-      pSize = APerm.size p
-      qSize = APerm.size q
+      m = Perm.size p
+      n = Perm.size q
 
-      qLongestIncreasingLength = APerm.Monotone.longestIncreasingLength q
-      qLongestDecreasingLength = APerm.Monotone.longestDecreasingLength q
+      qDecLength = Perm.Monotone.longestDecreasingLength q
+      qIncLength = Perm.Monotone.longestIncreasingLength q
 
-      pReverse = APerm.Operation.reversal p
-      qReverse = APerm.Operation.reversal q
+      pReverse = Perm.Operation.reversal p
+      qReverse = Perm.Operation.reversal q
 
-      qReverseLongestDecreasingLength = APerm.Monotone.longestDecreasingLength qReverse
+      qDecLength' = Perm.Monotone.longestDecreasingLength qReverse
 
-  searchAux :: APerm.APerm a -> APerm.APerm b -> Int -> Strategy.Strategy -> Maybe State.State
-  searchAux p q qLongestDecreasingLength strategy
-    | pLongestDecreasingLength > qLongestDecreasingLength = Nothing
-    | otherwise                                           = computation
+  -- Search auxiliary function.
+  -- `seachAux p q k s` take a pattern 'p', a target permutation 'q',
+  -- the longest decreasing subsequence in the target permutation 'k' and
+  -- a conflict ressolving strategy 's'.
+  -- It returns 'Just state' if 'p' is contains in 'q', Nothing otherwise.
+  searchAux :: Perm.Perm -> Perm.Perm -> Int -> Strategy.Strategy -> Maybe State.State
+  searchAux p q qDecLength strategy
+    | pDecLength > qDecLength = Nothing
+    | otherwise               = computation
     where
       -- Permutation p as points
-      pPoints = APerm.points p
+      pPoints = Perm.points p
 
       -- p longest decreassing by suffixes
       pRightLongestDecreasings = mkRightLongestDecreasings pPoints
 
       -- Permutation p longest decreasing data
-      pLongestDecreasing = APerm.Monotone.longestDecreasing p
-      pLongestDecreasingLength = APerm.size pLongestDecreasing
-      pLongestDecreasingPoints = APerm.points pLongestDecreasing
+      pDec       = Perm.Monotone.longestDecreasing p
+      pDecLength = Perm.size pDec
+      pDecPoints = Perm.points pDec
 
       -- initial state
       s = State.mk q
-      cs = Color.palette 1 qLongestDecreasingLength
+      cs = Color.palette 1 qDecLength
 
       -- Embed p and perform search
       computation = Foldable.asum [doSearch pcps cs context strategy s
-                                    | refColors   <- cs `Combinatorics.choose` pLongestDecreasingLength
-                                    , let pcps    = initialColorPoints pPoints pLongestDecreasingPoints refColors
+                                    | refColors   <- cs `Combinatorics.choose` pDecLength
+                                    , let pcps    = initialColorPoints pPoints pDecPoints refColors
                                     , let precede = IntMap.empty
-                                    , let ys      = fmap Point.yCoord pLongestDecreasingPoints
+                                    , let ys      = fmap Point.yCoord pDecPoints
                                     , let pairs   = List.zip refColors ys
                                     , let follow  = IntMap.fromList pairs
                                     , let context = Context.mk precede follow pRightLongestDecreasings
                                   ]
 
+  --
+  --
   doSearch :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> Strategy.Strategy -> State.State -> Maybe State.State
   doSearch [] _ _ _ s  = Just s
   doSearch pcps cs context strategy s

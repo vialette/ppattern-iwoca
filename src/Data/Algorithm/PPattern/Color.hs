@@ -42,6 +42,9 @@ where
   blankColor :: Color
   blankColor = 0 :: Color
 
+  {-|
+    Test blank color.
+  -}
   isBlankColor :: Color -> Bool
   isBlankColor c = c == blankColor
 

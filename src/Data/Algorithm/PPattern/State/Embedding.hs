@@ -37,22 +37,33 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
-  newtype Embedding = Embedding (Map.Map ColorPoint.ColorPoint ColorPoint.ColorPoint)
+  newtype Embedding = Embedding { getMap :: Map.Map ColorPoint.ColorPoint ColorPoint.ColorPoint }
 
+  --
+  --
   empty :: Embedding
   empty = Embedding Map.empty
 
+  --
+  --
   toList :: Embedding -> [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)]
-  toList (Embedding m) = Map.toList m
+  toList = Map.toList . getMap
 
+  --
+  --
   insert :: ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> Embedding -> Embedding
-  insert cp cp' (Embedding m) = Embedding m'
+  insert cp cp' e = Embedding { getMap = m' }
     where
+      m  = getMap e
       m' = Map.insert cp cp' m
 
+  --
+  --
   query :: ColorPoint.ColorPoint -> Embedding -> Maybe ColorPoint.ColorPoint
-  query cp (Embedding m) = Map.lookup cp m
+  query cp = Map.lookup cp . getMap
 
+  --
+  --
   showEmbedding :: Embedding -> String
   showEmbedding = aux "" . List.sort . toList
     where

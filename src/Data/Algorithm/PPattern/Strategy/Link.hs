@@ -21,20 +21,20 @@ module Data.Algorithm.PPattern.Strategy.Link
 )
 where
 
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as CP
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
   -- simple link
-  newtype Link = Link (CP.ColorPoint, CP.ColorPoint)
+  newtype Link = Link (ColorPoint.ColorPoint, ColorPoint.ColorPoint)
                  deriving (Show, Eq, Ord)
 
   -- Construct a simple link.
-  mk :: CP.ColorPoint -> CP.ColorPoint -> Link
-  mk cp1 cp2 = Link (cp1, cp2)
+  mk :: ColorPoint.ColorPoint -> ColorPoint.ColorPoint -> Link
+  mk cp cp' = Link (cp, cp')
 
   -- First color point.
-  fstColorPoint :: Link -> CP.ColorPoint
-  fstColorPoint (Link (cp1, _)) = cp1
+  fstColorPoint :: Link -> ColorPoint.ColorPoint
+  fstColorPoint (Link (cp, _)) = cp
 
   -- Second color point.
-  sndColorPoint :: Link -> CP.ColorPoint
-  sndColorPoint (Link (_, cp2)) = cp2
+  sndColorPoint :: Link -> ColorPoint.ColorPoint
+  sndColorPoint (Link (_, cp)) = cp
