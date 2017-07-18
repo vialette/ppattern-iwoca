@@ -136,56 +136,20 @@ is occupied by $i$.
 [Point (3,3),Point (6,1)]
 ```
 
-### Permutation graphs
-
 ## Pattern matching
 
-### Generic pattern matching
+### Basic pattern matching
 
-### Monotone patterns
+### Strategy
 
-### Separable patterns
++ *leftmost conflict* ('Data.Algorithm.PPattern.Strategy.leftmostConflict')
 
-### Size-3 patterns
++ *leftmost order conflict* ('Data.Algorithm.PPattern.Strategy.leftmostOrderConflictFirst')
 
-### Size-4 patterns
++ *leftmost value conflict* ('Data.Algorithm.PPattern.Strategy.leftmostValueConflictFirst')
 
-## Permutation classes
++ *rightmost conflict* ('Data.Algorithm.PPattern.Strategy.rightmostConflict')
 
-### Separable Permutations
++ *rightmost order conflict* ('Data.Algorithm.PPattern.Strategy.rightmostOrderConflictFirst')
 
-A separable Permutation is a Permutation that can be obtained from the trivial
-Permutation 1 by direct sums and skew sums;
-separable Permutations may be characterized by the forbidden Permutation patterns
-2413 and 3142
-(see <https://en.wikipedia.org/wiki/Separable_Permutation>).
-
-```haskell
-λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: import qualified Data.Algorithm.PPattern.SeparatingTree as SeparatingTree
-λ: let p = Perm.mk [3,1,4,2,6,5,7]
-λ: -- p does not avoid 2413 and 3142, and hence is not separable
-λ: Perm.isSeparable p                  
-False
-λ: -- so that no separating tree of p can be obtained
-λ: SeparatingTree.mk <img alt="$ Perm.toPoints p&#10;Nothing&#10;λ: let q = Perm.mk [3,1,2,4,6,5,7]&#10;λ: Perm.isSeparable q                             -- q does avoid 2413 and 3142, and hence is separable&#10;True&#10;λ: import Data.Maybe&#10;λ: fromJust . SeparatingTree.mk $" src="https://rawgit.com/in	git@github.com:vialette/ppattern/None/svgs/c7be5bdfada4253d65cf69b07d4cdacb.svg?invert_in_darkmode" align=middle width="1011.5407499999999pt" height="45.82083000000002pt"/> Perm.toPoints q -- so that a separating tree of q can be obtained
-+ Interval (1,7)
-.+ Interval (1,6)
-..+ Interval (1,4)
-...- Interval (1,3)
-....Point (1,3)
-....+ Interval (1,2)
-.....Point (2,1)
-.....Point (3,2)
-...Point (4,4)
-..- Interval (5,6)
-...Point (5,6)
-...Point (6,5)
-.Point (7,7)
-
-λ:
-```
-
-### (213,231)-avoiding patterns
-
-## Computing a base
++ *rightmost value conflict* ('Data.Algorithm.PPattern.Strategy.rightmostValueConflictFirst')
