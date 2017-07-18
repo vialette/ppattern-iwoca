@@ -142,14 +142,14 @@ is occupied by $i$.
 
 ### Strategy
 
-+ *leftmost conflict* ('Data.Algorithm.PPattern.Strategy.leftmostConflict')
++ *leftmost conflict* (`Data.Algorithm.PPattern.Strategy.leftmostConflict`)
 
-+ *leftmost order conflict* ('Data.Algorithm.PPattern.Strategy.leftmostOrderConflictFirst')
++ *leftmost order conflict* (`Data.Algorithm.PPattern.Strategy.leftmostOrderConflictFirst`)
 
-+ *leftmost value conflict* ('Data.Algorithm.PPattern.Strategy.leftmostValueConflictFirst')
++ *leftmost value conflict* (`Data.Algorithm.PPattern.Strategy.leftmostValueConflictFirst`)
 
-+ *rightmost conflict* ('Data.Algorithm.PPattern.Strategy.rightmostConflict')
++ *rightmost conflict* (`Data.Algorithm.PPattern.Strategy.rightmostConflict`)
 
-+ *rightmost order conflict* ('Data.Algorithm.PPattern.Strategy.rightmostOrderConflictFirst')
++ *rightmost order conflict* (`Data.Algorithm.PPattern.Strategy.rightmostOrderConflictFirst`)
 
-+ *rightmost value conflict* ('Data.Algorithm.PPattern.Strategy.rightmostValueConflictFirst')
++ *rightmost value conflict* (`Data.Algorithm.PPattern.Strategy.rightmostValueConflictFirst`)
