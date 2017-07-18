@@ -6,6 +6,8 @@
 
 ### Implementation
 
+Permutations are implemented as lists of points.
+
 ```haskell
 -- Define in Data.Algorithm.PPattern.Geometry.Point.hs
 newtype Point = Point (Int, Int) deriving (Show, Eq, Ord)
@@ -14,9 +16,17 @@ newtype Point = Point (Int, Int) deriving (Show, Eq, Ord)
 newtype Perm = Perm { getList :: [Point] } deriving (Eq, Ord)
 ```
 
+The function `mk :: (Foldable t, Ord a) => t a -> Perm` is devoted to creating
+permutations from foldable objects.
+
 ```haskell
-mk :: (Foldable t, Ord a) => t a -> APerm a
-mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
+λ: Perm.mk [2,1,3]
+[2,1,3]
+λ: Perm.mk "bac"
+[2,1,3]
+λ: Perm.mk ["tomorrow", "today", "yesterday"]
+[2,1,3]
+λ:
 ```
 
 ### Basic manipulation
@@ -28,7 +38,7 @@ mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
 [1,3,5,4,2]
 λ: Perm.size p
 5
-λ: Perm.toPoints p
+λ: Perm.points p
 [Point (1,1),Point (2,3),Point (3,5),Point (4,4),Point (5,2)]
 λ: Perm.xCoords p
 [1,2,3,4,5]
@@ -49,7 +59,7 @@ mk = APerm . fmap (uncurry APerm.T.mk) . reduce . Foldable.toList
 As you might have guessed, `show`reduces to `yCoords`:
 
 ```haskell
-instance Show (APerm a) where
+instance Show Perm where
   show = show . yCoords
 ```
 
@@ -155,56 +165,4 @@ and the direct sum of <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa12
 λ:
 ```
 
-### APermutation graphs
-
 ## Pattern matching
-
-### Generic pattern matching
-
-### Monotone patterns
-
-### Separable patterns
-
-### Size-3 patterns
-
-### Size-4 patterns
-
-## APermutation classes
-
-### Separable APermutations
-
-A separable APermutation is a APermutation that can be obtained from the trivial
-APermutation 1 by direct sums and skew sums;
-separable APermutations may be characterized by the forbidden APermutation patterns
-2413 and 3142
-(see <https://en.wikipedia.org/wiki/Separable_APermutation>).
-
-```haskell
-λ: import qualified Data.Algorithm.PPattern.APerm as APerm
-λ: import qualified Data.Algorithm.PPattern.SeparatingTree as SeparatingTree
-λ: let p = APerm.mk [3,1,4,2,6,5,7]
-λ: -- p does not avoid 2413 and 3142, and hence is not separable
-λ: APerm.isSeparable p                  
-False
-λ: -- so that no separating tree of p can be obtained
-λ: SeparatingTree.mk <img alt="<img alt="$ APerm.toPoints p&amp;#10;Nothing&amp;#10;λ: let q = APerm.mk [3,1,2,4,6,5,7]&amp;#10;λ: APerm.isSeparable q                             -- q does avoid 2413 and 3142, and hence is separable&amp;#10;True&amp;#10;λ: import Data.Maybe&amp;#10;λ: fromJust . SeparatingTree.mk $" src="svgs/6cf3447b0450166911e817c41625f463.png?invert_in_darkmode" align=middle width="841.26405pt" height="45.82083000000002pt"/>" src="https://rawgit.com/in	git@github.com:vialette/ppattern/None/svgs/c7be5bdfada4253d65cf69b07d4cdacb.svg?invert_in_darkmode" align=middle width="1011.5407499999999pt" height="45.82083000000002pt"/> APerm.toPoints q -- so that a separating tree of q can be obtained
-+ Interval (1,7)
-.+ Interval (1,6)
-..+ Interval (1,4)
-...- Interval (1,3)
-....Point (1,3)
-....+ Interval (1,2)
-.....Point (2,1)
-.....Point (3,2)
-...Point (4,4)
-..- Interval (5,6)
-...Point (5,6)
-...Point (6,5)
-.Point (7,7)
-
-λ:
-```
-
-### (213,231)-avoiding patterns
-
-## Computing a base
