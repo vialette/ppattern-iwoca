@@ -180,13 +180,14 @@ o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
 λ: import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
 λ: Occurrence.size (fromJust o)
 3
+λ: Occurrence.pattern (fromJust o)
+[2,1,3]
+λ: Occurrence.patternPoints (fromJust o)
+[Point (1,2),Point (2,1),Point (3,3)]
 λ: Occurrence.target (fromJust o)
 [2,1,3]
 λ: Occurrence.targetPoints (fromJust o)
-[Point (1,2),Point (2,1),Point (3,3)]
-λ: Occurrence.pattern (fromJust o)
-[2,1,3]
-λ:
+[Point (2,2),Point (5,1),Point (6,4)]
 ```
 
 ### Strategy
