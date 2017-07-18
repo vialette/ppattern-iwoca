@@ -80,9 +80,15 @@ Ties are allowed and are resolved according to the left-to-right order.
 
 ### Basic operations
 
-The \emph{reverse} of a permutation <img alt="$\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$" src="svgs/f00e73d0681e93ba274aa2e29bda2bb0.png?invert_in_darkmode" align=middle width="107.393715pt" height="14.102549999999994pt"/>
+The *reverse* of a permutation <img alt="$\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$" src="svgs/f00e73d0681e93ba274aa2e29bda2bb0.png?invert_in_darkmode" align=middle width="107.393715pt" height="14.102549999999994pt"/>
 is the permutation <img alt="$\sigma_n \sigma_{n-1} \ldots \sigma_1$" src="svgs/136707a3c7df490ad43d3008f02c3739.png?invert_in_darkmode" align=middle width="93.981855pt" height="14.102549999999994pt"/>.
-The \emph{complement} of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/>
+The *complement* of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation
+<img alt="$\beta_1 \beta_2 \ldots \beta_n$" src="svgs/69c5ec9825b74db00546c7649d8fcb9f.png?invert_in_darkmode" align=middle width="75.291645pt" height="22.745910000000016pt"/>, where
+<img alt="$\beta_i = n+1-/sigma_i$" src="svgs/e84f5fc1518253c82c7178ee80be16bd.png?invert_in_darkmode" align=middle width="152.28906pt" height="24.56552999999997pt"/>.
+That is, the complement substitutes the largest element of a permutation
+by the smallest one, the next largest element by the next smallest element, etc.
+The *inverse* of <img alt="$\sigma$" src="svgs/8cda31ed38c6d59d14ebefa440099572.png?invert_in_darkmode" align=middle width="9.945705000000002pt" height="14.102549999999994pt"/> is the permutation where the <img alt="$\sigma_i$" src="svgs/e61ae7f2cb94c8418c30517775fde77d.png?invert_in_darkmode" align=middle width="13.991505000000002pt" height="14.102549999999994pt"/>-th position
+is occupied by <img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.png?invert_in_darkmode" align=middle width="5.642109000000004pt" height="21.602129999999985pt"/>.
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.APerm as APerm

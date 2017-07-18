@@ -80,9 +80,15 @@ Ties are allowed and are resolved according to the left-to-right order.
 
 ### Basic operations
 
-The \emph{reverse} of a permutation $\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$
+The *reverse* of a permutation $\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$
 is the permutation $\sigma_n \sigma_{n-1} \ldots \sigma_1$.
-The \emph{complement} of $\sigma$
+The *complement* of $\sigma$ is the permutation
+$\beta_1 \beta_2 \ldots \beta_n$, where
+$\beta_i = n+1-/sigma_i$.
+That is, the complement substitutes the largest element of a permutation
+by the smallest one, the next largest element by the next smallest element, etc.
+The *inverse* of $\sigma$ is the permutation where the $\sigma_i$-th position
+is occupied by $i$.
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.APerm as APerm
