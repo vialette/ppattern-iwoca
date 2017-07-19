@@ -170,7 +170,9 @@ True
 
 The `Data.Algorithm.PPattern.search` function has type
 ```haskell
-search :: Data.Algorithm.PPattern.Perm -> Data.Algorithm.PPattern.Perm -> Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
+import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
+import qualified Data.Algorithm.PPattern.Perm as Perm
+search :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
 ```
 as shown in
 ```haskell
@@ -180,8 +182,12 @@ as shown in
 λ: let q = Perm.mk [6,2,3,5,1,4]
 λ: let o = PPattern.search p q
 λ: :type o
-o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
+o :: Maybe Occurrence.Occurrence
 ```
+
+The module `Data.Algorithm.PPattern.Occurrence` provides several function
+for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variable.
+
 
 ```haskell
 λ: import Data.Maybe
