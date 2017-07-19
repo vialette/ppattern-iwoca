@@ -118,6 +118,8 @@ all the entries that precede it is called a *left-to-right minimum*
 An entry of a permutation which is smaller (resp. larger) than
 all the entries that follow it is called a *right-to-left minimum*
 (resp. *right-to-left maximum*).
+A *valley* (resp. *peak*) in a permutation is an entry that is smaller (resp. larger)
+than both of its neighbors.
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
