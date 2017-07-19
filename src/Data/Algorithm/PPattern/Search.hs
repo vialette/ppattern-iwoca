@@ -52,12 +52,12 @@ where
     | otherwise                         = ColorPoint.mkBlank' p : initialColorPoints ps ps'' cs'
 
   -- Extract embedding in case of a direct search
-  occurrence :: State.State -> Maybe Occurrence.Occurrence
-  occurrence = Just . Occurrence.mk . State.toList
+  mkOccurrence :: State.State -> Maybe Occurrence.Occurrence
+  mkOccurrence = Just . Occurrence.mk . State.toList
 
   -- Extract embedding in case of a reverse search
-  occurrenceReverse :: Int -> Int -> State.State -> Maybe Occurrence.Occurrence
-  occurrenceReverse pSize qSize  = Just . Occurrence.mk . Foldable.foldr f [] . State.toList
+  mkReverseOccurrence :: Int -> Int -> State.State -> Maybe Occurrence.Occurrence
+  mkReverseOccurrence pSize qSize  = Just . Occurrence.mk . Foldable.foldr f [] . State.toList
     where
       f (cp1, cp2) acc = (cp1', cp2') : acc
         where
@@ -91,8 +91,8 @@ where
   search :: Perm.Perm -> Perm.Perm -> Strategy.Strategy -> Maybe Occurrence.Occurrence
   search p q strategy
     | m > n                    = Nothing
-    | qDecLength <= qIncLength = searchAux p        q        qDecLength  strategy >>= occurrence
-    | otherwise                = searchAux pReverse qReverse qDecLength' strategy >>= occurrenceReverse m n
+    | qDecLength <= qIncLength = searchAux p        q        qDecLength  strategy       >>= mkOccurrence
+    | otherwise                = searchAux pReverse qReverse qReverseDecLength strategy >>= mkReverseOccurrence m n
     where
       m = Perm.size p
       n = Perm.size q
@@ -103,7 +103,7 @@ where
       pReverse = Perm.Operation.reversal p
       qReverse = Perm.Operation.reversal q
 
-      qDecLength' = Perm.Monotone.longestDecreasingLength qReverse
+      qReverseDecLength = Perm.Monotone.longestDecreasingLength qReverse
 
   -- Search auxiliary function.
   -- `seachAux p q k s` take a pattern 'p', a target permutation 'q',
@@ -116,10 +116,10 @@ where
     | otherwise               = computation
     where
       -- Permutation p as points
-      pPoints = Perm.points p
+      pps = Perm.points p
 
       -- p longest decreassing by suffixes
-      pRightLongestDecreasings = mkRightLongestDecreasings pPoints
+      pRightLongestDecreasings = mkRightLongestDecreasings pps
 
       -- Permutation p longest decreasing data
       pDec       = Perm.Monotone.longestDecreasing p
@@ -133,7 +133,7 @@ where
       -- Embed p and perform search
       computation = Foldable.asum [doSearch pcps cs context strategy s
                                     | refColors   <- cs `Combinatorics.choose` pDecLength
-                                    , let pcps    = initialColorPoints pPoints pDecPoints refColors
+                                    , let pcps    = initialColorPoints pps pDecPoints refColors
                                     , let precede = IntMap.empty
                                     , let ys      = fmap Point.yCoord pDecPoints
                                     , let pairs   = List.zip refColors ys

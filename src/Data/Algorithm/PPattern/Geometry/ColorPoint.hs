@@ -43,9 +43,19 @@ where
   import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
   {-|
-    'ColorPoint' type encapsulates a point and a color.
+    'ColorPoint' type denotes a colored point.
   -}
-  newtype ColorPoint = ColorPoint (Point.Point, Color.Color) deriving (Show, Eq, Ord)
+  newtype ColorPoint = ColorPoint (Point.Point, Color.Color) deriving (Show, Eq)
+
+  {-|
+    Compare first on the point and next on the color.
+  -}
+  instance Ord ColorPoint where
+    (ColorPoint(p, c)) `compare` (ColorPoint (p', c')) = case cmp of
+                                                           EQ -> c `compare` c'
+                                                           _  -> cmp
+      where
+        cmp = p `compare` p'
 
   {-|
     'mk' makes a colored point from two coordinates and a color.

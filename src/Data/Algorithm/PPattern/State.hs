@@ -71,6 +71,7 @@ where
       qcps = State.IncreasingFactorization.increasingFactorization q
       n    = State.Next.mk qcps
 
+  -- Return the embedding as a list of pairs of colored points.
   toList :: State -> [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)]
   toList = State.Embedding.toList . embedding
 

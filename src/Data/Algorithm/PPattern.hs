@@ -47,7 +47,7 @@ where
   search p q = searchWithStrategy p q Strategy.defaultStrategy
 
   {-|
-    Alias for 'search' p q'.
+    Alias for function 'search'.
   -}
   occursIn :: Perm.Perm -> Perm.Perm -> Bool
   p `occursIn` q = Maybe.isJust $ search p q
