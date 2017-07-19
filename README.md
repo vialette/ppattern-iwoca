@@ -110,6 +110,15 @@ is occupied by <img alt="$i$" src="svgs/77a3b857d53fb44e33b53e4c8b68351a.png?inv
 
 ### Basic statistics
 
+An *ascent* (resp. *descent*) in a permutation is an entry followed by a
+larger (resp. smaller) entry.
+An entry of a permutation which is smaller (resp. larger) than
+all the entries that precede it is called a *left-to-right minimum*
+(resp. *left-to-right maximum*).
+An entry of a permutation which is smaller (resp. larger) than
+all the entries that follow it is called a *right-to-left minimum*
+(resp. *right-to-left maximum*).
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: import qualified Data.Algorithm.PPattern.Perm.Statistics as Perm.Statistics
@@ -182,11 +191,11 @@ as shown in
 λ: let q = Perm.mk [6,2,3,5,1,4]
 λ: let o = PPattern.search p q
 λ: :type o
-o :: Maybe Occurrence.Occurrence
+o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
 ```
 
-The module `Data.Algorithm.PPattern.Occurrence` provides several function
-for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variable.
+The `Data.Algorithm.PPattern.Occurrence` module provides several function
+for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 
 
 ```haskell
@@ -202,6 +211,12 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variable.
 [2,1,3]
 λ: Occurrence.targetPoints (fromJust o)
 [Point (2,2),Point (5,1),Point (6,4)]
+```
+
+For every occurrence, it holds that:
+
+```haskell
+Occurrence.pattern (fromJust o) == Occurrence.target (fromJust o)
 ```
 
 ### Strategy
