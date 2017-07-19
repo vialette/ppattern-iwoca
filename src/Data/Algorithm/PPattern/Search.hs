@@ -57,7 +57,7 @@ where
 
   -- Extract embedding in case of a reverse search
   mkReverseOccurrence :: Int -> Int -> State.State -> Maybe Occurrence.Occurrence
-  mkReverseOccurrence pSize qSize  = Just . Occurrence.mk . Foldable.foldr f [] . State.toList
+  mkReverseOccurrence pSize qSize  = Just . Occurrence.mk . List.reverse . Foldable.foldr f [] . State.toList
     where
       f (cp1, cp2) acc = (cp1', cp2') : acc
         where

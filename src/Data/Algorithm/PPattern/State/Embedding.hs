@@ -39,6 +39,7 @@ where
 
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
 
+  -- Mapping from colored points to colored points.
   newtype Embedding = Embedding { getMap :: Map.Map ColorPoint.ColorPoint ColorPoint.ColorPoint }
 
   -- Make an embty embedding.
