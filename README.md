@@ -149,6 +149,8 @@ all the entries that follow it is called a *right-to-left minimum*
 
 ### Basic pattern matching
 
++ Positive search:
+
 ```haskell
 λ: import qualified Data.Algorithm.PPattern as PPattern
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
@@ -161,6 +163,8 @@ True
 λ: q `PPattern.avoids` p
 False
 ```
+
++ Negative search:
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern as PPattern
@@ -211,12 +215,6 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 [2,1,3]
 λ: Occurrence.targetPoints (fromJust o)
 [Point (2,2),Point (5,1),Point (6,4)]
-```
-
-For every occurrence, it holds that:
-
-```haskell
-Occurrence.pattern (fromJust o) == Occurrence.target (fromJust o)
 ```
 
 ### Strategy
