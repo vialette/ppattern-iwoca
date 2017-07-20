@@ -19,17 +19,11 @@ module Data.Algorithm.PPattern
 
   -- * Searching with strategy
 , searchLeftmostOrderConflictFirst
-, searchLeftmostOrderConflictFirst'
 , searchRightmostOrderConflictFirst
-, searchRightmostOrderConflictFirst'
 , searchLeftmostValueConflictFirst
-, searchLeftmostValueConflictFirst'
 , searchRightmostValueConflictFirst
-, searchRightmostValueConflictFirst'
 , searchLeftmostConflict
-, searchLeftmostConflict'
 , searchRightmostConflict
-, searchRightmostConflict'
 )
 where
 
@@ -72,25 +66,11 @@ where
   searchWithStrategy = Search.search
 
   {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'
-    accoding to some strategy.
-  -}
-  searchWithStrategy' :: Perm.Perm -> Perm.Perm -> Strategy.Strategy -> Bool
-  searchWithStrategy' p q strategy = Maybe.isJust $ searchWithStrategy p q strategy
-
-  {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys'.
     Resolve conflicts according to a given strategy.
   -}
   searchLeftmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchLeftmostOrderConflictFirst p q = searchWithStrategy p q Strategy.leftmostOrderConflictFirst
-
-  {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts following the leftmost order conflict first strategy.
-  -}
-  searchLeftmostOrderConflictFirst' :: Perm.Perm -> Perm.Perm -> Bool
-  searchLeftmostOrderConflictFirst' p q = searchWithStrategy' p q Strategy.leftmostOrderConflictFirst
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
@@ -100,25 +80,11 @@ where
   searchRightmostOrderConflictFirst p q = searchWithStrategy p q Strategy.rightmostOrderConflictFirst
 
   {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts following the rightmost order conflict first strategy.
-  -}
-  searchRightmostOrderConflictFirst' :: Perm.Perm -> Perm.Perm -> Bool
-  searchRightmostOrderConflictFirst' p q = searchWithStrategy' p q Strategy.rightmostOrderConflictFirst
-
-  {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the leftmost value conflict first strategy.
   -}
   searchLeftmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  searchLeftmostValueConflictFirst p q = searchWithStrategy p q Strategy.leftmostValueConflictFirst
-
-  {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts following the leftmost value conflict first strategy.
-  -}
-  searchLeftmostValueConflictFirst' :: Perm.Perm -> Perm.Perm -> Bool
-  searchLeftmostValueConflictFirst' p q = searchWithStrategy' p q Strategy.rightmostValueConflictFirst
+  p `searchLeftmostValueConflictFirst` q = searchWithStrategy p q Strategy.leftmostValueConflictFirst
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
@@ -128,13 +94,6 @@ where
   searchRightmostValueConflictFirst p q = searchWithStrategy p q Strategy.rightmostValueConflictFirst
 
   {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts following the rightmost value conflict first strategy.
-  -}
-  searchRightmostValueConflictFirst' :: Perm.Perm -> Perm.Perm -> Bool
-  searchRightmostValueConflictFirst' p q = searchWithStrategy' p q Strategy.leftmostValueConflictFirst
-
-  {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the leftmost conflict strategy.
   -}
@@ -142,22 +101,8 @@ where
   searchLeftmostConflict p q = searchWithStrategy p q Strategy.leftmostConflict
 
   {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts following the leftmost conflict first strategy.
-  -}
-  searchLeftmostConflict' :: Perm.Perm -> Perm.Perm -> Bool
-  searchLeftmostConflict' p q = searchWithStrategy' p q Strategy.leftmostConflict
-
-  {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
     to the rightmost conflict strategy.
   -}
   searchRightmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchRightmostConflict p q = searchWithStrategy p q Strategy.rightmostConflict
-
-  {-|
-    Test if there exists an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts following the rightmost conflict first strategy.
-  -}
-  searchRightmostConflict' :: Perm.Perm -> Perm.Perm -> Bool
-  searchRightmostConflict' p q = searchWithStrategy' p q Strategy.rightmostConflict
