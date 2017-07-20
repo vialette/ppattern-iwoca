@@ -22,8 +22,6 @@ module Data.Algorithm.PPattern.Occurrence
 , pattern
 , targetPoints
 , target
-
- -- * Verifying
 , size
 )
 where
@@ -43,10 +41,10 @@ where
 
   -- Construct a pattern matching ocurrence
   mk :: [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)] -> Occurrence
-  mk ppqps = Occurrence { getList = List.zip pps qps }
+  mk pcpqcps = Occurrence { getList = List.zip pps qps }
     where
-      pps = fmap (ColorPoint.point . Tuple.fst) ppqps
-      qps = fmap (ColorPoint.point . Tuple.snd) ppqps
+      pps = fmap (ColorPoint.point . Tuple.fst) pcpqcps
+      qps = fmap (ColorPoint.point . Tuple.snd) pcpqcps
 
   {-|
     Extract pattern points from an occurrence.
