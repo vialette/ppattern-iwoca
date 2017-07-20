@@ -29,10 +29,10 @@ where
 
   import qualified Data.Maybe as Maybe
 
-  import qualified Data.Algorithm.PPattern.Perm       as Perm
-  import qualified Data.Algorithm.PPattern.Search     as Search
-  import qualified Data.Algorithm.PPattern.Strategy   as Strategy
-  import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
+  import qualified Data.Algorithm.PPattern.Perm              as Perm
+  import qualified Data.Algorithm.PPattern.Search            as Search
+  import qualified Data.Algorithm.PPattern.Search.Strategy   as Strategy
+  import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 
   {-|
     Search for an order-isomorphic occurrence of 'p' into 'q'.

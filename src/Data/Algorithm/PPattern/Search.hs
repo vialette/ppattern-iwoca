@@ -30,18 +30,18 @@ where
 
   import qualified Data.Algorithm.Patience as Patience
 
-  import qualified Data.Algorithm.PPattern.Color               as Color
-  import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
-  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
-  import qualified Data.Algorithm.PPattern.Strategy            as Strategy
-  import qualified Data.Algorithm.PPattern.State               as State
-  import qualified Data.Algorithm.PPattern.Search.Context      as Context
   import qualified Data.Algorithm.PPattern.Combinatorics       as Combinatorics
   import qualified Data.Algorithm.PPattern.Perm                as Perm
   import qualified Data.Algorithm.PPattern.Perm.Monotone       as Perm.Monotone
   import qualified Data.Algorithm.PPattern.Perm.Operation      as Perm.Operation
-  import qualified Data.Algorithm.PPattern.Conflict            as Conflict
-  import qualified Data.Algorithm.PPattern.Occurrence          as Occurrence
+  import qualified Data.Algorithm.PPattern.Color               as Color
+  import qualified Data.Algorithm.PPattern.Geometry.Point      as Point
+  import qualified Data.Algorithm.PPattern.Geometry.ColorPoint as ColorPoint
+  import qualified Data.Algorithm.PPattern.Search.Strategy     as Strategy
+  import qualified Data.Algorithm.PPattern.Search.State        as State
+  import qualified Data.Algorithm.PPattern.Search.Context      as Context
+  import qualified Data.Algorithm.PPattern.Search.Conflict     as Conflict
+  import qualified Data.Algorithm.PPattern.Search.Occurrence   as Occurrence
 
   -- Make an initial list of colored point. Each element from the longest
   -- decreasing subsequence is given a distinct color. All other elements
