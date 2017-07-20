@@ -17,6 +17,10 @@ module Data.Algorithm.PPattern.Search
   -- temp
 , initialColorPoints
 , searchAux
+, doSearch
+, doSearchBlankPoint
+, doSearchColorPoint
+, mkRightDecs
 )
 where
 
@@ -64,22 +68,21 @@ where
           cp1' = ColorPoint.updateXCoord (pSize + 1 - ColorPoint.xCoord cp1) cp1
           cp2' = ColorPoint.updateXCoord (qSize + 1 - ColorPoint.xCoord cp2) cp2
 
-  -- Max longest decreasing length by suffix.
-  -- 'mkRightLongestDecreasings ps' returns a map m defined as follows.
+  -- 'mkRightDecs ps' returns a map m defined as follows.
   -- m y is the longest decreasing subsequence (on y coordinates) in the suffix
-  -- of ps starting at the point with y-coordinate y.
-  mkRightLongestDecreasings :: [Point.Point] -> IntMap.IntMap Int
-  mkRightLongestDecreasings = mkRightLongestDecreasingsAux IntMap.empty . fmap f
+  -- of ps starting at the entry with y-coordinate y.
+  mkRightDecs :: [Point.Point] -> IntMap.IntMap Int
+  mkRightDecs = mkRightDecsAux IntMap.empty . fmap f
     where
       -- Patience.longestIncreasing asks for a list of pairs with data snd element.
       -- As we do not use this data snd element, we rely on undefined.
       f p = (Point.yCoord p, undefined)
 
   -- Max longest decreasing length by suffix auxiliary function.
-  mkRightLongestDecreasingsAux :: IntMap.IntMap Int -> [(Int, t)] -> IntMap.IntMap Int
-  mkRightLongestDecreasingsAux m []            = m
-  mkRightLongestDecreasingsAux m [(y, _)]      = IntMap.insert y 0 m
-  mkRightLongestDecreasingsAux m ((y, _) : ys) = mkRightLongestDecreasingsAux m' ys
+  mkRightDecsAux :: IntMap.IntMap Int -> [(Int, t)] -> IntMap.IntMap Int
+  mkRightDecsAux m []            = m
+  mkRightDecsAux m [(y, _)]      = IntMap.insert y 0 m
+  mkRightDecsAux m ((y, _) : ys) = mkRightDecsAux m' ys
     where
       ys'                     = List.filter (\ (y', _) -> y > y') ys
       longestIncreasing       = Patience.longestIncreasing $ List.reverse ys'
@@ -119,7 +122,7 @@ where
       pps = Perm.points p
 
       -- p longest decreassing by suffixes
-      pRightLongestDecreasings = mkRightLongestDecreasings pps
+      pRightDecs = mkRightDecs pps
 
       -- Permutation p longest decreasing data
       pDec       = Perm.Monotone.longestDecreasing p
@@ -138,7 +141,7 @@ where
                                     , let ys      = fmap Point.yCoord pDecPoints
                                     , let pairs   = List.zip refColors ys
                                     , let follow  = IntMap.fromList pairs
-                                    , let context = Context.mk precede follow pRightLongestDecreasings
+                                    , let context = Context.mk precede follow pRightDecs
                                   ]
 
   --
@@ -178,6 +181,7 @@ where
       c = ColorPoint.color  pcp
       context' = Context.update c y context
 
+  -- Resolve all conflicts (according to the given strategy).
   resolveConflicts :: Strategy.Strategy -> State.State -> Maybe State.State
   resolveConflicts strategy s =
     case strategy s of

@@ -43,7 +43,7 @@ Library
                  , Data.Algorithm.PPattern.State.Next
                  , Data.Algorithm.PPattern.State.IncreasingFactorization
                  , Data.Algorithm.PPattern.Strategy.Link
-                 , Data.Algorithm.PPattern.Strategy.PLink
+                 , Data.Algorithm.PPattern.Strategy.Link2
                  , Data.Algorithm.PPattern.Geometry.Point.List
                  , Data.Algorithm.PPattern.Geometry.ColorPoint
                  , Data.Algorithm.PPattern.Conflict
