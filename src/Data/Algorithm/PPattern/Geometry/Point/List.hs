@@ -36,7 +36,7 @@ module Data.Algorithm.PPattern.Geometry.Point.List
     moveX :: Int -> [Point.Point] -> [Point.Point]
     moveX i ps = mkFromList xys
       where
-        xs  = fmap (+i) $ fmap Point.xCoord ps
+        xs  = fmap ((+i) . Point.xCoord) ps
         ys  = fmap Point.yCoord ps
         xys = List.zip xs ys
 
@@ -44,12 +44,12 @@ module Data.Algorithm.PPattern.Geometry.Point.List
     moveY j ps = mkFromList xys
       where
         xs  = fmap Point.xCoord ps
-        ys  = fmap (+j) $ fmap Point.yCoord ps
+        ys  = fmap ((+j) . Point.yCoord) ps
         xys = List.zip xs ys
 
     move :: Int -> Int -> [Point.Point] -> [Point.Point]
     move i j ps = mkFromList xys
       where
-        xs  = fmap (+i) $ fmap Point.xCoord ps
-        ys  = fmap (+j) $ fmap Point.yCoord ps
+        xs  = fmap ((+i) . Point.xCoord) ps
+        ys  = fmap ((+j) . Point.yCoord) ps
         xys = List.zip xs ys
