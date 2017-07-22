@@ -62,11 +62,12 @@ where
   mk :: (Foldable t, Ord a) => t a -> Perm
   mk = Perm . reduce . Foldable.toList
 
-  -- Construct a Perm from a list of APoints.
+  -- Construct a Perm from a list of points.
+  -- No check is done, use with caution.
   fromList :: [Point.Point] -> Perm
   fromList = Perm
 
-  -- Construct a Perm by applying function on an existing Perm..
+  -- Construct a Perm by applying a function (point level) on an existing Perm..
   apply :: ([Point.Point] -> [Point.Point]) -> Perm -> Perm
   apply f = fromList . f . getList
 
