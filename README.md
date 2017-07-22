@@ -219,35 +219,52 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 [Point (2,2),Point (5,1),Point (6,4)]
 ```
 
-### Strategy
+### Resolving conflicts
 
-Resolving conflict is a key part of the approach.
+Conflict resolution is a key part of the approach.
+
+
 The `Data.Algorithm.PPattern.search` function uses a default
 leftmost conflict resolution algorithm.
 
 ```haskell
-defaultStrategy :: Strategy
-defaultStrategy = leftmostConflict
+defaultConflictSelection :: ConflictSelection
+defaultConflictSelection = leftmostConflict
 ```
 
-+ *leftmost conflict* (`Data.Algorithm.PPattern.Strategy.leftmostConflict`):
++ *leftmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
 Resolve any leftmost conflict first.
 
-+ *leftmost order conflict* (`Data.Algorithm.PPattern.Strategy.leftmostOrderConflictFirst`):
++ *leftmost order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostOrderConflictFirst`):
 Resolve the leftmost order conflict first.
 If such a conflict does not not exist resolve the leftmost value conflict first.
 
-+ *leftmost value conflict* (`Data.Algorithm.PPattern.Strategy.leftmostValueConflictFirst`):
++ *leftmost value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostValueConflictFirst`):
 Resolve the leftmost value conflict first.
 If such a conflict does not not exist resolve the leftmost order conflict first.
 
-+ *rightmost conflict* (`Data.Algorithm.PPattern.Strategy.rightmostConflict`):
++ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostConflict`):
 Resolve any rightmost conflict first.
 
-+ *rightmost order conflict* (`Data.Algorithm.PPattern.Strategy.rightmostOrderConflictFirst`):
++ *rightmost order conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostOrderConflictFirst`):
 Resolve the rightmost order conflict first.
 If such a conflict does not not exist resolve the rightmost value conflict first.
 
-+ *rightmost value conflict* (`Data.Algorithm.PPattern.Strategy.rightmostValueConflictFirst`):
++ *rightmost value conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostValueConflictFirst`):
 Resolve the rightmost value conflict first.
 If such a conflict does not not exist resolve the rightmost order conflict first.
+
+Module `Data.Algorithm.PPattern` offers the following search function for using
+a specific conflict resolution algorithm.
+
+```haskell
+import qualified Data.Algorithm.PPattern.Perm as Perm
+import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
+
+searchLeftmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+```

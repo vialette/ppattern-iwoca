@@ -11,13 +11,13 @@ Pattern matching for Permutations.
 
 module Data.Algorithm.PPattern
 (
-  -- * Searching with default strategy
+  -- * Searching with default ConflictSelection
   search
 , occursIn
 , avoids
 , contains
 
-  -- * Searching with strategy
+  -- * Searching with ConflictSelection
 , searchLeftmostOrderConflictFirst
 , searchRightmostOrderConflictFirst
 , searchLeftmostValueConflictFirst
@@ -31,14 +31,14 @@ where
 
   import qualified Data.Algorithm.PPattern.Perm              as Perm
   import qualified Data.Algorithm.PPattern.Search            as Search
-  import qualified Data.Algorithm.PPattern.Search.Strategy   as Strategy
+  import qualified Data.Algorithm.PPattern.Search.ConflictSelection   as ConflictSelection
   import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 
   {-|
     Search for an order-isomorphic occurrence of 'p' into 'q'.
   -}
   search :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  search p q = searchWithStrategy p q Strategy.defaultStrategy
+  search p q = searchWithConflictSelection p q ConflictSelection.defaultConflictSelection
 
   {-|
     Alias for function 'search'.
@@ -60,49 +60,49 @@ where
 
   {-|
     Search for an order-isomorphic occurrence of 'p' into 'q' according
-    to a given strategy.
+    to a given ConflictSelection.
   -}
-  searchWithStrategy :: Perm.Perm -> Perm.Perm -> Strategy.Strategy -> Maybe Occurrence.Occurrence
-  searchWithStrategy = Search.search
+  searchWithConflictSelection :: Perm.Perm -> Perm.Perm -> ConflictSelection.ConflictSelection -> Maybe Occurrence.Occurrence
+  searchWithConflictSelection = Search.search
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts according to a given strategy.
+    Resolve conflicts according to a given ConflictSelection.
   -}
   searchLeftmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  searchLeftmostOrderConflictFirst p q = searchWithStrategy p q Strategy.leftmostOrderConflictFirst
+  searchLeftmostOrderConflictFirst p q = searchWithConflictSelection p q ConflictSelection.leftmostOrderConflictFirst
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the rightmost order conflict first strategy.
+    to the rightmost order conflict first ConflictSelection.
   -}
   searchRightmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  searchRightmostOrderConflictFirst p q = searchWithStrategy p q Strategy.rightmostOrderConflictFirst
+  searchRightmostOrderConflictFirst p q = searchWithConflictSelection p q ConflictSelection.rightmostOrderConflictFirst
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the leftmost value conflict first strategy.
+    to the leftmost value conflict first ConflictSelection.
   -}
   searchLeftmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  p `searchLeftmostValueConflictFirst` q = searchWithStrategy p q Strategy.leftmostValueConflictFirst
+  p `searchLeftmostValueConflictFirst` q = searchWithConflictSelection p q ConflictSelection.leftmostValueConflictFirst
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the rightmost value conflict first strategy.
+    to the rightmost value conflict first ConflictSelection.
   -}
   searchRightmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  searchRightmostValueConflictFirst p q = searchWithStrategy p q Strategy.rightmostValueConflictFirst
+  searchRightmostValueConflictFirst p q = searchWithConflictSelection p q ConflictSelection.rightmostValueConflictFirst
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the leftmost conflict strategy.
+    to the leftmost conflict ConflictSelection.
   -}
   searchLeftmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  searchLeftmostConflict p q = searchWithStrategy p q Strategy.leftmostConflict
+  searchLeftmostConflict p q = searchWithConflictSelection p q ConflictSelection.leftmostConflict
 
   {-|
     Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the rightmost conflict strategy.
+    to the rightmost conflict ConflictSelection.
   -}
   searchRightmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-  searchRightmostConflict p q = searchWithStrategy p q Strategy.rightmostConflict
+  searchRightmostConflict p q = searchWithConflictSelection p q ConflictSelection.rightmostConflict
