@@ -18,6 +18,14 @@ not contain a descending subsequence of 4 elements.
 Given permutation <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> and <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/>, the *Permutation Pattern* problem
 is to decide if <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> contains <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/>.
 The *Permutation Pattern* problem is NP-complete.
+It can be solved by brute force in time <img alt="$O(n^k)$" src="svgs/7872efdd46393cf2267348a2b61e11c6.png?invert_in_darkmode" align=middle width="43.604220000000005pt" height="27.852989999999977pt"/>, where
+<img alt="$n = |\tau|$" src="svgs/1b86d7172a06cda0f0649dc6df40d4f4.png?invert_in_darkmode" align=middle width="49.818285pt" height="24.56552999999997pt"/> and <img alt="$k = |\pi|$" src="svgs/aef90dd61609593d79e73448d778732e.png?invert_in_darkmode" align=middle width="49.936755000000005pt" height="24.56552999999997pt"/>.
+This has been improved to <img alt="$O(n^{0.47k + o(k)})$" src="svgs/d70eeed1ab6baec80fc692f1fb94188a.png?invert_in_darkmode" align=middle width="101.28591pt" height="29.12679000000001pt"/>
+by Ahal and Rabinovich.
+Guillemot and Marx proved that the *Permutation Pattern* problem
+can be solved in time <img alt="$2^{O(k^2 \log(k))}}$" src="svgs/26b858e8e4cd93d52f257ce3fd5f4cd6.png?invert_in_darkmode" align=middle width="79.11898500000001pt" height="32.40632999999999pt"/>
+(i.e., the *Permutation Pattern* problem is fixed-parameter tractable
+parameterized by the size of the pattern).
 
 ## Permutations
 
