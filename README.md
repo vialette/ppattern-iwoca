@@ -200,7 +200,7 @@ as shown in
 o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
 ```
 
-The `Data.Algorithm.PPattern.Occurrence` module provides several function
+The `Data.Algorithm.PPattern.Occurrence` module provides several functions
 for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 
 
@@ -227,52 +227,46 @@ Given two permutations, <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa
 of <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> into <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> is any function <img alt="$e: [m] \to [n]$" src="svgs/7608a5022962af6c21393a6adcfc871c.png?invert_in_darkmode" align=middle width="89.221935pt" height="24.56552999999997pt"/>.
 A pair <img alt="$(i, j)$" src="svgs/e8873e227619b7a62ee7eb981ef1faea.png?invert_in_darkmode" align=middle width="33.35376pt" height="24.56552999999997pt"/> is a
 
-+ *horizontal* conflict for <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.png?invert_in_darkmode" align=middle width="7.625590500000003pt" height="14.102549999999994pt"/> if <img alt="$i &lt; j$" src="svgs/2e8f6bc2b2b5781d1b52d17c82893806.png?invert_in_darkmode" align=middle width="35.19351pt" height="21.602129999999985pt"/> and <img alt="$e(i)\geq e(j)$" src="svgs/924bf8dbabaf1f63d8223e06147c43c7.png?invert_in_darkmode" align=middle width="75.92359499999999pt" height="24.56552999999997pt"/>,
++ *horizontal* conflict for <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.png?invert_in_darkmode" align=middle width="7.625590500000003pt" height="14.102549999999994pt"/> if <img alt="$i &lt; j$" src="svgs/2e8f6bc2b2b5781d1b52d17c82893806.png?invert_in_darkmode" align=middle width="35.19351pt" height="21.602129999999985pt"/> and <img alt="$e(i) &gt; e(j)$" src="svgs/45a5f584f6e662a77edd49e8adbf653f.png?invert_in_darkmode" align=middle width="75.92359499999999pt" height="24.56552999999997pt"/>,
 
 + *vertical* conflict for <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.png?invert_in_darkmode" align=middle width="7.625590500000003pt" height="14.102549999999994pt"/> if <img alt="$\pi[i] &lt; \pi[j]$" src="svgs/05ac3568c0df484dd1702372599024d0.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &gt; \tau[e(j)]$" src="svgs/a1f26a2237ccd2f6c5d9a0e6d984d790.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>,
-or <img alt="$\pi[i] &gt; \pi[j]$" src="svgs/91663a7b958d164af745e39f1f7fc2dc.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &lt;\tau[e(j)]$" src="svgs/b23f5ca1825ed281e68e80013b982669.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>
+or <img alt="$\pi[i] &gt; \pi[j]$" src="svgs/91663a7b958d164af745e39f1f7fc2dc.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &lt;\tau[e(j)]$" src="svgs/b23f5ca1825ed281e68e80013b982669.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>.
 
-The `Data.Algorithm.PPattern.search` function uses a default
-leftmost conflict resolution algorithm.
-
-```haskell
-defaultConflictSelection :: ConflictSelection
-defaultConflictSelection = leftmostConflict
-```
-
-+ *leftmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
++ *horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
 Resolve any leftmost conflict first.
 
-+ *leftmost order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostOrderConflictFirst`):
-Resolve the leftmost order conflict first.
-If such a conflict does not not exist resolve the leftmost value conflict first.
++ *leftmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
+Resolve the leftmost horizontal conflict first.
+If such a conflict does not not exist resolve the leftmost vertical conflict first.
 
-+ *leftmost value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostValueConflictFirst`):
-Resolve the leftmost value conflict first.
-If such a conflict does not not exist resolve the leftmost order conflict first.
++ *leftmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
+Resolve the leftmost vertical conflict first.
+If such a conflict does not not exist resolve the leftmost horizontal conflict first.
 
-+ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostConflict`):
++ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
 Resolve any rightmost conflict first.
 
-+ *rightmost order conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostOrderConflictFirst`):
-Resolve the rightmost order conflict first.
-If such a conflict does not not exist resolve the rightmost value conflict first.
++ *rightmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
+Resolve the rightmost horizontal conflict first.
+If such a conflict does not not exist resolve the rightmost vertical conflict first.
 
-+ *rightmost value conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostValueConflictFirst`):
-Resolve the rightmost value conflict first.
-If such a conflict does not not exist resolve the rightmost order conflict first.
++ *rightmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
+Resolve the rightmost vertical conflict first.
+If such a conflict does not not exist resolve the rightmost horizontal conflict first.
 
-Module `Data.Algorithm.PPattern` offers the following search functions for using
+The `Data.Algorithm.PPattern.search` function uses a default
+horizontal conflict resolution algorithm.
+The `Data.Algorithm.PPattern` module offers the following search functions for using
 a specific conflict resolution algorithm.
 
 ```haskell
 import qualified Data.Algorithm.PPattern.Perm as Perm
 import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 
-searchLeftmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchLeftmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchLeftmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchRightmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchRightmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchRightmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchHorizontalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchHorizontalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchHorizontalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchVerticalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchVerticalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchVerticalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
 ```

@@ -200,7 +200,7 @@ as shown in
 o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
 ```
 
-The `Data.Algorithm.PPattern.Occurrence` module provides several function
+The `Data.Algorithm.PPattern.Occurrence` module provides several functions
 for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 
 
@@ -227,52 +227,46 @@ Given two permutations, $\pi$ of $[m]$ and $\tau$ of $[n]$, a *pre-embedding*
 of $\pi$ into $\tau$ is any function $e: [m] \to [n]$.
 A pair $(i, j)$ is a
 
-+ *horizontal* conflict for $e$ if $i < j$ and $e(i)\geq e(j)$,
++ *horizontal* conflict for $e$ if $i < j$ and $e(i) > e(j)$,
 
 + *vertical* conflict for $e$ if $\pi[i] < \pi[j]$ and $\tau[e(i)] > \tau[e(j)]$,
-or $\pi[i] > \pi[j]$ and $\tau[e(i)] <\tau[e(j)]$
+or $\pi[i] > \pi[j]$ and $\tau[e(i)] <\tau[e(j)]$.
 
-The `Data.Algorithm.PPattern.search` function uses a default
-leftmost conflict resolution algorithm.
-
-```haskell
-defaultConflictSelection :: ConflictSelection
-defaultConflictSelection = leftmostConflict
-```
-
-+ *leftmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
++ *horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
 Resolve any leftmost conflict first.
 
-+ *leftmost order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostOrderConflictFirst`):
-Resolve the leftmost order conflict first.
-If such a conflict does not not exist resolve the leftmost value conflict first.
++ *leftmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
+Resolve the leftmost horizontal conflict first.
+If such a conflict does not not exist resolve the leftmost vertical conflict first.
 
-+ *leftmost value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostValueConflictFirst`):
-Resolve the leftmost value conflict first.
-If such a conflict does not not exist resolve the leftmost order conflict first.
++ *leftmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
+Resolve the leftmost vertical conflict first.
+If such a conflict does not not exist resolve the leftmost horizontal conflict first.
 
-+ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostConflict`):
++ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
 Resolve any rightmost conflict first.
 
-+ *rightmost order conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostOrderConflictFirst`):
-Resolve the rightmost order conflict first.
-If such a conflict does not not exist resolve the rightmost value conflict first.
++ *rightmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
+Resolve the rightmost horizontal conflict first.
+If such a conflict does not not exist resolve the rightmost vertical conflict first.
 
-+ *rightmost value conflict* (`Data.Algorithm.PPattern.ConflictSelection.rightmostValueConflictFirst`):
-Resolve the rightmost value conflict first.
-If such a conflict does not not exist resolve the rightmost order conflict first.
++ *rightmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
+Resolve the rightmost vertical conflict first.
+If such a conflict does not not exist resolve the rightmost horizontal conflict first.
 
-Module `Data.Algorithm.PPattern` offers the following search functions for using
+The `Data.Algorithm.PPattern.search` function uses a default
+horizontal conflict resolution algorithm.
+The `Data.Algorithm.PPattern` module offers the following search functions for using
 a specific conflict resolution algorithm.
 
 ```haskell
 import qualified Data.Algorithm.PPattern.Perm as Perm
 import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 
-searchLeftmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchLeftmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchLeftmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchRightmostConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchRightmostOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchRightmostValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchHorizontalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchHorizontalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchHorizontalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchVerticalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchVerticalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchVerticalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
 ```
