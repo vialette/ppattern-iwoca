@@ -2,6 +2,23 @@
 
 # PPattern - Permutation Pattern
 
+A permutation of length $n$ is a bijective mapping
+$\tau : [n] \to [n]$; one way to represent it is as the
+sequence of numbers $\tau[1] \tau[2] \ldots \tau[n]$.
+A permutation $\tau$ *contains* permutation $\pi$ if $\pi$
+has a (not necessarily consecutive) subsequence where the relative
+ordering of the elements is the same as in $\tau$.
+In this case, $\pi$ is a *subpattern* of $\tau$;
+otherwise, $\tau$ avoids $\pi$.
+For example, $3215674$ contains the pattern $132$, since the subsequence
+$154$ is ordered the same way as $132$.
+On the other hand, the permutation avoids $4321$: it does
+not contain a descending subsequence of 4 elements.
+
+Given permutation $\pi$ and $\tau$, the *Permutation Pattern* problem
+is to decide if $\tau$ contains $\pi$.
+The *Permutation Pattern* problem is NP-complete.
+
 ## Permutations
 
 ### Implementation

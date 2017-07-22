@@ -2,6 +2,23 @@
 
 # PPattern - Permutation Pattern
 
+A permutation of length <img alt="$n$" src="svgs/55a049b8f161ae7cfeb0197d75aff967.png?invert_in_darkmode" align=middle width="9.830040000000002pt" height="14.102549999999994pt"/> is a bijective mapping
+<img alt="$\tau : [n] \to [n]$" src="svgs/718a3cb0ff45d3938ea7f92402603e09.png?invert_in_darkmode" align=middle width="86.06729999999999pt" height="24.56552999999997pt"/>; one way to represent it is as the
+sequence of numbers <img alt="$\tau[1] \tau[2] \ldots \tau[n]$" src="svgs/54b58f0ce8ad4d9440c4fe6a3eb0de9b.png?invert_in_darkmode" align=middle width="105.21934499999999pt" height="24.56552999999997pt"/>.
+A permutation <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> *contains* permutation <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> if <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/>
+has a (not necessarily consecutive) subsequence where the relative
+ordering of the elements is the same as in <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/>.
+In this case, <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> is a *subpattern* of <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/>;
+otherwise, <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> avoids <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/>.
+For example, <img alt="$3215674$" src="svgs/e34e4704dc5af80561a82d0bacc7d14f.png?invert_in_darkmode" align=middle width="57.319514999999996pt" height="21.10812pt"/> contains the pattern <img alt="$132$" src="svgs/acdbd4a445cb5214dab41fc6c15bc38d.png?invert_in_darkmode" align=middle width="24.56553pt" height="21.10812pt"/>, since the subsequence
+<img alt="$154$" src="svgs/84c9edc740a30b19a1fa77d214677eb0.png?invert_in_darkmode" align=middle width="24.56553pt" height="21.10812pt"/> is ordered the same way as <img alt="$132$" src="svgs/acdbd4a445cb5214dab41fc6c15bc38d.png?invert_in_darkmode" align=middle width="24.56553pt" height="21.10812pt"/>.
+On the other hand, the permutation avoids <img alt="$4321$" src="svgs/62e593fc80b2b2300c678e7eb5e38b15.png?invert_in_darkmode" align=middle width="32.753985pt" height="21.10812pt"/>: it does
+not contain a descending subsequence of 4 elements.
+
+Given permutation <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> and <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/>, the *Permutation Pattern* problem
+is to decide if <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> contains <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/>.
+The *Permutation Pattern* problem is NP-complete.
+
 ## Permutations
 
 ### Implementation
