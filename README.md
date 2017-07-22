@@ -223,6 +223,14 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 
 Conflict resolution is a key part of the approach.
 
+Given two permutations, <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> of <img alt="$[m]$" src="svgs/dd493f02a0fe43f96fae4e8995770011.png?invert_in_darkmode" align=middle width="23.477520000000005pt" height="24.56552999999997pt"/> and <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> of <img alt="$[n]$" src="svgs/e56c228e9cc317db54aad972ab7f99e9.png?invert_in_darkmode" align=middle width="18.92847pt" height="24.56552999999997pt"/>, a *pre-embedding*
+of <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> into <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> is any function <img alt="$e: [m] \to [n]$" src="svgs/7608a5022962af6c21393a6adcfc871c.png?invert_in_darkmode" align=middle width="89.221935pt" height="24.56552999999997pt"/>.
+A pair <img alt="$(i, j)$" src="svgs/e8873e227619b7a62ee7eb981ef1faea.png?invert_in_darkmode" align=middle width="33.35376pt" height="24.56552999999997pt"/> is a
+
++ *horizontal* conflict for <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.png?invert_in_darkmode" align=middle width="7.625590500000003pt" height="14.102549999999994pt"/> if <img alt="$i &lt; j$" src="svgs/2e8f6bc2b2b5781d1b52d17c82893806.png?invert_in_darkmode" align=middle width="35.19351pt" height="21.602129999999985pt"/> and <img alt="$e(i)\geq e(j)$" src="svgs/924bf8dbabaf1f63d8223e06147c43c7.png?invert_in_darkmode" align=middle width="75.92359499999999pt" height="24.56552999999997pt"/>,
+
++ *vertical* conflict for <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.png?invert_in_darkmode" align=middle width="7.625590500000003pt" height="14.102549999999994pt"/> if <img alt="$\pi[i] &lt; \pi[j]$" src="svgs/05ac3568c0df484dd1702372599024d0.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &gt; \tau[e(j)]$" src="svgs/a1f26a2237ccd2f6c5d9a0e6d984d790.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>,
+or <img alt="$\pi[i] &gt; \pi[j]$" src="svgs/91663a7b958d164af745e39f1f7fc2dc.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &lt;\tau[e(j)]$" src="svgs/b23f5ca1825ed281e68e80013b982669.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>
 
 The `Data.Algorithm.PPattern.search` function uses a default
 leftmost conflict resolution algorithm.
@@ -254,7 +262,7 @@ If such a conflict does not not exist resolve the rightmost value conflict first
 Resolve the rightmost value conflict first.
 If such a conflict does not not exist resolve the rightmost order conflict first.
 
-Module `Data.Algorithm.PPattern` offers the following search function for using
+Module `Data.Algorithm.PPattern` offers the following search functions for using
 a specific conflict resolution algorithm.
 
 ```haskell

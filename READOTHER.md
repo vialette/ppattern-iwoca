@@ -223,6 +223,14 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 
 Conflict resolution is a key part of the approach.
 
+Given two permutations, $\pi$ of $[m]$ and $\tau$ of $[n]$, a *pre-embedding*
+of $\pi$ into $\tau$ is any function $e: [m] \to [n]$.
+A pair $(i, j)$ is a
+
++ *horizontal* conflict for $e$ if $i < j$ and $e(i)\geq e(j)$,
+
++ *vertical* conflict for $e$ if $\pi[i] < \pi[j]$ and $\tau[e(i)] > \tau[e(j)]$,
+or $\pi[i] > \pi[j]$ and $\tau[e(i)] <\tau[e(j)]$
 
 The `Data.Algorithm.PPattern.search` function uses a default
 leftmost conflict resolution algorithm.
@@ -254,7 +262,7 @@ If such a conflict does not not exist resolve the rightmost value conflict first
 Resolve the rightmost value conflict first.
 If such a conflict does not not exist resolve the rightmost order conflict first.
 
-Module `Data.Algorithm.PPattern` offers the following search function for using
+Module `Data.Algorithm.PPattern` offers the following search functions for using
 a specific conflict resolution algorithm.
 
 ```haskell
