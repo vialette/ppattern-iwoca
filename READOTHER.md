@@ -18,6 +18,14 @@ not contain a descending subsequence of 4 elements.
 Given permutation $\pi$ and $\tau$, the *Permutation Pattern* problem
 is to decide if $\tau$ contains $\pi$.
 The *Permutation Pattern* problem is NP-complete.
+It can be solved by brute force in time $O(n^k)$, where
+$n = |\tau|$ and $k = |\pi|$.
+This has been improved to $O(n^{0.47k + o(k)})$
+by Ahal and Rabinovich.
+Guillemot and Marx proved that the *Permutation Pattern* problem
+can be solved in time $2^{O(k^2 \log(k))}}$
+(i.e., the *Permutation Pattern* problem is fixed-parameter tractable
+parameterized by the size of the pattern).
 
 ## Permutations
 
