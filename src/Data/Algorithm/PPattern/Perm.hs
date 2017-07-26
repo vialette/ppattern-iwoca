@@ -16,6 +16,7 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Constructing
 , mk
+, empty
 , fromList
 
 , apply
@@ -61,6 +62,12 @@ where
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm
   mk = Perm . reduce . Foldable.toList
+
+  {-|
+    Construct a The empty permutation.
+  -}
+  empty :: Perm
+  empty = Perm []
 
   -- Construct a Perm from a list of points.
   -- No check is done, use with caution.

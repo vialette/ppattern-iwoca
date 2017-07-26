@@ -17,12 +17,12 @@ module Data.Algorithm.PPattern.Search.ConflictSelection.Link2
 )
 where
 
-  import qualified Data.Algorithm.PPattern.Search.ConflictSelection.Link as Strategy.Link
+  import qualified Data.Algorithm.PPattern.Search.ConflictSelection.Link as ConflictSelection.Link
 
   -- pair of links
-  newtype Link2 = Link2 (Strategy.Link.Link, Strategy.Link.Link)
+  newtype Link2 = Link2 (ConflictSelection.Link.Link, ConflictSelection.Link.Link)
                   deriving (Show, Eq, Ord)
 
   -- Construct a simple Link2.
-  mk :: Strategy.Link.Link -> Strategy.Link.Link -> Link2
+  mk :: ConflictSelection.Link.Link -> ConflictSelection.Link.Link -> Link2
   mk link1 link2 = Link2 (link1, link2)

@@ -37,7 +37,7 @@ where
   newtype Occurrence = Occurrence { getList :: [(Point.Point, Point.Point)] }
 
   instance Show Occurrence where
-    show = show . getList
+    show = List.intercalate ", " . fmap (\ (p, p') -> show p ++ " -> " ++ show p') . getList
 
   -- Construct a pattern matching ocurrence
   mk :: [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)] -> Occurrence

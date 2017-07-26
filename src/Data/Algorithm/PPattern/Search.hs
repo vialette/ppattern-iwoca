@@ -38,9 +38,9 @@ where
   import qualified Data.Algorithm.PPattern.Geometry.Point           as Point
   import qualified Data.Algorithm.PPattern.Geometry.ColorPoint      as ColorPoint
   import qualified Data.Algorithm.PPattern.Search.ConflictSelection as ConflictSelection
+  import qualified Data.Algorithm.PPattern.Search.Conflict          as Conflict
   import qualified Data.Algorithm.PPattern.Search.State             as State
   import qualified Data.Algorithm.PPattern.Search.Context           as Context
-  import qualified Data.Algorithm.PPattern.Search.Conflict          as Conflict
   import qualified Data.Algorithm.PPattern.Search.Occurrence        as Occurrence
 
   -- Make an initial list of colored point. Each element from the longest
@@ -90,12 +90,12 @@ where
       m'                      = IntMap.insert y longestDecreasingLength m
 
   -- Search for an order-isomorphic occurrence of a permutation p into a permutation q.
-  -- Resolve conflicts according to a given conflictSelection.
-  search :: Perm.Perm -> Perm.Perm -> ConflictSelection.ConflictSelection -> Maybe Occurrence.Occurrence
-  search p q conflictSelection
+  -- Resolve conflicts according to a given strategy.
+  search :: Perm.Perm -> Perm.Perm -> ConflictSelection.Strategy -> Maybe Occurrence.Occurrence
+  search p q strategy
     | m > n                    = Nothing
-    | qDecLength <= qIncLength = searchAux p        q        qDecLength  conflictSelection       >>= mkOccurrence
-    | otherwise                = searchAux pReverse qReverse qReverseDecLength conflictSelection >>= mkReverseOccurrence m n
+    | qDecLength <= qIncLength = searchAux p        q        qDecLength        strategy >>= mkOccurrence
+    | otherwise                = searchAux pReverse qReverse qReverseDecLength strategy >>= mkReverseOccurrence m n
     where
       m = Perm.size p
       n = Perm.size q
@@ -111,10 +111,10 @@ where
   -- Search auxiliary function.
   -- `seachAux p q k s` take a pattern 'p', a target permutation 'q',
   -- the longest decreasing subsequence in the target permutation 'k' and
-  -- a conflict ressolving conflictSelection 's'.
+  -- a conflict ressolving strategy 's'.
   -- It returns 'Just state' if 'p' is contains in 'q', Nothing otherwise.
-  searchAux :: Perm.Perm -> Perm.Perm -> Int -> ConflictSelection.ConflictSelection -> Maybe State.State
-  searchAux p q qDecLength conflictSelection
+  searchAux :: Perm.Perm -> Perm.Perm -> Int -> ConflictSelection.Strategy -> Maybe State.State
+  searchAux p q qDecLength strategy
     | pDecLength > qDecLength = Nothing
     | otherwise               = computation
     where
@@ -134,7 +134,7 @@ where
       cs = Color.palette 1 qDecLength
 
       -- Embed p and perform search
-      computation = Foldable.asum [doSearch pcps cs context conflictSelection s
+      computation = Foldable.asum [doSearch pcps cs context strategy s
                                     | refColors   <- cs `Combinatorics.choose` pDecLength
                                     , let pcps    = initialColorPoints pps pDecPoints refColors
                                     , let precede = IntMap.empty
@@ -146,22 +146,22 @@ where
 
   --
   --
-  doSearch :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> ConflictSelection.ConflictSelection -> State.State -> Maybe State.State
+  doSearch :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> ConflictSelection.Strategy -> State.State -> Maybe State.State
   doSearch [] _ _ _ s  = Just s
-  doSearch pcps cs context conflictSelection s
-    | Color.isBlankColor c = doSearchBlankPoint pcps cs context conflictSelection s
-    | otherwise            = doSearchColorPoint pcps cs context conflictSelection s
+  doSearch pcps cs context strategy s
+    | Color.isBlankColor c = doSearchBlankPoint pcps cs context strategy s
+    | otherwise            = doSearchColorPoint pcps cs context strategy s
     where
       pcp = List.head pcps
       c   = ColorPoint.color pcp
 
   -- pcp is a blank point.
-  doSearchBlankPoint :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> ConflictSelection.ConflictSelection -> State.State -> Maybe State.State
+  doSearchBlankPoint :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> ConflictSelection.Strategy -> State.State -> Maybe State.State
   doSearchBlankPoint []           _  _       _        _ = error "doSearchFreePoint. We shouldn't be there" -- make ghc -Werror happy
-  doSearchBlankPoint (pcp : pcps) cs context conflictSelection s =
+  doSearchBlankPoint (pcp : pcps) cs context strategy s =
     Foldable.asum [State.pAppend (ColorPoint.updateColor c pcp) s >>= -- append new point
-                   resolveConflicts conflictSelection                      >>= -- resolve for match
-                   doSearch pcps cs context' conflictSelection
+                   resolveConflicts strategy                      >>= -- resolve for match
+                   doSearch pcps cs context' strategy
                      | c <- cs
                      , Context.agree c y context
                      , Context.allowedColor c y cs context
@@ -171,20 +171,20 @@ where
       y = ColorPoint.yCoord pcp
 
   -- pcp is not a blank point.s
-  doSearchColorPoint :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> ConflictSelection.ConflictSelection -> State.State -> Maybe State.State
-  doSearchColorPoint []           _  _       _        _ = error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
-  doSearchColorPoint (pcp : pcps) cs context conflictSelection s = State.pAppend pcp s       >>=
-                                                                   resolveConflicts conflictSelection >>=
-                                                                   doSearch pcps cs context' conflictSelection
+  doSearchColorPoint :: [ColorPoint.ColorPoint] -> [Color.Color] -> Context.Context -> ConflictSelection.Strategy -> State.State -> Maybe State.State
+  doSearchColorPoint []           _  _       _       _ = error "doSearchFixedColorPoint. We shouldn't be there" -- make ghc -Werror happy
+  doSearchColorPoint (pcp : pcps) cs context strategy s = State.pAppend pcp s       >>=
+                                                          resolveConflicts strategy >>=
+                                                          doSearch pcps cs context' strategy
     where
       y = ColorPoint.yCoord pcp
       c = ColorPoint.color  pcp
       context' = Context.update c y context
 
-  -- Resolve all conflicts (according to the given conflictSelection).
-  resolveConflicts :: ConflictSelection.ConflictSelection -> State.State -> Maybe State.State
-  resolveConflicts conflictSelection s =
-    case conflictSelection s of
+  -- Resolve all conflicts (according to the given strategy).
+  resolveConflicts :: ConflictSelection.Strategy -> State.State -> Maybe State.State
+  resolveConflicts strategy s =
+    case ConflictSelection.getConflict strategy s of
       Nothing                                  -> Just s
-      Just (Conflict.HorizontalConflict pcp t) -> State.xResolve pcp t s >>= resolveConflicts conflictSelection
-      Just (Conflict.VerticalConflict pcp t)   -> State.yResolve pcp t s >>= resolveConflicts conflictSelection
+      Just (Conflict.HorizontalConflict pcp t) -> State.xResolve pcp t s >>= resolveConflicts strategy
+      Just (Conflict.VerticalConflict pcp t)   -> State.yResolve pcp t s >>= resolveConflicts strategy

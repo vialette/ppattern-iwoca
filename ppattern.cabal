@@ -35,6 +35,9 @@ Library
                  , Data.Algorithm.PPattern.Perm.Inner.Statistics
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.ConflictSelection
+                 , Data.Algorithm.PPattern.Search.ConflictSelection.Link
+                 , Data.Algorithm.PPattern.Search.ConflictSelection.Link2
+                 , Data.Algorithm.PPattern.Search.Conflict
                  , Data.Algorithm.PPattern.Search.Occurrence
                  , Data.Algorithm.PPattern.Search.Context
                  , Data.Algorithm.PPattern.Search.State
@@ -42,9 +45,6 @@ Library
                  , Data.Algorithm.PPattern.Search.State.Embedding
                  , Data.Algorithm.PPattern.Search.State.Next
                  , Data.Algorithm.PPattern.Search.State.IncreasingFactorization
-                 , Data.Algorithm.PPattern.Search.ConflictSelection.Link
-                 , Data.Algorithm.PPattern.Search.ConflictSelection.Link2
-                 , Data.Algorithm.PPattern.Search.Conflict
                  , Data.Algorithm.PPattern.Geometry.Point.List
                  , Data.Algorithm.PPattern.Geometry.ColorPoint
                  , Data.Algorithm.PPattern.List
