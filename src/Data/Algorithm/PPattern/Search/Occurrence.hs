@@ -16,6 +16,10 @@ module Data.Algorithm.PPattern.Search.Occurrence
 
   -- * Constructing
 , mk
+, mkSafe
+
+  -- * Sanity check
+, check
 
  -- * Querying
 , patternPoints
@@ -45,6 +49,14 @@ where
     where
       pps = fmap (ColorPoint.point . Tuple.fst) pcpqcps
       qps = fmap (ColorPoint.point . Tuple.snd) pcpqcps
+
+  -- Construct a pattern matching ocurrence
+  mkSafe :: [(ColorPoint.ColorPoint, ColorPoint.ColorPoint)] -> Occurrence
+  mkSafe pcpqcps
+    | pattern o /= target o = error ("Bad occurrence " ++ show o)
+    | otherwise             = o
+    where
+      o = mk pcpqcps
 
   {-|
     Extract pattern points from an occurrence.
@@ -77,6 +89,13 @@ where
   -}
   target :: Occurrence -> Perm.Perm
   target = Perm.mk . fmap Point.yCoord . targetPoints
+
+  {-|
+
+    >>>
+  -}
+  check :: Occurrence -> Bool
+  check o = pattern o == target o
 
   {-|
 
