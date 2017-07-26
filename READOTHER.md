@@ -257,30 +257,30 @@ A pair $(i, j)$ is a
 + *vertical* conflict for $e$ if $\pi[i] < \pi[j]$ and $\tau[e(i)] > \tau[e(j)]$,
 or $\pi[i] > \pi[j]$ and $\tau[e(i)] <\tau[e(j)]$.
 
-+ *horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
++ *leftmost conflict first* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostConflictFirst`):
 Resolve any leftmost conflict first.
 
-+ *leftmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
++ *leftmost horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostHorizontalConflictFirst`):
 Resolve the leftmost horizontal conflict first.
 If such a conflict does not not exist resolve the leftmost vertical conflict first.
 
-+ *leftmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
++ *leftmost vertical conflict* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostVerticalConflictFirst`):
 Resolve the leftmost vertical conflict first.
 If such a conflict does not not exist resolve the leftmost horizontal conflict first.
 
-+ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
++ *rightmost conflict first* (`Data.Algorithm.PPattern.ConflictSelection.RightmostConflictFirst`):
 Resolve any rightmost conflict first.
 
-+ *rightmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
++ *rightmost horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.RightmostHorizontalConflictFirst`):
 Resolve the rightmost horizontal conflict first.
 If such a conflict does not not exist resolve the rightmost vertical conflict first.
 
-+ *rightmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
++ *rightmost vertical conflict* (`Data.Algorithm.PPattern.ConflictSelection.RighmostVerticalConflictFirst`):
 Resolve the rightmost vertical conflict first.
 If such a conflict does not not exist resolve the rightmost horizontal conflict first.
 
 The `Data.Algorithm.PPattern.search` function uses a default
-horizontal conflict resolution algorithm.
+horizontal conflict first resolution algorithm.
 The `Data.Algorithm.PPattern` module offers the following search functions for using
 a specific conflict resolution algorithm.
 
@@ -288,10 +288,10 @@ a specific conflict resolution algorithm.
 import qualified Data.Algorithm.PPattern.Perm as Perm
 import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 
-searchHorizontalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchHorizontalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchHorizontalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchVerticalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchVerticalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchVerticalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostHorizontalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostVerticalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostHorizontalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostVerticalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
 ```

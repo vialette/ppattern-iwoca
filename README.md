@@ -257,30 +257,30 @@ A pair <img alt="$(i, j)$" src="svgs/e8873e227619b7a62ee7eb981ef1faea.png?invert
 + *vertical* conflict for <img alt="$e$" src="svgs/8cd34385ed61aca950a6b06d09fb50ac.png?invert_in_darkmode" align=middle width="7.625590500000003pt" height="14.102549999999994pt"/> if <img alt="$\pi[i] &lt; \pi[j]$" src="svgs/05ac3568c0df484dd1702372599024d0.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &gt; \tau[e(j)]$" src="svgs/a1f26a2237ccd2f6c5d9a0e6d984d790.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>,
 or <img alt="$\pi[i] &gt; \pi[j]$" src="svgs/91663a7b958d164af745e39f1f7fc2dc.png?invert_in_darkmode" align=middle width="73.243995pt" height="24.56552999999997pt"/> and <img alt="$\tau[e(i)] &lt;\tau[e(j)]$" src="svgs/b23f5ca1825ed281e68e80013b982669.png?invert_in_darkmode" align=middle width="112.16023499999999pt" height="24.56552999999997pt"/>.
 
-+ *horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
++ *leftmost conflict first* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostConflictFirst`):
 Resolve any leftmost conflict first.
 
-+ *leftmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
++ *leftmost horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostHorizontalConflictFirst`):
 Resolve the leftmost horizontal conflict first.
 If such a conflict does not not exist resolve the leftmost vertical conflict first.
 
-+ *leftmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
++ *leftmost vertical conflict* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostVerticalConflictFirst`):
 Resolve the leftmost vertical conflict first.
 If such a conflict does not not exist resolve the leftmost horizontal conflict first.
 
-+ *rightmost conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostConflict`):
++ *rightmost conflict first* (`Data.Algorithm.PPattern.ConflictSelection.RightmostConflictFirst`):
 Resolve any rightmost conflict first.
 
-+ *rightmost horizontal order conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostHorizontalConflictFirst`):
++ *rightmost horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.RightmostHorizontalConflictFirst`):
 Resolve the rightmost horizontal conflict first.
 If such a conflict does not not exist resolve the rightmost vertical conflict first.
 
-+ *rightmost vertical value conflict* (`Data.Algorithm.PPattern.ConflictSelection.leftmostVerticalConflictFirst`):
++ *rightmost vertical conflict* (`Data.Algorithm.PPattern.ConflictSelection.RighmostVerticalConflictFirst`):
 Resolve the rightmost vertical conflict first.
 If such a conflict does not not exist resolve the rightmost horizontal conflict first.
 
 The `Data.Algorithm.PPattern.search` function uses a default
-horizontal conflict resolution algorithm.
+horizontal conflict first resolution algorithm.
 The `Data.Algorithm.PPattern` module offers the following search functions for using
 a specific conflict resolution algorithm.
 
@@ -288,10 +288,10 @@ a specific conflict resolution algorithm.
 import qualified Data.Algorithm.PPattern.Perm as Perm
 import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 
-searchHorizontalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchHorizontalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchHorizontalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchVerticalConflict :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchVerticalOrderConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-searchVerticalValueConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostHorizontalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchLeftmostVerticalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostHorizontalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
+searchRightmostVerticalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
 ```
