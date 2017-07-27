@@ -107,8 +107,6 @@ instance Show Perm where
   show = show . yCoords
 ```
 
-### Basic properties
-
 ### Ties
 
 Ties are allowed and are resolved according to the left-to-right order.
@@ -129,7 +127,7 @@ Use `Data.Algorithm.PPattern.Perm.mkSafe` to forbid ties.
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: Perm.mkSafe "acb"
 Just [1,3,2]
-λ: Perm.mk "acbacb"
+λ: Perm.mkSafe "acbacb"
 Nothing
 ```
 
@@ -206,16 +204,26 @@ than both of its neighbors.
 
 ### Basic pattern matching
 
+The `Data.Algorithm.PPattern.search` function is devoted to permutation pattern
+matching.
+The result (in case of succeed) is given in the form of a point to point mapping.
+The `Data.Algorithm.PPattern.occursIn`,
+`Data.Algorithm.PPattern.avoids` and
+`Data.Algorithm.PPattern.contains` functions discard the solution mapping and
+return a boolean.
+
 + Positive search:
 
 ```haskell
 λ: import qualified Data.Algorithm.PPattern as PPattern
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: let p = Perm.mk [2,1,3]
-λ: let q = Perm.mk [6,2,3,5,1,4]
+λ: let p = Perm.mk [3,2,4,1]
+λ: let q = Perm.mk [5,4,3,6,2,1]
 λ: PPattern.search p q
-Just [(Point (1,2),Point (2,2)),(Point (2,1),Point (5,1)),(Point (3,3),Point (6,4))]
+Just Point (1,3) -> Point (2,4), Point (2,2) -> Point (3,3), Point (3,4) -> Point (4,6), Point (4,1) -> Point (6,1)
 λ: p `PPattern.occursIn` q
+True
+λ: q `PPattern.contains` p
 True
 λ: q `PPattern.avoids` p
 False
@@ -226,14 +234,17 @@ False
 ```haskell
 λ: import qualified Data.Algorithm.PPattern as PPattern
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: let p = Perm.mk [1..3]
-λ: let q = Perm.mk [6..1]
+λ: let p = Perm.mk [1,2,3]
+λ: let q = Perm.mk [5,4,3,6,2,1]
 λ: PPattern.search p q
 Nothing
 λ: p `PPattern.occursIn` q
 False
+λ: q `PPattern.contains` p
+True
 λ: q `PPattern.avoids` p
 True
+
 ```
 
 ### Occurrence
