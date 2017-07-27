@@ -51,6 +51,8 @@ permutations from foldable objects.
 [2,1,3]
 λ: Perm.mk ["tomorrow", "today", "yesterday"]
 [2,1,3]
+λ: Perm.mk "bac" == Perm.mk ["tomorrow", "today", "yesterday"]
+True
 ```
 
 ### Basic manipulation

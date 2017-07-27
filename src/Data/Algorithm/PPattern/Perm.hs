@@ -67,17 +67,33 @@ where
 
   {-|
     Construct a The empty permutation.
+
+    >>> Perm.empty
+    []
   -}
   empty :: Perm
   empty = Perm []
 
-  -- Construct a Perm from a list of points.
+  -- Construct a permutation from a list of points.
   -- No check is done, use with caution.
   fromList :: [Point.Point] -> Perm
   fromList = Perm
 
   {-|
     `pointAtXCoord x p` returns the point of permutation `p` with x-coordinate `x`.
+    Linear time function.
+
+    >>> let p = Perm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> mapM_ print [Perm.pointAtXCoord x p | x <- [0..6]]
+    Nothing
+    Just (Point (1,1))
+    Just (Point (2,3))
+    Just (Point (3,5))
+    Just (Point (4,4))
+    Just (Point (5,2))
+    Nothing
   -}
   pointAtXCoord :: Int -> Perm -> Maybe Point.Point
   pointAtXCoord x = aux . getList
@@ -88,7 +104,20 @@ where
         | otherwise           = aux ps
 
   {-|
-    `pointAtYCoord y p` returns the point of permutation `p` with y-coordinate `x`.
+    `pointAtYCoord y p` returns the point of permutation `p` with y-coordinate `y`.
+    Linear time function.
+
+    >>> let p = Perm.mk "acedb"
+    >>> p
+    [1,3,5,4,2]
+    >>> mapM_ print [Perm.pointAtYCoord y p | y <- [0..6]]
+    Nothing
+    Just (Point (1,1))
+    Just (Point (5,2))
+    Just (Point (2,3))
+    Just (Point (4,4))
+    Just (Point (3,5))
+    Nothing
   -}
   pointAtYCoord :: Int -> Perm -> Maybe Point.Point
   pointAtYCoord y = aux . getList
