@@ -41,8 +41,8 @@ newtype Point = Point (Int, Int) deriving (Show, Eq, Ord)
 newtype Perm = Perm { getList :: [Point] } deriving (Eq, Ord)
 ```
 
-The function `mk :: (Foldable t, Ord a) => t a -> Perm` is devoted to creating
-permutations from foldable objects.
+The function `Data.Algorithm.PPattern.Perm.mk :: (Foldable t, Ord a) => t a -> Perm`
+is devoted to creating permutations from foldable objects.
 
 ```haskell
 λ: Perm.mk [2,1,3]
