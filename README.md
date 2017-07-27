@@ -279,7 +279,7 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 [Point (2,4),Point (3,3),Point (4,6),Point (6,1)]
 ```
 
-Of course, the following assertions always hold if .
+Of course, the following assertions always hold.
 
 ```haskell
 λ: Maybe.isNothing o || p == Occurrence.pattern (Maybe.fromJust o)
@@ -291,7 +291,6 @@ True
 ### Resolving conflicts
 
 Conflict resolution is a key part of the approach.
-
 Given two permutations, <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> of <img alt="$[m]$" src="svgs/dd493f02a0fe43f96fae4e8995770011.png?invert_in_darkmode" align=middle width="23.477520000000005pt" height="24.56552999999997pt"/> and <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> of <img alt="$[n]$" src="svgs/e56c228e9cc317db54aad972ab7f99e9.png?invert_in_darkmode" align=middle width="18.92847pt" height="24.56552999999997pt"/>, a *pre-embedding*
 of <img alt="$\pi$" src="svgs/f30fdded685c83b0e7b446aa9c9aa120.png?invert_in_darkmode" align=middle width="9.922935000000003pt" height="14.102549999999994pt"/> into <img alt="$\tau$" src="svgs/0fe1677705e987cac4f589ed600aa6b3.png?invert_in_darkmode" align=middle width="9.013125000000002pt" height="14.102549999999994pt"/> is any function <img alt="$e: [m] \to [n]$" src="svgs/7608a5022962af6c21393a6adcfc871c.png?invert_in_darkmode" align=middle width="89.221935pt" height="24.56552999999997pt"/>.
 A pair <img alt="$(i, j)$" src="svgs/e8873e227619b7a62ee7eb981ef1faea.png?invert_in_darkmode" align=middle width="33.35376pt" height="24.56552999999997pt"/> is a

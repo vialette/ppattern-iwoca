@@ -279,7 +279,7 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 [Point (2,4),Point (3,3),Point (4,6),Point (6,1)]
 ```
 
-Of course, the following assertions always hold if .
+Of course, the following assertions always hold.
 
 ```haskell
 λ: Maybe.isNothing o || p == Occurrence.pattern (Maybe.fromJust o)
@@ -291,7 +291,6 @@ True
 ### Resolving conflicts
 
 Conflict resolution is a key part of the approach.
-
 Given two permutations, $\pi$ of $[m]$ and $\tau$ of $[n]$, a *pre-embedding*
 of $\pi$ into $\tau$ is any function $e: [m] \to [n]$.
 A pair $(i, j)$ is a
