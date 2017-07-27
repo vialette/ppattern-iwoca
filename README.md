@@ -68,6 +68,10 @@ permutations from foldable objects.
 [1,2,3,4,5]
 λ: Perm.yCoords p
 [1,3,5,4,2]
+λ: [Perm.pointAtXCoord x p | x <- [0..6]]
+[Nothing,Just (Point (1,1)),Just (Point (2,3)),Just (Point (3,5)),Just (Point (4,4)),Just (Point (5,2)),Nothing]
+λ: [Perm.pointAtYCoord y p | y <- [0..6]]
+[Nothing,Just (Point (1,1)),Just (Point (5,2)),Just (Point (2,3)),Just (Point (4,4)),Just (Point (3,5)),Nothing]
 ```
 
 `Perm.xCoords` and `Perm.yCoords` are reduced forms for:

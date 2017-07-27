@@ -23,6 +23,8 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Querying
 , size
+, pointAtXCoord
+, pointAtYCoord
 
   -- * Converting
 , points
@@ -73,6 +75,28 @@ where
   -- No check is done, use with caution.
   fromList :: [Point.Point] -> Perm
   fromList = Perm
+
+  {-|
+    `pointAtXCoord x p` returns the point of permutation `p` with x-coordinate `x`.
+  -}
+  pointAtXCoord :: Int -> Perm -> Maybe Point.Point
+  pointAtXCoord x = aux . getList
+    where
+      aux [] = Nothing
+      aux (p : ps)
+        | x == Point.xCoord p = Just p
+        | otherwise           = aux ps
+
+  {-|
+    `pointAtYCoord y p` returns the point of permutation `p` with y-coordinate `x`.
+  -}
+  pointAtYCoord :: Int -> Perm -> Maybe Point.Point
+  pointAtYCoord y = aux . getList
+    where
+      aux [] = Nothing
+      aux (p : ps)
+        | y == Point.yCoord p = Just p
+        | otherwise           = aux ps
 
   -- Construct a Perm by applying a function (point level) on an existing Perm..
   apply :: ([Point.Point] -> [Point.Point]) -> Perm -> Perm
