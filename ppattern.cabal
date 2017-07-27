@@ -13,7 +13,7 @@ Extra-Source-Files:  README.md
 Cabal-Version:       >=1.22
 
 Library
-  ghc-options: -Wall -Werror -O2
+  ghc-options: -Wall -Werror -O2 -funfolding-use-threshold=16
   Default-Language: Haskell2010
   Hs-Source-Dirs: src
   Build-Depends:
