@@ -293,32 +293,35 @@ True
 Conflict resolution is a key part of the approach.
 Given two permutations, $\pi$ of $[m]$ and $\tau$ of $[n]$, a *pre-embedding*
 of $\pi$ into $\tau$ is any function $e: [m] \to [n]$.
-A pair $(i, j)$ is a
+A pair $(i, j)$ with $i < j$ is a
 
-+ *horizontal* conflict for $e$ if $i < j$ and $e(i) > e(j)$,
++ *horizontal* conflict for $e$ if $e(i) > e(j)$,
 
 + *vertical* conflict for $e$ if $\pi[i] < \pi[j]$ and $\tau[e(i)] > \tau[e(j)]$,
 or $\pi[i] > \pi[j]$ and $\tau[e(i)] <\tau[e(j)]$.
 
-+ *leftmost conflict first* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostConflictFirst`):
+Several conflict selection strategies are conceivable.
+The following `PPattern` conflict selection strategies are implemented.
+
++ *leftmost conflict first* (`Data.Algorithm.PPattern.Search.ConflictSelection.LeftmostConflictFirst`):
 Resolve any leftmost conflict first.
 
-+ *leftmost horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostHorizontalConflictFirst`):
++ *leftmost horizontal conflict* (`Data.Algorithm.PPattern.Search.ConflictSelection.LeftmostHorizontalConflictFirst`):
 Resolve the leftmost horizontal conflict first.
 If such a conflict does not not exist resolve the leftmost vertical conflict first.
 
-+ *leftmost vertical conflict* (`Data.Algorithm.PPattern.ConflictSelection.LeftmostVerticalConflictFirst`):
++ *leftmost vertical conflict* (`Data.Algorithm.PPattern.Search.ConflictSelection.LeftmostVerticalConflictFirst`):
 Resolve the leftmost vertical conflict first.
 If such a conflict does not not exist resolve the leftmost horizontal conflict first.
 
-+ *rightmost conflict first* (`Data.Algorithm.PPattern.ConflictSelection.RightmostConflictFirst`):
++ *rightmost conflict first* (`Data.Algorithm.PPattern.Search.ConflictSelection.RightmostConflictFirst`):
 Resolve any rightmost conflict first.
 
-+ *rightmost horizontal conflict* (`Data.Algorithm.PPattern.ConflictSelection.RightmostHorizontalConflictFirst`):
++ *rightmost horizontal conflict* (`Data.Algorithm.PPattern.Search.ConflictSelection.RightmostHorizontalConflictFirst`):
 Resolve the rightmost horizontal conflict first.
 If such a conflict does not not exist resolve the rightmost vertical conflict first.
 
-+ *rightmost vertical conflict* (`Data.Algorithm.PPattern.ConflictSelection.RighmostVerticalConflictFirst`):
++ *rightmost vertical conflict* (`Data.Algorithm.PPattern.Search.ConflictSelection.RighmostVerticalConflictFirst`):
 Resolve the rightmost vertical conflict first.
 If such a conflict does not not exist resolve the rightmost horizontal conflict first.
 
