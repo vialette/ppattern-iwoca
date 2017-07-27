@@ -85,7 +85,8 @@ Just (Point (5,2))
 Just (Point (2,3))
 Just (Point (4,4))
 Just (Point (3,5))
-Nothing```
+Nothing
+```
 
 Notice that `Data.Algorithm.PPattern.Perm.xCoords` and
 `Data.Algorithm.PPattern.Perm.yCoords` are reduced forms for:
