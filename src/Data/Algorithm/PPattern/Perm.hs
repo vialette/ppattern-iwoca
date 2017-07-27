@@ -16,6 +16,7 @@ module Data.Algorithm.PPattern.Perm
 
   -- * Constructing
 , mk
+, mkSafe
 , empty
 , fromList
 
@@ -33,10 +34,11 @@ module Data.Algorithm.PPattern.Perm
 )
 where
 
-  import qualified Data.Tuple    as Tuple
-  import qualified Data.List     as List
-  import qualified Data.Foldable as Foldable
-  import qualified Data.Function as Function
+  import qualified Data.Tuple      as Tuple
+  import qualified Data.List       as List
+  import qualified Data.List.Extra as List.Extra
+  import qualified Data.Foldable   as Foldable
+  import qualified Data.Function   as Function
 
   import qualified Data.Algorithm.PPattern.Geometry.Point  as Point
 
@@ -54,6 +56,7 @@ where
 
   {-|
     Construct a permutation from some foldable instance.
+    Ties are resolved according to the left-to-tight otrder.
 
     >>> Perm.mk "acb"
     [1,3,2]
@@ -63,7 +66,28 @@ where
     [1,7,4,2,8,5,3,9,6]
   -}
   mk :: (Foldable t, Ord a) => t a -> Perm
-  mk = Perm . reduce . Foldable.toList
+  mk = mk_ . Foldable.toList
+
+  {-|
+    Construct a permutation from some foldable instance.
+    Return Nothing in case of ties.
+
+    >>> Perm.mk Safe"acb"
+    Just [1,3,2]
+    >>> Perm.mk "acbacb"
+    Nothing
+  -}
+  mkSafe :: (Foldable t, Ord a) => t a -> Maybe Perm
+  mkSafe fs = aux $ mk_ xs
+    where
+      xs    = Foldable.toList fs
+      aux p = if size p == (List.length . List.Extra.nubOrd) xs
+              then Just p
+              else Nothing
+
+  -- Construct a permutation from a list.
+  mk_ :: (Ord a) => [a] -> Perm
+  mk_ = Perm . reduce
 
   {-|
     Construct a The empty permutation.

@@ -123,6 +123,16 @@ Ties are allowed and are resolved according to the left-to-right order.
 [1,7,4,2,8,5,3,9,6]
 ```
 
+Use `Data.Algorithm.PPattern.Perm.mkSafe` to forbid ties.
+
+```haskell
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: Perm.mkSafe "acb"
+Just [1,3,2]
+λ: Perm.mk "acbacb"
+Nothing
+```
+
 ### Basic operations
 
 The *reverse* of a permutation $\sigma = \sigma_1 \sigma_1 \ldots \sigma_n$
