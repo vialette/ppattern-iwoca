@@ -204,8 +204,8 @@ than both of its neighbors.
 
 ### Basic pattern matching
 
-The `Data.Algorithm.PPattern.search` function is devoted to permutation pattern
-matching.
+The `Data.Algorithm.PPattern.search` function is for searching the occurrence of
+a pattern (short permutation) in a larger permutatins.
 The result (in case of succeed) is given in the form of a point to point mapping.
 The `Data.Algorithm.PPattern.occursIn`,
 `Data.Algorithm.PPattern.avoids` and
@@ -251,38 +251,41 @@ True
 
 The `Data.Algorithm.PPattern.search` function has type
 ```haskell
-import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
 import qualified Data.Algorithm.PPattern.Perm as Perm
+import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
 search :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
-```
-as shown in
-```haskell
-λ: import qualified Data.Algorithm.PPattern as PPattern
-λ: import qualified Data.Algorithm.PPattern.Perm as Perm
-λ: let p = Perm.mk [2,1,3]
-λ: let q = Perm.mk [6,2,3,5,1,4]
-λ: let o = PPattern.search p q
-λ: :type o
-o :: Maybe Data.Algorithm.PPattern.Occurrence.Occurrence
 ```
 
 The `Data.Algorithm.PPattern.Occurrence` module provides several functions
 for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 
+```haskell
+λ: import qualified Data.Maybe as Maybe
+λ: import qualified Data.Algorithm.PPattern as PPattern
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
+λ: import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
+λ: let q = Perm.mk [5,4,3,6,2,1]
+λ: let p = Perm.mk [3,2,4,1]
+λ: let o = PPattern.search p q
+λ: Occurrence.size (Maybe.fromJust o)
+4
+λ: Occurrence.pattern (Maybe.fromJust o)
+[3,2,4,1]
+λ: Occurrence.patternPoints (Maybe.fromJust o)
+[Point (1,3),Point (2,2),Point (3,4),Point (4,1)]
+λ: Occurrence.target (Maybe.fromJust o)
+[3,2,4,1]
+λ: Occurrence.targetPoints (Maybe.fromJust o)
+[Point (2,4),Point (3,3),Point (4,6),Point (6,1)]
+```
+
+Of course, the following assertions always hold if .
 
 ```haskell
-λ: import Data.Maybe
-λ: import qualified Data.Algorithm.PPattern.Occurrence as Occurrence
-λ: Occurrence.size (fromJust o)
-3
-λ: Occurrence.pattern (fromJust o)
-[2,1,3]
-λ: Occurrence.patternPoints (fromJust o)
-[Point (1,2),Point (2,1),Point (3,3)]
-λ: Occurrence.target (fromJust o)
-[2,1,3]
-λ: Occurrence.targetPoints (fromJust o)
-[Point (2,2),Point (5,1),Point (6,4)]
+λ: Maybe.isNothing o || p == Occurrence.pattern (Maybe.fromJust o)
+True
+λ: Maybe.isNothing o || p == Occurrence.target (Maybe.fromJust o)
+True
 ```
 
 ### Resolving conflicts
