@@ -264,6 +264,7 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 λ: import qualified Data.Algorithm.PPattern as PPattern
 λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: import qualified Data.Algorithm.PPattern.Search.Occurrence as Occurrence
+λ: import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 λ: let q = Perm.mk [5,4,3,6,2,1]
 λ: let p = Perm.mk [3,2,4,1]
 λ: let o = PPattern.search p q
@@ -277,6 +278,10 @@ for querying `Data.Algorithm.PPattern.Occurrence.Occurrence` type variables.
 [3,2,4,1]
 λ: Occurrence.targetPoints (Maybe.fromJust o)
 [Point (2,4),Point (3,3),Point (4,6),Point (6,1)]
+λ: fmap Point.xCoord (Occurrence.targetPoints (fromJust o))
+[2,3,4,6]
+λ: fmap Point.yCoord (Occurrence.targetPoints (fromJust o))
+[4,3,6,1]
 ```
 
 Of course, the following assertions always hold.
