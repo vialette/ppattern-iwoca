@@ -87,9 +87,11 @@ Just (Point (4,4))
 Just (Point (3,5))
 Nothing```
 
-`Perm.xCoords` and `Perm.yCoords` are reduced forms for:
+Notice that `Data.Algorithm.PPattern.Perm.xCoords` and
+`Data.Algorithm.PPattern.Perm.yCoords` are reduced forms for:
 
 ```haskell
+λ: import qualified Data.Algorithm.PPattern.Perm as Perm
 λ: import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 λ: fmap Point.xCoord (Perm.points p)
 [1,2,3,4,5]
