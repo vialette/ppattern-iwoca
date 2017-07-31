@@ -6,7 +6,7 @@ MAXSIZE=${2:-100}
 STEPSIZE=${3:-10}
 
 # number of trials for every split parameter
-TRIALS=${4:-1000000}
+TRIALS=${4:-100000}
 
 # output csv file
 CSV=../data/split-parameter-minsize-${MINSIZE}-maxsize-${MAXSIZE}-stepsize-${STEPSIZE}-trials-${TRIALS}.csv

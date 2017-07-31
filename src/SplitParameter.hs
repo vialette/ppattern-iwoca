@@ -13,8 +13,7 @@ commentary with @some markup@.
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-import qualified Data.List   as List
-import qualified Data.Monoid as Monoid
+import qualified Data.Foldable as Foldable
 import System.Console.CmdArgs
 import System.Random
 
@@ -47,12 +46,9 @@ splitParamter n t = aux [] 1
         k       = Perm.Monotone.longestDecreasingLength p
 
 go :: RandomGen g => Int -> Int -> g -> IO ()
-go n t g = putStr $ show n    `Monoid.mappend`
-                    ",\""  `Monoid.mappend`
-                    ks     `Monoid.mappend`
-                    "\"\n"
+go n t g = Foldable.mapM_ putStr $ fmap (\k -> show n ++ "," ++ show k ++ "\n") ks
   where
-    ks = List.intercalate "," . fmap show $ splitParamter n t g
+    ks = splitParamter n t g
 
 main :: IO ()
 main = do
