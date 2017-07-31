@@ -9,7 +9,7 @@ STEPSIZE=${3:-10}
 TRIALS=${4:-2}
 
 # generate
-for ((SIZE=$MINSIZE; SIZE<=$MAXSIZE; PSIZE+=$STEPSIZE)); do
+for ((SIZE=$MINSIZE; SIZE<=$MAXSIZE; SIZE+=$STEPSIZE)); do
   # output csv file
   CSV=../data/split-parameter-size-${SIZE}-trials-${TRIALS}.csv
 

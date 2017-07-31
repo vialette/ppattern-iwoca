@@ -109,19 +109,19 @@ Executable ppattern-benchmark
                , patience >=0.1
                , ppattern >= 0.1
 
- Executable split-parameter
-   Main-Is: SplitParameter.hs
-   Hs-Source-Dirs: src
-   ghc-options: -Wall -Werror -O2
-   Default-Language: Haskell2010
-   Build-Depends: base >= 4.8
-                , containers >= 0.5 && < 0.6
-                , random >=1.1
-                , random-shuffle >= 0.0
-                , utility-ht >= 0.0.12
-                , cmdargs >= 0.10.4
-                , clock >= 0.7
-                , formatting >= 6.2
-                , extra >=1.1
-                , patience >=0.1
-                , ppattern >= 0.1
+Executable split-parameter
+  Main-Is: SplitParameter.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends: base >= 4.8
+              , containers >= 0.5 && < 0.6
+              , random >=1.1
+              , random-shuffle >= 0.0
+              , utility-ht >= 0.0.12
+              , cmdargs >= 0.10.4
+              , clock >= 0.7
+              , formatting >= 6.2
+              , extra >=1.1
+              , patience >=0.1
+              , ppattern >= 0.1
