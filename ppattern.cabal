@@ -16,42 +16,45 @@ Library
   ghc-options: -Wall -Werror -O2 -funfolding-use-threshold=16
   Default-Language: Haskell2010
   Hs-Source-Dirs: src
-  Build-Depends:
-    base >=4.8,
-    containers >=0.5 && <0.6,
-    patience >=0.1,
-    extra >=1.1
-  Exposed-Modules: Data.Algorithm.PPattern.Perm
+  Build-Depends: base >=4.8
+               , containers >=0.5 && <0.6
+               , patience >=0.1
+               , extra >=1.1
+               , random >=1.1
+  Exposed-Modules: Data.Algorithm.PPattern
+                 , Data.Algorithm.PPattern.Color
+                 , Data.Algorithm.PPattern.Combinatorics
+                 , Data.Algorithm.PPattern.Geometry.ColorPoint
+                 , Data.Algorithm.PPattern.Geometry.Point
+                 , Data.Algorithm.PPattern.Perm
                  , Data.Algorithm.PPattern.Perm.Compose
                  , Data.Algorithm.PPattern.Perm.Enumerate
                  , Data.Algorithm.PPattern.Perm.Monotone
                  , Data.Algorithm.PPattern.Perm.Operation
-                 , Data.Algorithm.PPattern.Perm.Sub
+                 , Data.Algorithm.PPattern.Perm.Random
+                 , Data.Algorithm.PPattern.Perm.Split
                  , Data.Algorithm.PPattern.Perm.Statistics
-                 , Data.Algorithm.PPattern.Geometry.Point
-                 , Data.Algorithm.PPattern
-                 , Data.Algorithm.PPattern.Perm.Inner.Monotone
-                 , Data.Algorithm.PPattern.Perm.Inner.Operation
-                 , Data.Algorithm.PPattern.Perm.Inner.Sub
-                 , Data.Algorithm.PPattern.Perm.Inner.Statistics
+                 , Data.Algorithm.PPattern.Perm.Sub
                  , Data.Algorithm.PPattern.Search
                  , Data.Algorithm.PPattern.Search.ConflictSelection
-                 , Data.Algorithm.PPattern.Search.ConflictSelection.Link
-                 , Data.Algorithm.PPattern.Search.ConflictSelection.Link2
-                 , Data.Algorithm.PPattern.Search.Conflict
                  , Data.Algorithm.PPattern.Search.Occurrence
-                 , Data.Algorithm.PPattern.Search.Context
-                 , Data.Algorithm.PPattern.Search.State
-                 , Data.Algorithm.PPattern.Search.State.Access
-                 , Data.Algorithm.PPattern.Search.State.Embedding
-                 , Data.Algorithm.PPattern.Search.State.Next
-                 , Data.Algorithm.PPattern.Search.State.IncreasingFactorization
-                 , Data.Algorithm.PPattern.Geometry.Point.List
-                 , Data.Algorithm.PPattern.Geometry.ColorPoint
                  , Data.Algorithm.PPattern.List
-                 , Data.Algorithm.PPattern.Combinatorics
-                 , Data.Algorithm.PPattern.Color
-
+  Other-Modules: Data.Algorithm.PPattern.Geometry.Point.List
+               , Data.Algorithm.PPattern.IntPartition
+               , Data.Algorithm.PPattern.Perm.Inner.Monotone
+               , Data.Algorithm.PPattern.Perm.Inner.Operation
+               , Data.Algorithm.PPattern.Perm.Inner.Sub
+               , Data.Algorithm.PPattern.Perm.Inner.Statistics
+               , Data.Algorithm.PPattern.Random
+               , Data.Algorithm.PPattern.Search.ConflictSelection.Link
+               , Data.Algorithm.PPattern.Search.ConflictSelection.Link2
+               , Data.Algorithm.PPattern.Search.Conflict
+               , Data.Algorithm.PPattern.Search.Context
+               , Data.Algorithm.PPattern.Search.State
+               , Data.Algorithm.PPattern.Search.State.Access
+               , Data.Algorithm.PPattern.Search.State.Embedding
+               , Data.Algorithm.PPattern.Search.State.Next
+               , Data.Algorithm.PPattern.Search.State.IncreasingFactorization
 test-suite spec
   type: exitcode-stdio-1.0
   hs-source-dirs: tests
@@ -59,4 +62,32 @@ test-suite spec
   Default-Language: Haskell2010
   build-depends: base  >=4.8
                , hspec >= 2.4.3
-               , ppattern-generic
+
+Executable split-distribution
+ Main-Is: SplitDistribution.hs
+ Hs-Source-Dirs: src
+ ghc-options: -Wall -Werror -O2
+ Default-Language: Haskell2010
+ Build-Depends: base >= 4.8
+              , containers >= 0.5 && < 0.6
+              , random >=1.1
+              , random-shuffle >= 0.0
+              , utility-ht >= 0.0.12
+              , cmdargs >= 0.10.4
+              , extra >=1.1
+              , patience >=0.1
+              , ppattern >= 0.1
+
+Executable exact-distribution
+  Main-Is: ExactDistribution.hs
+  Hs-Source-Dirs: src
+  ghc-options: -Wall -Werror -O2
+  Default-Language: Haskell2010
+  Build-Depends: base >= 4.8
+               , containers >= 0.5 && < 0.6
+               , random >=1.1
+               , utility-ht >= 0.0.12
+               , cmdargs >= 0.10.4
+               , extra >=1.1
+               , patience >=0.1
+               , ppattern >= 0.1

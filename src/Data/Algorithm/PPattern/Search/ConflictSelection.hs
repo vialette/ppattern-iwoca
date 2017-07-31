@@ -1,5 +1,5 @@
 {-|
-Module      : Data.Algorithm.PPattern.Strategy
+Module      : Data.Algorithm.PPattern.Search.ConflictSelection
 Structription : Short Structription
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017
 License     : MIT
@@ -48,7 +48,7 @@ where
     show RightmostHorizontalConflictFirst = "rightmost horizontal conflict first"
     show RightmostVerticalConflictFirst   = "rightmost vertical conflict first"
 
-  -- CConflict selection function
+  -- Conflict selection function
   type ConflictSelection = State.State -> Maybe Conflict.Conflict
 
   -- Get the conflict selection function.
@@ -116,7 +116,7 @@ where
   firstConflict [] = Nothing
   firstConflict (Strategy.Link2.Link2 (link1, link2) : l2s)
     | horizontalConflict link1 link2 = Just $ mkHorizontalConflict link1 link2
-    -- | HorizontalConflict link2 link1 = Just $ mkHorizontalConflict link2 link1
+    -- HorizontalConflict link2 link1 = Just $ mkHorizontalConflict link2 link1
     | verticalConflict link1 link2 = Just $ mkVerticalConflict link1 link2
     | verticalConflict link2 link1 = Just $ mkVerticalConflict link2 link1
     | otherwise                 = firstConflict l2s
