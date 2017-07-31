@@ -1,5 +1,5 @@
 {-|
-Module      : SplitDistribution
+Module      : SplitParameter
 Description : Short description
 Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017
 License     : MIT
@@ -22,41 +22,32 @@ import qualified Data.Algorithm.PPattern.Perm.Monotone as Perm.Monotone
 import qualified Data.Algorithm.PPattern.Perm.Split    as Perm.Split
 
 data Options = Options { size           :: Int
-                       , splitParameter :: Int
-                       , trials         :: Int
                        , seed           :: Int
                        } deriving (Data, Typeable)
 
 options :: Options
 options = Options { size           = def &= help "The permutation size"
-                  , splitParameter = def &= help "The split parameter"
-                  , trials         = def &= help "The number of trials"
                   , seed           = def &= help "The seed of the random generator"
                   }
                   &= verbosity
-                  &= summary "split-distribution v0.1.0.0, (C) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017"
-                  &= program "split-distribution"
+                  &= summary "split-parameter v0.1.0.0, (C) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017"
+                  &= program "split-parameter"
 
 -- Estimate distribution
-distribution :: RandomGen g => Int -> Int -> Int -> g -> [Int]
-distribution n k t = aux [] 1
+splitParamter :: RandomGen g => Int -> g -> [Int]
+splitParamter n g = Perm.Monotone.longestDecreasingLength p
   where
-    aux acc i g
-      | i > t = acc
-      | otherwise = aux (k' : acc) (i+1) g'
-      where
-        (p, g') = Perm.Split.rand n k g
-        k'      = Perm.Monotone.longestDecreasingLength p
+    (p, _) = Perm.Rand.rand' n g
 
-go :: RandomGen g => Int -> Int -> Int -> g -> IO ()
-go n k t g = putStr $ show k `Monoid.mappend`
-                      ",\""  `Monoid.mappend`
-                      ks     `Monoid.mappend`
-                      "\n"
+go :: RandomGen g => Int -> g -> IO ()
+go n g = putStr $ show k `Monoid.mappend`
+                  ",\""  `Monoid.mappend`
+                  show k `Monoid.mappend`
+                  "\n"
   where
-    ks = List.intercalate "," . fmap show $ distribution n k t g
+    k = splitParamter n g
 
 main :: IO ()
 main = do
   opts <- cmdArgs options
-  go (size opts) (splitParameter opts) (trials opts) $ mkStdGen (seed opts)
+  go (size opts) $ mkStdGen (seed opts)

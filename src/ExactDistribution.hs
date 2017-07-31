@@ -30,7 +30,7 @@ options :: Options
 options = Options { size = def &= help "The permutation size"
                   }
                   &= verbosity
-                  &= summary "exact-distribution v0.1.0.0, (C) Stéphane Vialette 2017"
+                  &= summary "exact-distribution v0.1.0.0, (C) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017"
                   &= program "exact-distribution"
 
 -- Exact distribution
