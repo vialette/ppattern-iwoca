@@ -13,6 +13,7 @@ commentary with @some markup@.
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+import qualified Data.List   as List
 import qualified Data.Monoid as Monoid
 import System.Console.CmdArgs
 import System.Random
@@ -20,33 +21,40 @@ import System.Random
 import qualified Data.Algorithm.PPattern.Perm.Monotone as Perm.Monotone
 import qualified Data.Algorithm.PPattern.Perm.Random   as Perm.Random
 
-data Options = Options { size           :: Int
-                       , seed           :: Int
+data Options = Options { size   :: Int
+                       , trials :: Int
+                       , seed   :: Int
                        } deriving (Data, Typeable)
 
 options :: Options
-options = Options { size = def &= help "The permutation size"
-                  , seed = def &= help "The seed of the random generator"
+options = Options { size   = def &= help "The permutation size"
+                  , trials = def &= help "The number of trials"
+                  , seed   = def &= help "The seed of the random generator"
                   }
                   &= verbosity
                   &= summary "split-parameter v0.1.0.0, (C) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-1017"
                   &= program "split-parameter"
 
 -- Estimate distribution
-splitParamter :: RandomGen g => Int -> g -> Int
-splitParamter n g = Perm.Monotone.longestDecreasingLength p
+splitParamter :: RandomGen g => Int -> Int -> g -> [Int]
+splitParamter n t = aux [] 1
   where
-    (p, _) = Perm.Random.rand' n g
+    aux acc i g
+      | i > t     = acc
+      | otherwise = aux (k : acc) (i+1) g'
+      where
+        (p, g') = Perm.Random.rand' n g
+        k       = Perm.Monotone.longestDecreasingLength p
 
-go :: RandomGen g => Int -> g -> IO ()
-go n g = putStr $ show n `Monoid.mappend`
-                  ",\""  `Monoid.mappend`
-                  show k `Monoid.mappend`
-                  "\"\n"
+go :: RandomGen g => Int -> Int -> g -> IO ()
+go n t g = putStr $ show n    `Monoid.mappend`
+                    ",\""  `Monoid.mappend`
+                    ks     `Monoid.mappend`
+                    "\"\n"
   where
-    k = splitParamter n g
+    ks = List.intercalate "," . fmap show $ splitParamter n t g
 
 main :: IO ()
 main = do
   opts <- cmdArgs options
-  go (size opts) $ mkStdGen (seed opts)
+  go (size opts) (trials opts)$ mkStdGen (seed opts)
