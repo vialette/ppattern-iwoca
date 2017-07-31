@@ -1,7 +1,7 @@
 {-|
 Module      : Data.Algorithm.PPattern
 Structription : Short Structription
-Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016-2017
+Copyright   : (c) anonymous, 2016-1017, 2016-2017
 License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
