@@ -39,7 +39,7 @@ splitParamter n g = Perm.Monotone.longestDecreasingLength p
     (p, _) = Perm.Random.rand' n g
 
 go :: RandomGen g => Int -> g -> IO ()
-go n g = putStr $ show k `Monoid.mappend`
+go n g = putStr $ show n `Monoid.mappend`
                   ",\""  `Monoid.mappend`
                   show k `Monoid.mappend`
                   "\"\n"

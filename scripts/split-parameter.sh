@@ -8,15 +8,15 @@ STEPSIZE=${3:-10}
 # number of trials for every split parameter
 TRIALS=${4:-2}
 
+# output csv file
+CSV=../data/split-parameter-minsize-${MINSIZE}-maxsize-${MAXSIZE}-stepsize-${STEPSIZE}-trials-${TRIALS}.csv
+
 # generate
 for ((SIZE=$MINSIZE; SIZE<=$MAXSIZE; SIZE+=$STEPSIZE)); do
-  # output csv file
-  CSV=../data/split-parameter-size-${SIZE}-trials-${TRIALS}.csv
-
   for ((I=1; I<=$TRIALS ; I+=1)); do
     # echo
     DATE=`date +"%T"`
-    echo "#${I} - ${DATE}";
+    echo "#${I} - size=${SIZE} - ${DATE}";
 
     # random generator seed
     SEED=$RANDOM
