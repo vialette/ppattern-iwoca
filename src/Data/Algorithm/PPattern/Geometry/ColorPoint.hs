@@ -5,6 +5,8 @@ Copyright   : (c) Laurent Bulteau, Romeo Rizzi, Stéphane Vialette, 2016
 License     : MIT
 Maintainer  : vialette@gmail.com
 Stability   : experimental
+
+Color 2D point.
 -}
 
 module Data.Algorithm.PPattern.Geometry.ColorPoint
@@ -45,7 +47,8 @@ where
   {-|
     'ColorPoint' type denotes a colored point.
   -}
-  newtype ColorPoint = ColorPoint (Point.Point, Color.Color) deriving (Show, Eq)
+  newtype ColorPoint = ColorPoint (Point.Point, Color.Color)
+                       deriving (Show, Eq)
 
   {-|
     Compare first on the point and next on the color.
@@ -61,7 +64,7 @@ where
     'mk' makes a colored point from two coordinates and a color.
   -}
   mk ::Int -> Int -> Color.Color -> ColorPoint
-  mk x y c = mk' p c
+  mk x y = mk' p
     where
       p = Point.mk x y
 
@@ -138,7 +141,7 @@ where
       p' = Point.updateXCoord x p
 
   {-|
-    Update color point x-coordinate.
+    Update color point x-coordinate according to a function.
   -}
   updateXCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
   updateXCoord' f (ColorPoint (p, c)) = mk' p' c
@@ -154,7 +157,7 @@ where
       p' = Point.updateYCoord y p
 
   {-|
-    Update color point y-coordinate.
+    Update color point y-coordinate according to a function.
   -}
   updateYCoord' :: (Int -> Int) -> ColorPoint -> ColorPoint
   updateYCoord' f (ColorPoint (p, c)) = mk' p' c

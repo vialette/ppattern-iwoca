@@ -27,29 +27,44 @@ module Data.Algorithm.PPattern.Geometry.Point.List
 
     import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
+    {-|
+      Make a list of points from a list of (x-coordinate, y-coordinate)..
+    -}
     mkFromList :: [(Int, Int)] -> [Point.Point]
     mkFromList = fmap (Tuple.uncurry Point.mk)
 
+    {-|
+      Make a list of sequential points from y-coordinates.
+    -}
     mkSequential :: [Int] -> [Point.Point]
     mkSequential = mkFromList . List.zip [1..]
 
+    {-|
+      Make a list of points from a list of points shifting x-coordinates
+      by 'i'.
+    -}
     moveX :: Int -> [Point.Point] -> [Point.Point]
-    moveX i ps = mkFromList xys
+    moveX i ps = mkFromList $ List.zip xs ys
       where
-        xs  = fmap ((+i) . Point.xCoord) ps
-        ys  = fmap Point.yCoord ps
-        xys = List.zip xs ys
+        xs = fmap ((+i) . Point.xCoord) ps
+        ys = fmap Point.yCoord ps
 
+    {-|
+      Make a list of points from a list of points shifting y-coordinates
+      by 'j'.
+    -}
     moveY :: Int -> [Point.Point] -> [Point.Point]
-    moveY j ps = mkFromList xys
+    moveY j ps = mkFromList $ List.zip xs ys
       where
-        xs  = fmap Point.xCoord ps
-        ys  = fmap ((+j) . Point.yCoord) ps
-        xys = List.zip xs ys
+        xs = fmap Point.xCoord ps
+        ys = fmap ((+j) . Point.yCoord) ps
 
+    {-|
+      Make a list of points from a list of points shifting x-coordinates
+      (resp. y-coordinates) by 'i' (resp. 'j').
+    -}
     move :: Int -> Int -> [Point.Point] -> [Point.Point]
-    move i j ps = mkFromList xys
+    move i j ps = mkFromList $ List.zip xs ys
       where
-        xs  = fmap ((+i) . Point.xCoord) ps
-        ys  = fmap ((+j) . Point.yCoord) ps
-        xys = List.zip xs ys
+        xs = fmap ((+i) . Point.xCoord) ps
+        ys = fmap ((+j) . Point.yCoord) ps

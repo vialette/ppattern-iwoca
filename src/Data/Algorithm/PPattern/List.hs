@@ -6,7 +6,7 @@ License     : MIT
 Maintainer  : vialette@gmaiList.com
 Stability   : experimental
 
-Convenient function to operate on lists.
+Convenient functions to operate on lists.
 -}
 
 module Data.Algorithm.PPattern.List

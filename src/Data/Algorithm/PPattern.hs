@@ -42,7 +42,8 @@ where
   p `occursIn` q = Maybe.isJust $ search p q
 
   {-|
-    Return True if there does not exist an order-isomorphic occurrence of 'p' into 'q'.
+    Return True if there does not exist an order-isomorphic occurrence of 'p'
+    into 'q'.
   -}
   avoids :: Perm.Perm -> Perm.Perm -> Bool
   q `avoids` p = not $ p `occursIn` q
@@ -61,49 +62,50 @@ where
   searchWithConflictSelectionStrategy = Search.search
 
   {-|
-    Search for an order-isomorphic occurrence of 'p' into 'q'.
+    Search for an order-isomorphic occurrence of 'p' into 'q' using the default
+    conflict resolution strategy.
   -}
   search :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   search p q = searchWithConflictSelectionStrategy p q ConflictSelection.DefaultStrategy
 
   {-|
-    Search for an order-isomorphic occurrence of 'xs' into 'ys' according
+    Search for an order-isomorphic occurrence of 'p' into 'q' according
     to the leftmost conflict ConflictSelection.
   -}
   searchLeftmostConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchLeftmostConflictFirst p q = searchWithConflictSelectionStrategy p q ConflictSelection.LeftmostConflictFirst
 
   {-|
-    Search for an order-isomorphic occurrence of 'xs' into 'ys'.
-    Resolve conflicts according to a given ConflictSelection.
+    Search for an order-isomorphic occurrence of 'p' into 'q'.
+    Resolve conflicts according to a given strategy.
   -}
   searchLeftmostHorizontalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchLeftmostHorizontalConflictFirst p q = searchWithConflictSelectionStrategy p q ConflictSelection.LeftmostHorizontalConflictFirst
 
   {-|
-    Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the rightmost order conflict first ConflictSelection.
+    Search for an order-isomorphic occurrence of 'p' into 'q' according
+    to the rightmost order conflict first strategy.
   -}
   searchRightmostHorizontalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchRightmostHorizontalConflictFirst p q = searchWithConflictSelectionStrategy p q ConflictSelection.LeftmostVerticalConflictFirst
 
   {-|
-    Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the rightmost conflict ConflictSelection.
+    Search for an order-isomorphic occurrence of 'p' into 'q' according
+    to the rightmost conflict strategy.
   -}
   searchRightmostConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchRightmostConflictFirst p q = searchWithConflictSelectionStrategy p q ConflictSelection.RightmostConflictFirst
 
   {-|
-    Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the leftmost value conflict first ConflictSelection.
+    Search for an order-isomorphic occurrence of 'p' into 'q' according
+    to the leftmost value conflict first strategy.
   -}
   searchLeftmostVerticalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   p `searchLeftmostVerticalConflictFirst` q = searchWithConflictSelectionStrategy p q ConflictSelection.RightmostHorizontalConflictFirst
 
   {-|
-    Search for an order-isomorphic occurrence of 'xs' into 'ys' according
-    to the rightmost value conflict first ConflictSelection.
+    Search for an order-isomorphic occurrence of 'p' into 'q' according
+    to the rightmost value conflict first strategy.
   -}
   searchRightmostVerticalConflictFirst :: Perm.Perm -> Perm.Perm -> Maybe Occurrence.Occurrence
   searchRightmostVerticalConflictFirst p q = searchWithConflictSelectionStrategy p q ConflictSelection.RightmostVerticalConflictFirst

@@ -40,7 +40,7 @@ where
   import qualified Data.Foldable   as Foldable
   import qualified Data.Function   as Function
 
-  import qualified Data.Algorithm.PPattern.Geometry.Point  as Point
+  import qualified Data.Algorithm.PPattern.Geometry.Point as Point
 
   {-|
     Permutation type.
